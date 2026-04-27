@@ -132,28 +132,30 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
             </span>
           </div>
 
-          <h1
-            className="animate-fade-up-delay-1 font-display mb-6"
-            style={{ fontWeight: 700, lineHeight: 1.0 }}
-          >
+          <h1 className="animate-fade-up-delay-1 mb-6">
             <span
+              className="font-body"
               style={{
-                fontSize: "clamp(1.5rem, 3.5vw, 2.5rem)",
+                fontSize: "clamp(0.9rem, 2vw, 1.1rem)",
                 display: "block",
-                color: "rgba(255,255,255,0.7)",
-                letterSpacing: "0.02em",
+                color: "rgba(255,255,255,0.6)",
+                letterSpacing: "0.15em",
                 fontWeight: 400,
+                textTransform: "uppercase",
+                marginBottom: "0.5rem",
               }}
             >
               Любой юридический документ за
             </span>
             <span
+              className="font-display"
               style={{
                 fontSize: "clamp(5rem, 13vw, 11rem)",
                 color: "#ffffff",
                 fontStyle: "italic",
                 display: "block",
                 lineHeight: 0.95,
+                fontWeight: 700,
               }}
             >
               24 часа
