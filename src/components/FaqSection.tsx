@@ -158,7 +158,7 @@ export default function FaqSection({ onOpenModal }: { onOpenModal: () => void })
           <img
             src="https://cdn.poehali.dev/projects/ec09f91e-5c19-456f-a8f1-620fce7cd143/bucket/0d841fe0-d0b2-4ea0-a768-cbe3dfe8d052.jpeg"
             alt="Legis24"
-            style={{ height: 40, width: "auto", opacity: 0.8 }}
+            style={{ height: 40, width: "auto", mixBlendMode: "multiply" }}
           />
           <p className="font-body text-xs" style={{ color: "var(--text-muted)" }}>
             © 2024 Legis24. Адвокатское бюро. Все права защищены.

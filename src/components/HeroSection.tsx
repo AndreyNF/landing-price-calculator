@@ -29,7 +29,7 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
           <img
             src="https://cdn.poehali.dev/projects/ec09f91e-5c19-456f-a8f1-620fce7cd143/bucket/0d841fe0-d0b2-4ea0-a768-cbe3dfe8d052.jpeg"
             alt="Legis24"
-            style={{ height: 48, width: "auto" }}
+            style={{ height: 48, width: "auto", mixBlendMode: "multiply" }}
           />
         </div>
 
