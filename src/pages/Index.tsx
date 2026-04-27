@@ -51,13 +51,13 @@ function Calculator() {
     <div
       className="p-8 lg:p-10"
       style={{
-        background: "rgba(201,168,76,0.04)",
-        border: "1px solid rgba(201,168,76,0.2)",
+        background: "rgba(239,68,68,0.04)",
+        border: "1px solid rgba(239,68,68,0.18)",
       }}
     >
       <p
         className="font-body text-xs tracking-widest uppercase mb-6"
-        style={{ color: "var(--gold)", letterSpacing: "0.2em" }}
+        style={{ color: "var(--red)", letterSpacing: "0.2em" }}
       >
         Калькулятор — интеллектуальная собственность
       </p>
@@ -69,7 +69,7 @@ function Calculator() {
             <span className="font-body text-sm" style={{ color: "var(--mist)", opacity: 0.6 }}>
               Сумма иска
             </span>
-            <span className="font-display text-3xl" style={{ color: "var(--gold-light)", fontWeight: 300 }}>
+            <span className="font-display text-3xl" style={{ color: "var(--mist)", fontWeight: 300 }}>
               {formatShort(amount)} ₽
             </span>
           </div>
@@ -86,7 +86,7 @@ function Calculator() {
           />
           <div
             className="flex justify-between font-body text-xs"
-            style={{ color: "var(--gold-dim)" }}
+            style={{ color: "var(--mist-dim)" }}
           >
             <span>50 тыс</span>
             <span>5 млн</span>
@@ -102,13 +102,13 @@ function Calculator() {
                 style={{
                   border: `1px solid ${
                     amount === ex.sum
-                      ? "rgba(201,168,76,0.6)"
-                      : "rgba(201,168,76,0.15)"
+                      ? "rgba(239,68,68,0.6)"
+                      : "rgba(255,255,255,0.12)"
                   }`,
-                  color: amount === ex.sum ? "var(--gold-light)" : "var(--mist)",
+                  color: amount === ex.sum ? "#fff" : "var(--mist)",
                   background:
-                    amount === ex.sum ? "rgba(201,168,76,0.1)" : "transparent",
-                  opacity: amount === ex.sum ? 1 : 0.6,
+                    amount === ex.sum ? "rgba(239,68,68,0.12)" : "transparent",
+                  opacity: amount === ex.sum ? 1 : 0.55,
                 }}
               >
                 {ex.label}
@@ -120,13 +120,13 @@ function Calculator() {
           <div
             className="mt-6 p-4 font-body text-xs leading-6"
             style={{
-              background: "rgba(201,168,76,0.04)",
-              border: "1px solid rgba(201,168,76,0.1)",
+              background: "rgba(255,255,255,0.03)",
+              border: "1px solid rgba(255,255,255,0.07)",
               color: "var(--mist)",
-              opacity: 0.55,
+              opacity: 0.6,
             }}
           >
-            <strong style={{ color: "var(--gold-dim)", opacity: 1 }}>Формула:</strong>
+            <strong style={{ color: "var(--mist-2)", opacity: 1 }}>Формула:</strong>
             <br />
             До 500 000 ₽ → 10% (мин. 20 000 ₽)
             <br />
@@ -139,7 +139,7 @@ function Calculator() {
           <div>
             <p
               className="font-body text-xs tracking-widest uppercase mb-2"
-              style={{ color: "var(--gold-dim)" }}
+              style={{ color: "var(--mist-dim)" }}
             >
               Стоимость представительства
             </p>
@@ -148,7 +148,7 @@ function Calculator() {
               style={{
                 fontSize: "clamp(2.5rem, 5vw, 3.5rem)",
                 fontWeight: 300,
-                color: "var(--gold-light)",
+                color: "var(--red)",
                 lineHeight: 1,
               }}
             >
@@ -221,7 +221,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
         </span>
         <span
           className="flex-shrink-0 transition-transform duration-300"
-          style={{ color: "var(--gold)", transform: open ? "rotate(45deg)" : "rotate(0deg)" }}
+          style={{ color: "var(--red)", transform: open ? "rotate(45deg)" : "rotate(0deg)" }}
         >
           <Icon name="Plus" size={16} />
         </span>
@@ -254,17 +254,17 @@ const Index = () => {
       <nav
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 py-4"
         style={{
-          background: "rgba(14,12,10,0.9)",
+          background: "rgba(15,23,42,0.92)",
           backdropFilter: "blur(16px)",
-          borderBottom: "1px solid rgba(201,168,76,0.08)",
+          borderBottom: "1px solid rgba(255,255,255,0.06)",
         }}
       >
         <div className="flex items-center gap-3">
-          <div className="w-5 h-px" style={{ background: "var(--gold)" }} />
-          <span className="font-display text-base tracking-widest" style={{ color: "var(--gold-light)" }}>
+          <div className="w-5 h-px" style={{ background: "var(--red)" }} />
+          <span className="font-display text-base tracking-widest" style={{ color: "#fff" }}>
             LEGIS
           </span>
-          <div className="w-5 h-px" style={{ background: "var(--gold)" }} />
+          <div className="w-5 h-px" style={{ background: "var(--red)" }} />
         </div>
 
         <div className="hidden md:flex items-center gap-8 font-body text-xs tracking-widest uppercase" style={{ color: "var(--mist)", opacity: 0.5 }}>
@@ -287,7 +287,7 @@ const Index = () => {
 
         <button
           className="md:hidden"
-          style={{ color: "var(--gold)" }}
+          style={{ color: "var(--red)" }}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           <Icon name={mobileMenuOpen ? "X" : "Menu"} size={20} />
@@ -298,7 +298,7 @@ const Index = () => {
       {mobileMenuOpen && (
         <div
           className="fixed top-14 left-0 right-0 z-40 px-6 py-6 space-y-4"
-          style={{ background: "rgba(14,12,10,0.97)", borderBottom: "1px solid rgba(201,168,76,0.1)" }}
+          style={{ background: "rgba(15,23,42,0.98)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}
         >
           {[["services", "Услуги"], ["price", "Прайс"], ["calculator", "Калькулятор"], ["faq", "FAQ"]].map(
             ([id, label]) => (
@@ -306,7 +306,7 @@ const Index = () => {
                 key={id}
                 onClick={() => scrollTo(id)}
                 className="block w-full text-left font-body text-sm py-2"
-                style={{ color: "var(--mist)", borderBottom: "1px solid rgba(201,168,76,0.06)" }}
+                style={{ color: "var(--mist)", borderBottom: "1px solid rgba(255,255,255,0.05)" }}
               >
                 {label}
               </button>
@@ -321,8 +321,8 @@ const Index = () => {
         className="relative min-h-screen flex items-center"
         style={{
           background: `
-            radial-gradient(ellipse 70% 60% at 80% 40%, rgba(201,168,76,0.05) 0%, transparent 70%),
-            radial-gradient(ellipse 50% 70% at 10% 90%, rgba(201,168,76,0.03) 0%, transparent 60%),
+            radial-gradient(ellipse 60% 50% at 75% 40%, rgba(239,68,68,0.07) 0%, transparent 65%),
+            radial-gradient(ellipse 40% 50% at 15% 85%, rgba(37,99,235,0.05) 0%, transparent 55%),
             var(--obsidian)
           `,
         }}
@@ -334,7 +334,7 @@ const Index = () => {
             className="absolute top-0 bottom-0 w-px hidden lg:block"
             style={{
               left: `${pct}%`,
-              background: "linear-gradient(to bottom, transparent 5%, rgba(201,168,76,0.05) 50%, transparent 95%)",
+              background: "linear-gradient(to bottom, transparent 5%, rgba(255,255,255,0.04) 50%, transparent 95%)",
             }}
           />
         ))}
@@ -343,13 +343,13 @@ const Index = () => {
           {/* Badge */}
           <div
             className="animate-fade-up inline-flex items-center gap-3 mb-10 px-4 py-2"
-            style={{ border: "1px solid rgba(201,168,76,0.2)", background: "rgba(201,168,76,0.05)" }}
+            style={{ border: "1px solid rgba(239,68,68,0.3)", background: "rgba(239,68,68,0.07)" }}
           >
             <span
               className="w-1.5 h-1.5 rounded-full"
-              style={{ background: "var(--gold)", boxShadow: "0 0 8px var(--gold)" }}
+              style={{ background: "var(--red)", boxShadow: "0 0 8px var(--red)" }}
             />
-            <span className="font-body text-xs tracking-widest uppercase" style={{ color: "var(--gold)" }}>
+            <span className="font-body text-xs tracking-widest uppercase" style={{ color: "var(--red)" }}>
               Сроки горят? Успеем к дедлайну
             </span>
           </div>
@@ -360,7 +360,7 @@ const Index = () => {
           >
             Любой юридический<br />
             документ за{" "}
-            <span style={{ color: "var(--gold-light)", fontStyle: "italic" }}>24 часа</span>
+            <span style={{ color: "var(--red)", fontStyle: "italic" }}>24 часа</span>
           </h1>
 
           <p
@@ -394,7 +394,7 @@ const Index = () => {
           {/* Stats row */}
           <div
             className="animate-fade-up-delay-3 mt-16 pt-10 flex flex-wrap gap-10"
-            style={{ borderTop: "1px solid rgba(201,168,76,0.1)" }}
+            style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
           >
             {[
               ["24 ч", "срок подготовки документа"],
@@ -402,7 +402,7 @@ const Index = () => {
               ["98%", "успешных дел"],
             ].map(([val, label]) => (
               <div key={label}>
-                <p className="font-display text-3xl mb-0.5" style={{ color: "var(--gold-light)", fontWeight: 300 }}>
+                <p className="font-display text-3xl mb-0.5" style={{ color: "var(--red)", fontWeight: 300 }}>
                   {val}
                 </p>
                 <p className="font-body text-xs" style={{ color: "var(--mist)", opacity: 0.4 }}>
@@ -418,7 +418,7 @@ const Index = () => {
       <section id="services" className="py-24 px-6 md:px-10">
         <div className="max-w-6xl mx-auto">
           <div className="mb-12">
-            <p className="font-body text-xs tracking-widest uppercase mb-3" style={{ color: "var(--gold)", letterSpacing: "0.2em" }}>
+            <p className="font-body text-xs tracking-widest uppercase mb-3" style={{ color: "var(--red)", letterSpacing: "0.2em" }}>
               Что делаем
             </p>
             <h2 className="font-display text-4xl lg:text-5xl font-light" style={{ color: "var(--mist)" }}>
@@ -427,7 +427,7 @@ const Index = () => {
             <div className="gold-line mt-5" />
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px" style={{ background: "rgba(201,168,76,0.08)" }}>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px" style={{ background: "rgba(255,255,255,0.05)" }}>
             {[
               {
                 icon: "Gavel",
@@ -451,7 +451,7 @@ const Index = () => {
               },
             ].map((s) => (
               <div key={s.title} className="service-card p-7">
-                <div className="mb-4" style={{ color: "var(--gold)" }}>
+                <div className="mb-4" style={{ color: "var(--red)" }}>
                   <Icon name={s.icon} size={20} />
                 </div>
                 <p className="font-display text-xl mb-2" style={{ color: "var(--mist)" }}>
@@ -474,7 +474,7 @@ const Index = () => {
       <section id="price" className="py-24 px-6 md:px-10">
         <div className="max-w-6xl mx-auto">
           <div className="mb-12">
-            <p className="font-body text-xs tracking-widest uppercase mb-3" style={{ color: "var(--gold)", letterSpacing: "0.2em" }}>
+            <p className="font-body text-xs tracking-widest uppercase mb-3" style={{ color: "var(--red)", letterSpacing: "0.2em" }}>
               Прозрачное ценообразование
             </p>
             <h2 className="font-display text-4xl lg:text-5xl font-light" style={{ color: "var(--mist)" }}>
@@ -489,12 +489,12 @@ const Index = () => {
               className="p-8 lg:p-10"
               style={{
                 background: "var(--charcoal)",
-                border: "1px solid rgba(201,168,76,0.18)",
+                border: "1px solid rgba(255,255,255,0.08)",
               }}
             >
               <div className="flex items-start justify-between mb-6">
                 <div>
-                  <p className="font-body text-xs tracking-widest uppercase mb-2" style={{ color: "var(--gold)", letterSpacing: "0.15em" }}>
+                  <p className="font-body text-xs tracking-widest uppercase mb-2" style={{ color: "var(--red)", letterSpacing: "0.15em" }}>
                     Интеллектуальная собственность
                   </p>
                   <h3 className="font-display text-2xl" style={{ color: "var(--mist)" }}>
@@ -504,7 +504,7 @@ const Index = () => {
                     анализ · подготовка · подача
                   </p>
                 </div>
-                <div style={{ color: "var(--gold)", opacity: 0.6 }}>
+                <div style={{ color: "var(--red)", opacity: 0.7 }}>
                   <Icon name="BookOpen" size={24} />
                 </div>
               </div>
@@ -513,7 +513,7 @@ const Index = () => {
               <div className="space-y-3 mb-6">
                 <div
                   className="flex items-center justify-between p-4"
-                  style={{ background: "rgba(201,168,76,0.06)", border: "1px solid rgba(201,168,76,0.12)" }}
+                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
                 >
                   <div>
                     <p className="font-body text-sm" style={{ color: "var(--mist)" }}>
@@ -523,13 +523,13 @@ const Index = () => {
                       мин. 20 000 ₽
                     </p>
                   </div>
-                  <p className="font-display text-2xl" style={{ color: "var(--gold-light)", fontWeight: 300 }}>
+                  <p className="font-display text-2xl" style={{ color: "var(--red)", fontWeight: 300 }}>
                     10%
                   </p>
                 </div>
                 <div
                   className="flex items-center justify-between p-4"
-                  style={{ background: "rgba(201,168,76,0.06)", border: "1px solid rgba(201,168,76,0.12)" }}
+                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
                 >
                   <div>
                     <p className="font-body text-sm" style={{ color: "var(--mist)" }}>
@@ -539,7 +539,7 @@ const Index = () => {
                       + 2% от суммы превышения
                     </p>
                   </div>
-                  <p className="font-display text-2xl" style={{ color: "var(--gold-light)", fontWeight: 300 }}>
+                  <p className="font-display text-2xl" style={{ color: "var(--red)", fontWeight: 300 }}>
                     50 000 ₽
                   </p>
                 </div>
@@ -548,9 +548,9 @@ const Index = () => {
               {/* Examples */}
               <div
                 className="p-4 mb-6"
-                style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(201,168,76,0.08)" }}
+                style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}
               >
-                <p className="font-body text-xs tracking-widest uppercase mb-3" style={{ color: "var(--gold-dim)" }}>
+                <p className="font-body text-xs tracking-widest uppercase mb-3" style={{ color: "var(--mist-dim)" }}>
                   Примеры
                 </p>
                 <div className="space-y-2">
@@ -563,7 +563,7 @@ const Index = () => {
                       <span style={{ color: "var(--mist)", opacity: 0.5 }}>
                         Иск {new Intl.NumberFormat("ru-RU").format(sum)} ₽
                       </span>
-                      <span style={{ color: "var(--gold-light)" }}>
+                      <span style={{ color: "var(--red)" }}>
                         → {new Intl.NumberFormat("ru-RU").format(fee)} ₽
                       </span>
                     </div>
@@ -573,9 +573,9 @@ const Index = () => {
 
               <button
                 className="w-full py-3.5 font-body text-xs tracking-widest uppercase transition-all duration-200"
-                style={{ border: "1px solid rgba(201,168,76,0.35)", color: "var(--gold-light)" }}
-                onMouseEnter={(e) => (e.currentTarget.style.borderColor = "rgba(201,168,76,0.7)")}
-                onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(201,168,76,0.35)")}
+                style={{ border: "1px solid rgba(239,68,68,0.4)", color: "var(--red)" }}
+                onMouseEnter={(e) => (e.currentTarget.style.borderColor = "rgba(239,68,68,0.8)")}
+                onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(239,68,68,0.4)")}
                 onClick={() => scrollTo("calculator")}
               >
                 Рассчитать стоимость →
@@ -587,12 +587,12 @@ const Index = () => {
               className="p-8 lg:p-10"
               style={{
                 background: "var(--charcoal)",
-                border: "1px solid rgba(201,168,76,0.18)",
+                border: "1px solid rgba(255,255,255,0.08)",
               }}
             >
               <div className="flex items-start justify-between mb-6">
                 <div>
-                  <p className="font-body text-xs tracking-widest uppercase mb-2" style={{ color: "var(--gold)", letterSpacing: "0.15em" }}>
+                  <p className="font-body text-xs tracking-widest uppercase mb-2" style={{ color: "var(--red)", letterSpacing: "0.15em" }}>
                     Взаимодействие с ФНС
                   </p>
                   <h3 className="font-display text-2xl" style={{ color: "var(--mist)" }}>
@@ -602,7 +602,7 @@ const Index = () => {
                     фиксированная стоимость
                   </p>
                 </div>
-                <div style={{ color: "var(--gold)", opacity: 0.6 }}>
+                <div style={{ color: "var(--red)", opacity: 0.7 }}>
                   <Icon name="Landmark" size={24} />
                 </div>
               </div>
@@ -617,8 +617,8 @@ const Index = () => {
                     key={item.name}
                     className="flex items-center justify-between p-4 transition-all duration-200"
                     style={{
-                      background: item.highlight ? "rgba(201,168,76,0.08)" : "rgba(201,168,76,0.04)",
-                      border: `1px solid ${item.highlight ? "rgba(201,168,76,0.2)" : "rgba(201,168,76,0.08)"}`,
+                      background: item.highlight ? "rgba(239,68,68,0.08)" : "rgba(255,255,255,0.03)",
+                      border: `1px solid ${item.highlight ? "rgba(239,68,68,0.2)" : "rgba(255,255,255,0.07)"}`,
                     }}
                   >
                     <div>
@@ -631,7 +631,7 @@ const Index = () => {
                     </div>
                     <p
                       className="font-display text-xl flex-shrink-0 ml-4"
-                      style={{ color: item.highlight ? "var(--gold-light)" : "var(--mist)", fontWeight: 300 }}
+                      style={{ color: item.highlight ? "var(--red)" : "var(--mist)", fontWeight: 300 }}
                     >
                       {item.price}
                     </p>
@@ -648,7 +648,7 @@ const Index = () => {
           {/* Estimate CTA */}
           <div
             className="mt-8 p-6 flex flex-col md:flex-row items-center justify-between gap-4"
-            style={{ background: "rgba(201,168,76,0.04)", border: "1px solid rgba(201,168,76,0.12)" }}
+            style={{ background: "rgba(239,68,68,0.04)", border: "1px solid rgba(239,68,68,0.18)" }}
           >
             <div>
               <p className="font-display text-lg" style={{ color: "var(--mist)" }}>
@@ -667,14 +667,14 @@ const Index = () => {
 
       {/* DIVIDER */}
       <div className="max-w-6xl mx-auto px-6 md:px-10">
-        <div style={{ height: "1px", background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.15), transparent)" }} />
+        <div style={{ height: "1px", background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent)" }} />
       </div>
 
       {/* ── CALCULATOR ──────────────────────────────────────────────────── */}
       <section id="calculator" className="py-24 px-6 md:px-10">
         <div className="max-w-6xl mx-auto">
           <div className="mb-10">
-            <p className="font-body text-xs tracking-widest uppercase mb-3" style={{ color: "var(--gold)", letterSpacing: "0.2em" }}>
+            <p className="font-body text-xs tracking-widest uppercase mb-3" style={{ color: "var(--red)", letterSpacing: "0.2em" }}>
               Интерактивный расчёт
             </p>
             <h2 className="font-display text-4xl lg:text-5xl font-light" style={{ color: "var(--mist)" }}>
@@ -688,14 +688,14 @@ const Index = () => {
 
       {/* DIVIDER */}
       <div className="max-w-6xl mx-auto px-6 md:px-10">
-        <div style={{ height: "1px", background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.15), transparent)" }} />
+        <div style={{ height: "1px", background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent)" }} />
       </div>
 
       {/* ── HOW WE WORK ─────────────────────────────────────────────────── */}
       <section className="py-24 px-6 md:px-10">
         <div className="max-w-6xl mx-auto">
           <div className="mb-12">
-            <p className="font-body text-xs tracking-widest uppercase mb-3" style={{ color: "var(--gold)", letterSpacing: "0.2em" }}>
+            <p className="font-body text-xs tracking-widest uppercase mb-3" style={{ color: "var(--red)", letterSpacing: "0.2em" }}>
               Процесс
             </p>
             <h2 className="font-display text-4xl lg:text-5xl font-light" style={{ color: "var(--mist)" }}>
@@ -704,7 +704,7 @@ const Index = () => {
             <div className="gold-line mt-5" />
           </div>
 
-          <div className="grid md:grid-cols-3 gap-px" style={{ background: "rgba(201,168,76,0.08)" }}>
+          <div className="grid md:grid-cols-3 gap-px" style={{ background: "rgba(255,255,255,0.05)" }}>
             {[
               {
                 num: "01",
@@ -729,11 +729,11 @@ const Index = () => {
                 <div className="flex items-start justify-between mb-6">
                   <span
                     className="font-display text-5xl"
-                    style={{ color: "rgba(201,168,76,0.12)", fontWeight: 300, lineHeight: 1 }}
+                    style={{ color: "rgba(255,255,255,0.08)", fontWeight: 300, lineHeight: 1 }}
                   >
                     {step.num}
                   </span>
-                  <span style={{ color: "var(--gold)", opacity: 0.7 }}>
+                  <span style={{ color: "var(--red)", opacity: 0.7 }}>
                     <Icon name={step.icon} size={20} />
                   </span>
                 </div>
@@ -758,21 +758,21 @@ const Index = () => {
         <div className="max-w-6xl mx-auto">
           <div
             className="p-10 lg:p-14 relative overflow-hidden"
-            style={{ background: "rgba(201,168,76,0.04)", border: "1px solid rgba(201,168,76,0.15)" }}
+            style={{ background: "rgba(239,68,68,0.04)", border: "1px solid rgba(239,68,68,0.18)" }}
           >
             <div
               className="absolute top-0 left-0 right-0 h-px"
-              style={{ background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent)" }}
+              style={{ background: "linear-gradient(90deg, transparent, rgba(239,68,68,0.4), transparent)" }}
             />
 
             <div className="grid lg:grid-cols-2 gap-10 items-center">
               <div>
-                <p className="font-body text-xs tracking-widest uppercase mb-4" style={{ color: "var(--gold)", letterSpacing: "0.2em" }}>
+                <p className="font-body text-xs tracking-widest uppercase mb-4" style={{ color: "var(--red)", letterSpacing: "0.2em" }}>
                   Цена ошибки
                 </p>
                 <h2 className="font-display text-3xl lg:text-4xl font-light mb-6" style={{ color: "var(--mist)" }}>
                   Ошибка в документе<br />
-                  <span style={{ color: "var(--gold-light)", fontStyle: "italic" }}>может стоить дорого</span>
+                  <span style={{ color: "var(--red)", fontStyle: "italic" }}>может стоить дорого</span>
                 </h2>
                 <button className="btn-gold px-8 py-4">Отправить документ</button>
               </div>
@@ -786,7 +786,7 @@ const Index = () => {
                   <div key={r.text} className="flex items-start gap-4">
                     <div
                       className="flex-shrink-0 w-8 h-8 flex items-center justify-center"
-                      style={{ background: "rgba(201,168,76,0.08)", border: "1px solid rgba(201,168,76,0.15)" }}
+                      style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)" }}
                     >
                       <Icon name={r.icon} size={14} />
                     </div>
@@ -806,7 +806,7 @@ const Index = () => {
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <p className="font-body text-xs tracking-widest uppercase mb-4" style={{ color: "var(--gold)", letterSpacing: "0.2em" }}>
+              <p className="font-body text-xs tracking-widest uppercase mb-4" style={{ color: "var(--red)", letterSpacing: "0.2em" }}>
                 Доп. услуга
               </p>
               <h2 className="font-display text-3xl lg:text-4xl font-light mb-4" style={{ color: "var(--mist)" }}>
@@ -818,9 +818,9 @@ const Index = () => {
               </p>
               <button
                 className="font-body text-xs tracking-widest uppercase px-8 py-3.5 transition-all duration-200"
-                style={{ border: "1px solid rgba(201,168,76,0.3)", color: "var(--gold-light)" }}
-                onMouseEnter={(e) => (e.currentTarget.style.borderColor = "rgba(201,168,76,0.7)")}
-                onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(201,168,76,0.3)")}
+                style={{ border: "1px solid rgba(239,68,68,0.35)", color: "var(--red)" }}
+                onMouseEnter={(e) => (e.currentTarget.style.borderColor = "rgba(239,68,68,0.7)")}
+                onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(239,68,68,0.35)")}
               >
                 Узнать подробнее
               </button>
@@ -835,11 +835,11 @@ const Index = () => {
                 <div
                   key={item.title}
                   className="flex items-center gap-5 p-5 transition-all duration-200"
-                  style={{ background: "var(--charcoal)", border: "1px solid rgba(201,168,76,0.1)" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.borderColor = "rgba(201,168,76,0.3)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(201,168,76,0.1)")}
+                  style={{ background: "var(--charcoal)", border: "1px solid rgba(255,255,255,0.07)" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.borderColor = "rgba(239,68,68,0.3)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)")}
                 >
-                  <div className="flex-shrink-0" style={{ color: "var(--gold)", opacity: 0.7 }}>
+                  <div className="flex-shrink-0" style={{ color: "var(--red)", opacity: 0.7 }}>
                     <Icon name={item.icon} size={18} />
                   </div>
                   <div>
@@ -858,7 +858,7 @@ const Index = () => {
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-3 gap-16">
             <div>
-              <p className="font-body text-xs tracking-widest uppercase mb-3" style={{ color: "var(--gold)", letterSpacing: "0.2em" }}>
+              <p className="font-body text-xs tracking-widest uppercase mb-3" style={{ color: "var(--red)", letterSpacing: "0.2em" }}>
                 Ответы
               </p>
               <h2 className="font-display text-4xl font-light" style={{ color: "var(--mist)" }}>
@@ -885,20 +885,20 @@ const Index = () => {
           <div
             className="p-12 lg:p-16 text-center relative overflow-hidden"
             style={{
-              background: "linear-gradient(135deg, rgba(201,168,76,0.07) 0%, rgba(201,168,76,0.03) 100%)",
-              border: "1px solid rgba(201,168,76,0.2)",
+              background: "linear-gradient(135deg, rgba(239,68,68,0.06) 0%, rgba(15,23,42,0) 100%)",
+              border: "1px solid rgba(239,68,68,0.2)",
             }}
           >
             <div
               className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-px"
-              style={{ background: "linear-gradient(90deg, transparent, var(--gold), transparent)" }}
+              style={{ background: "linear-gradient(90deg, transparent, var(--red), transparent)" }}
             />
-            <p className="font-body text-xs tracking-widest uppercase mb-4" style={{ color: "var(--gold)", letterSpacing: "0.2em" }}>
+            <p className="font-body text-xs tracking-widest uppercase mb-4" style={{ color: "var(--red)", letterSpacing: "0.2em" }}>
               Начать работу
             </p>
             <h2 className="font-display text-4xl lg:text-5xl font-light mb-4" style={{ color: "var(--mist)" }}>
               Разберём вашу ситуацию{" "}
-              <span style={{ color: "var(--gold-light)", fontStyle: "italic" }}>сегодня</span>
+              <span style={{ color: "var(--red)", fontStyle: "italic" }}>сегодня</span>
             </h2>
             <p className="font-body text-sm mb-10 max-w-md mx-auto" style={{ color: "var(--mist)", opacity: 0.45 }}>
               Отправьте документ — скажем, как действовать
@@ -924,12 +924,12 @@ const Index = () => {
       </section>
 
       {/* ── FOOTER ──────────────────────────────────────────────────────── */}
-      <footer className="py-10 px-6 md:px-10" style={{ borderTop: "1px solid rgba(201,168,76,0.07)" }}>
+      <footer className="py-10 px-6 md:px-10" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-5">
           <div className="flex items-center gap-3">
-            <div className="w-5 h-px" style={{ background: "var(--gold-dim)" }} />
-            <span className="font-display text-base tracking-widest" style={{ color: "var(--gold-dim)" }}>LEGIS</span>
-            <div className="w-5 h-px" style={{ background: "var(--gold-dim)" }} />
+            <div className="w-5 h-px" style={{ background: "var(--red)", opacity: 0.5 }} />
+            <span className="font-display text-base tracking-widest" style={{ color: "var(--mist)", opacity: 0.4 }}>LEGIS</span>
+            <div className="w-5 h-px" style={{ background: "var(--red)", opacity: 0.5 }} />
           </div>
           <p className="font-body text-xs" style={{ color: "var(--mist)", opacity: 0.25 }}>
             © 2024 LEGIS. Адвокатское бюро. Все права защищены.
@@ -946,8 +946,8 @@ const Index = () => {
       <div
         className="fixed bottom-0 left-0 right-0 md:hidden z-40 p-4"
         style={{
-          background: "rgba(14,12,10,0.97)",
-          borderTop: "1px solid rgba(201,168,76,0.15)",
+          background: "rgba(15,23,42,0.97)",
+          borderTop: "1px solid rgba(239,68,68,0.2)",
         }}
       >
         <button className="btn-gold w-full py-4 text-xs">

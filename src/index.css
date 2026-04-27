@@ -34,13 +34,25 @@
 
     --radius: 0.25rem;
 
-    --gold: #c9a84c;
-    --gold-light: #e2c97e;
-    --gold-dim: #8a6e30;
-    --obsidian: #0e0c0a;
-    --charcoal: #161310;
-    --surface: #1c1810;
-    --mist: #f0e8d8;
+    /* ── NEW PALETTE ────────────────────────── */
+    --red: #ef4444;
+    --red-hover: #dc2626;
+    --red-dim: rgba(239, 68, 68, 0.15);
+    --blue-link: #2563eb;
+
+    --obsidian: #0f172a;
+    --charcoal: #111827;
+    --surface: #1f2937;
+    --border-c: rgba(255, 255, 255, 0.07);
+
+    --mist: #ffffff;
+    --mist-2: #cbd5f5;
+    --mist-dim: #9ca3af;
+
+    /* keep gold only for accent line/logo */
+    --gold: #f59e0b;
+    --gold-light: #fbbf24;
+    --gold-dim: #92400e;
   }
 }
 
@@ -54,6 +66,7 @@
     font-family: "IBM Plex Sans", sans-serif;
     background-color: var(--obsidian);
     color: var(--mist);
+    -webkit-font-smoothing: antialiased;
   }
 
   h1,
@@ -156,49 +169,41 @@ body::before {
   animation: fadeIn 1.2s ease forwards;
 }
 
-/* Gold shimmer button */
+/* Primary CTA — red */
 .btn-gold {
-  background: linear-gradient(
-    120deg,
-    var(--gold-dim) 0%,
-    var(--gold) 40%,
-    var(--gold-light) 60%,
-    var(--gold) 80%,
-    var(--gold-dim) 100%
-  );
-  background-size: 200% auto;
-  color: var(--obsidian);
+  background: var(--red);
+  color: #ffffff;
   font-family: "IBM Plex Sans", sans-serif;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   font-size: 0.75rem;
   transition:
-    background-position 0.5s ease,
-    transform 0.2s ease,
+    background 0.2s ease,
+    transform 0.15s ease,
     box-shadow 0.2s ease;
 }
 .btn-gold:hover {
-  background-position: right center;
+  background: var(--red-hover);
   transform: translateY(-1px);
-  box-shadow: 0 8px 32px rgba(201, 168, 76, 0.3);
+  box-shadow: 0 8px 28px rgba(239, 68, 68, 0.35);
 }
 
 /* Service card */
 .service-card {
-  background: var(--charcoal);
-  border: 1px solid rgba(201, 168, 76, 0.12);
+  background: var(--surface);
+  border: 1px solid var(--border-c);
   transition:
-    border-color 0.3s ease,
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 .service-card:hover {
-  border-color: rgba(201, 168, 76, 0.4);
-  transform: translateY(-4px);
+  border-color: rgba(239, 68, 68, 0.35);
+  transform: translateY(-3px);
   box-shadow:
-    0 16px 48px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(201, 168, 76, 0.1);
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(239, 68, 68, 0.08);
 }
 
 /* Calculator */
@@ -219,11 +224,11 @@ body::before {
 
 /* FAQ */
 .faq-item {
-  border-bottom: 1px solid rgba(201, 168, 76, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   transition: background 0.2s ease;
 }
 .faq-item:hover {
-  background: rgba(201, 168, 76, 0.03);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 /* Slider custom */
@@ -232,10 +237,10 @@ input[type="range"] {
   appearance: none;
   background: linear-gradient(
     to right,
-    var(--gold) 0%,
-    var(--gold) var(--range-fill, 0%),
-    rgba(201, 168, 76, 0.15) var(--range-fill, 0%),
-    rgba(201, 168, 76, 0.15) 100%
+    var(--red) 0%,
+    var(--red) var(--range-fill, 0%),
+    rgba(255, 255, 255, 0.1) var(--range-fill, 0%),
+    rgba(255, 255, 255, 0.1) 100%
   );
   height: 2px;
   border-radius: 1px;
@@ -246,9 +251,9 @@ input[type="range"]::-webkit-slider-thumb {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: var(--gold);
+  background: var(--red);
   border: 2px solid var(--obsidian);
-  box-shadow: 0 0 8px rgba(201, 168, 76, 0.5);
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
   transition: transform 0.2s ease;
 }
 input[type="range"]::-webkit-slider-thumb:hover {
@@ -263,6 +268,14 @@ input[type="range"]::-webkit-slider-thumb:hover {
   background: var(--obsidian);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--gold-dim);
+  background: rgba(239, 68, 68, 0.4);
   border-radius: 2px;
+}
+
+/* Accent line (replaces gold-line) */
+.gold-line {
+  width: 48px;
+  height: 2px;
+  background: var(--red);
+  border-radius: 1px;
 }
