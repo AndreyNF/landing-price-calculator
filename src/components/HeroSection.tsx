@@ -95,10 +95,7 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
       <section
         className="relative min-h-screen flex items-center"
         style={{
-          backgroundImage: `
-            linear-gradient(to bottom, rgba(10,20,50,0.55) 0%, rgba(10,20,50,0.4) 100%),
-            url('https://cdn.poehali.dev/projects/ec09f91e-5c19-456f-a8f1-620fce7cd143/bucket/41d43ad1-6edb-499e-abc6-7222dfa6852c.jpg')
-          `,
+          backgroundImage: `url('https://cdn.poehali.dev/projects/ec09f91e-5c19-456f-a8f1-620fce7cd143/bucket/638bfb96-6919-449f-b82d-039a0507d1c6.png')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -109,7 +106,7 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
             className="absolute top-0 bottom-0 w-px hidden lg:block"
             style={{
               left: `${pct}%`,
-              background: "linear-gradient(to bottom, transparent 5%, rgba(255,255,255,0.12) 50%, transparent 95%)",
+              background: "linear-gradient(to bottom, transparent 5%, rgba(15,44,90,0.1) 50%, transparent 95%)",
             }}
           />
         ))}
@@ -118,7 +115,7 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
           {/* Badge */}
           <p
             className="animate-fade-up font-body text-xs tracking-widest uppercase mb-4"
-            style={{ color: "rgba(255,255,255,0.5)", letterSpacing: "0.2em" }}
+            style={{ color: "var(--blue)", letterSpacing: "0.2em" }}
           >
             Сроки горят? Успеем к дедлайну
           </p>
@@ -129,7 +126,7 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
               style={{
                 fontSize: "clamp(0.9rem, 2vw, 1.1rem)",
                 display: "block",
-                color: "rgba(255,255,255,0.6)",
+                color: "var(--text-muted)",
                 letterSpacing: "0.15em",
                 fontWeight: 400,
                 textTransform: "uppercase",
@@ -142,7 +139,7 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
               className="font-display"
               style={{
                 fontSize: "clamp(5rem, 13vw, 11rem)",
-                color: "#ffffff",
+                color: "var(--navy)",
                 fontStyle: "italic",
                 display: "block",
                 lineHeight: 0.95,
@@ -155,13 +152,13 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
 
           <p
             className="animate-fade-up-delay-2 font-body text-sm md:text-base mb-3"
-            style={{ color: "rgba(255,255,255,0.65)", letterSpacing: "0.04em" }}
+            style={{ color: "var(--text-muted)", letterSpacing: "0.04em" }}
           >
             Претензии · ФНС · Суд · Интеллектуальная собственность
           </p>
           <p
             className="animate-fade-up-delay-2 font-body text-sm mb-10 max-w-lg"
-            style={{ color: "rgba(255,255,255,0.55)" }}
+            style={{ color: "var(--text-muted)" }}
           >
             Работаем с бизнесом. Без ошибок. С учётом актуальной судебной практики.
           </p>
@@ -173,13 +170,13 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
             <button
               className="btn-outline px-10 py-4 font-body font-semibold text-xs tracking-widest uppercase"
               style={{
-                border: "1px solid rgba(255,255,255,0.35)",
-                color: "#ffffff",
+                border: "1px solid rgba(15,44,90,0.3)",
+                color: "var(--navy)",
                 background: "transparent",
                 borderRadius: 6,
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.7)")}
-              onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)")}
+              onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--navy)")}
+              onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(15,44,90,0.3)")}
               onClick={() => scrollTo("calculator")}
             >
               Рассчитать стоимость
@@ -189,7 +186,7 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
           {/* Stats row */}
           <div
             className="animate-fade-up-delay-3 mt-16 pt-10 flex flex-wrap gap-6 md:gap-10"
-            style={{ borderTop: "1px solid rgba(255,255,255,0.15)" }}
+            style={{ borderTop: "1px solid var(--border-c)" }}
           >
             {[
               ["24 ч", "срок подготовки документа"],
@@ -199,11 +196,11 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
               <div key={label}>
                 <p
                   className="font-display text-3xl mb-0.5"
-                  style={{ color: "#ffffff", fontWeight: 700 }}
+                  style={{ color: "var(--blue)", fontWeight: 700 }}
                 >
                   {val}
                 </p>
-                <p className="font-body text-xs" style={{ color: "rgba(255,255,255,0.55)" }}>
+                <p className="font-body text-xs" style={{ color: "var(--text-muted)" }}>
                   {label}
                 </p>
               </div>
