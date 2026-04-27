@@ -16,7 +16,7 @@ export default function PriceCards({ onScrollTo, onOpenModal }: PriceCardsProps)
           >
             Прозрачное ценообразование
           </p>
-          <h2 className="font-display text-4xl lg:text-5xl" style={{ color: "var(--navy)" }}>
+          <h2 className="font-display text-2xl sm:text-3xl lg:text-5xl" style={{ color: "var(--navy)" }}>
             Стоимость услуг
           </h2>
           <div className="gold-line mt-5" />
@@ -55,14 +55,14 @@ export default function PriceCards({ onScrollTo, onOpenModal }: PriceCardsProps)
               ].map((tier) => (
                 <div
                   key={tier.label}
-                  className="flex items-center justify-between p-4"
+                  className="flex items-center justify-between gap-3 p-4"
                   style={{ background: "var(--bg-white)", border: "1px solid var(--border-c)", borderRadius: 6 }}
                 >
-                  <div>
+                  <div className="min-w-0">
                     <p className="font-body text-sm font-medium" style={{ color: "var(--text)" }}>{tier.label}</p>
                     <p className="font-body text-xs" style={{ color: "var(--text-muted)" }}>{tier.sub}</p>
                   </div>
-                  <p className="font-display text-2xl" style={{ color: "var(--navy)", fontWeight: 700 }}>
+                  <p className="font-display text-xl flex-shrink-0" style={{ color: "var(--navy)", fontWeight: 700 }}>
                     {tier.val}
                   </p>
                 </div>
@@ -86,11 +86,11 @@ export default function PriceCards({ onScrollTo, onOpenModal }: PriceCardsProps)
                   [450000, 45000],
                   [700000, 54000],
                 ].map(([sum, fee]) => (
-                  <div key={sum} className="flex justify-between font-body text-sm">
+                  <div key={sum} className="flex justify-between gap-2 font-body text-sm">
                     <span style={{ color: "var(--text-muted)" }}>
                       Иск {new Intl.NumberFormat("ru-RU").format(sum)} ₽
                     </span>
-                    <span style={{ color: "var(--success)", fontWeight: 600 }}>
+                    <span className="flex-shrink-0" style={{ color: "var(--success)", fontWeight: 600 }}>
                       → {new Intl.NumberFormat("ru-RU").format(fee)} ₽
                     </span>
                   </div>
@@ -152,7 +152,7 @@ export default function PriceCards({ onScrollTo, onOpenModal }: PriceCardsProps)
               ].map((item) => (
                 <div
                   key={item.name}
-                  className="flex items-center justify-between p-4 transition-all duration-200"
+                  className="flex items-center justify-between gap-3 p-4 transition-all duration-200"
                   style={{
                     background: item.highlight ? "rgba(37,99,235,0.06)" : "var(--bg-white)",
                     border: `1px solid ${item.highlight ? "rgba(37,99,235,0.2)" : "var(--border-c)"}`,
@@ -168,7 +168,7 @@ export default function PriceCards({ onScrollTo, onOpenModal }: PriceCardsProps)
                     </p>
                   </div>
                   <p
-                    className="font-display text-xl flex-shrink-0 ml-4"
+                    className="font-display text-lg flex-shrink-0"
                     style={{ color: item.highlight ? "var(--navy)" : "var(--text)", fontWeight: 700 }}
                   >
                     {item.price}

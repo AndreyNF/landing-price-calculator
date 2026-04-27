@@ -13,7 +13,7 @@ export default function ProcessSection({ onOpenModal }: { onOpenModal: () => voi
             >
               Процесс
             </p>
-            <h2 className="font-display text-4xl lg:text-5xl" style={{ color: "var(--navy)" }}>
+            <h2 className="font-display text-2xl sm:text-3xl lg:text-5xl" style={{ color: "var(--navy)" }}>
               Как мы работаем
             </h2>
             <div className="gold-line mt-5" />
@@ -89,10 +89,10 @@ export default function ProcessSection({ onOpenModal }: { onOpenModal: () => voi
                   Цена ошибки
                 </p>
                 <h2
-                  className="font-display text-3xl lg:text-4xl mb-6"
+                  className="font-display text-2xl sm:text-3xl lg:text-4xl mb-6"
                   style={{ color: "var(--navy)" }}
                 >
-                  Ошибка в документе<br />
+                  Ошибка в документе{" "}
                   <span style={{ color: "var(--blue)", fontStyle: "italic" }}>может стоить дорого</span>
                 </h2>
                 <button className="btn-gold px-8 py-4" onClick={onOpenModal}>Отправить документ</button>
@@ -142,7 +142,7 @@ export default function ProcessSection({ onOpenModal }: { onOpenModal: () => voi
                 Доп. услуга
               </p>
               <h2
-                className="font-display text-3xl lg:text-4xl mb-4"
+                className="font-display text-xl sm:text-2xl lg:text-4xl mb-4"
                 style={{ color: "var(--navy)" }}
               >
                 Защита интеллектуальной собственности

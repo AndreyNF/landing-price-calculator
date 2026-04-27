@@ -11,7 +11,7 @@ export default function ServicesGrid({ onOpenModal }: { onOpenModal: () => void 
           >
             Что делаем
           </p>
-          <h2 className="font-display text-4xl lg:text-5xl" style={{ color: "var(--navy)" }}>
+          <h2 className="font-display text-2xl sm:text-3xl lg:text-5xl" style={{ color: "var(--navy)" }}>
             Документы под задачи бизнеса
           </h2>
           <div className="gold-line mt-5" />

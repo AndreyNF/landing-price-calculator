@@ -161,8 +161,8 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
           </h1>
 
           <p
-            className="animate-fade-up-delay-2 font-body text-base mb-3"
-            style={{ color: "var(--text-muted)", letterSpacing: "0.08em" }}
+            className="animate-fade-up-delay-2 font-body text-sm md:text-base mb-3"
+            style={{ color: "var(--text-muted)", letterSpacing: "0.04em" }}
           >
             Претензии · ФНС · Суд · Интеллектуальная собственность
           </p>
@@ -195,7 +195,7 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
 
           {/* Stats row */}
           <div
-            className="animate-fade-up-delay-3 mt-16 pt-10 flex flex-wrap gap-10"
+            className="animate-fade-up-delay-3 mt-16 pt-10 flex flex-wrap gap-6 md:gap-10"
             style={{ borderTop: "1px solid var(--border-c)" }}
           >
             {[

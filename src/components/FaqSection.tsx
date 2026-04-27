@@ -40,7 +40,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
         className="w-full flex items-center justify-between py-5 text-left gap-4"
         onClick={() => setOpen(!open)}
       >
-        <span className="font-display text-lg" style={{ color: "var(--navy)" }}>
+        <span className="font-display text-base sm:text-lg" style={{ color: "var(--navy)" }}>
           {q}
         </span>
         <span
@@ -77,7 +77,7 @@ export default function FaqSection({ onOpenModal }: { onOpenModal: () => void })
               >
                 Ответы
               </p>
-              <h2 className="font-display text-4xl" style={{ color: "var(--navy)" }}>
+              <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl" style={{ color: "var(--navy)" }}>
                 Часто задаваемые вопросы
               </h2>
               <div className="gold-line mt-5" />
@@ -117,7 +117,7 @@ export default function FaqSection({ onOpenModal }: { onOpenModal: () => void })
               Начать работу
             </p>
             <h2
-              className="font-display text-4xl lg:text-5xl mb-4"
+              className="font-display text-2xl sm:text-3xl lg:text-5xl mb-4"
               style={{ color: "var(--navy)" }}
             >
               Разберём вашу ситуацию{" "}

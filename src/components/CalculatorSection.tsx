@@ -63,11 +63,11 @@ function Calculator({ onOpenModal }: { onOpenModal: () => void }) {
       <div className="grid lg:grid-cols-2 gap-10">
         {/* Left: slider */}
         <div>
-          <div className="flex justify-between items-end mb-4">
+          <div className="flex justify-between items-end mb-4 gap-3">
             <span className="font-body text-sm" style={{ color: "var(--text-muted)" }}>
               Сумма иска
             </span>
-            <span className="font-display text-3xl font-bold" style={{ color: "var(--navy)" }}>
+            <span className="font-display text-2xl font-bold flex-shrink-0" style={{ color: "var(--navy)" }}>
               {formatShort(amount)} ₽
             </span>
           </div>
@@ -178,7 +178,7 @@ export default function CalculatorSection({ onOpenModal }: { onOpenModal: () => 
           >
             Интерактивный расчёт
           </p>
-          <h2 className="font-display text-4xl lg:text-5xl" style={{ color: "var(--navy)" }}>
+          <h2 className="font-display text-2xl sm:text-3xl lg:text-5xl" style={{ color: "var(--navy)" }}>
             Калькулятор стоимости
           </h2>
           <div className="gold-line mt-5" />
