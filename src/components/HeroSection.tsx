@@ -27,7 +27,7 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
       >
         <div className="flex items-center">
           <img
-            src="https://cdn.poehali.dev/projects/ec09f91e-5c19-456f-a8f1-620fce7cd143/bucket/f43bee61-8d4f-4628-9014-63453c99021f.png"
+            src="https://cdn.poehali.dev/projects/ec09f91e-5c19-456f-a8f1-620fce7cd143/bucket/0d841fe0-d0b2-4ea0-a768-cbe3dfe8d052.jpeg"
             alt="Legis24"
             style={{ height: 48, width: "auto" }}
           />
