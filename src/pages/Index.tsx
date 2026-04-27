@@ -355,12 +355,11 @@ const Index = () => {
           </div>
 
           <h1
-            className="animate-fade-up-delay-1 font-display leading-tight mb-6"
-            style={{ fontSize: "clamp(2.8rem, 6.5vw, 5.5rem)", fontWeight: 300, color: "var(--mist)" }}
+            className="animate-fade-up-delay-1 font-display mb-6"
+            style={{ fontWeight: 300, color: "var(--mist)", lineHeight: 1.0 }}
           >
-            Любой юридический<br />
-            документ за{" "}
-            <span style={{ color: "var(--red)", fontStyle: "italic" }}>24 часа</span>
+            <span style={{ fontSize: "clamp(2rem, 4vw, 3.2rem)", display: "block", opacity: 0.7, letterSpacing: "0.02em" }}>Любой юридический документ за</span>
+            <span style={{ fontSize: "clamp(5rem, 13vw, 11rem)", color: "var(--red)", fontStyle: "italic", display: "block", lineHeight: 0.95 }}>24 часа</span>
           </h1>
 
           <p
