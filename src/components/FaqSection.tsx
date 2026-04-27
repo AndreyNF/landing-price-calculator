@@ -155,18 +155,13 @@ export default function FaqSection({ onOpenModal }: { onOpenModal: () => void })
         style={{ borderTop: "1px solid var(--border-c)", background: "var(--bg-white)" }}
       >
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-5">
-          <div className="flex items-center gap-3">
-            <div className="w-5 h-px" style={{ background: "var(--navy)", opacity: 0.5 }} />
-            <span
-              className="font-display text-base tracking-widest"
-              style={{ color: "var(--navy)" }}
-            >
-              LEGIS
-            </span>
-            <div className="w-5 h-px" style={{ background: "var(--navy)", opacity: 0.5 }} />
-          </div>
+          <img
+            src="https://cdn.poehali.dev/projects/ec09f91e-5c19-456f-a8f1-620fce7cd143/bucket/f43bee61-8d4f-4628-9014-63453c99021f.png"
+            alt="Legis24"
+            style={{ height: 28, width: "auto", opacity: 0.7 }}
+          />
           <p className="font-body text-xs" style={{ color: "var(--text-muted)" }}>
-            © 2024 LEGIS. Адвокатское бюро. Все права защищены.
+            © 2024 Legis24. Адвокатское бюро. Все права защищены.
           </p>
           <div className="flex gap-5 font-body text-xs" style={{ color: "var(--text-muted)" }}>
             <span>Политика конфиденциальности</span>

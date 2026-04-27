@@ -25,12 +25,12 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
           borderBottom: "1px solid var(--border-c)",
         }}
       >
-        <div className="flex items-center gap-3">
-          <div className="w-5 h-px" style={{ background: "var(--navy)" }} />
-          <span className="font-display text-base tracking-widest" style={{ color: "var(--navy)" }}>
-            LEGIS
-          </span>
-          <div className="w-5 h-px" style={{ background: "var(--navy)" }} />
+        <div className="flex items-center">
+          <img
+            src="https://cdn.poehali.dev/projects/ec09f91e-5c19-456f-a8f1-620fce7cd143/bucket/f43bee61-8d4f-4628-9014-63453c99021f.png"
+            alt="Legis24"
+            style={{ height: 36, width: "auto" }}
+          />
         </div>
 
         <div
