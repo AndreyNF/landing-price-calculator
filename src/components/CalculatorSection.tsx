@@ -48,13 +48,14 @@ function Calculator({ onOpenModal }: { onOpenModal: () => void }) {
     <div
       className="p-8 lg:p-10"
       style={{
-        background: "rgba(239,68,68,0.04)",
-        border: "1px solid rgba(239,68,68,0.18)",
+        background: "var(--bg-white)",
+        border: "1px solid var(--border-c)",
+        borderRadius: 8,
       }}
     >
       <p
         className="font-body text-xs tracking-widest uppercase mb-6"
-        style={{ color: "var(--red)", letterSpacing: "0.2em" }}
+        style={{ color: "var(--blue)", letterSpacing: "0.2em" }}
       >
         Калькулятор — интеллектуальная собственность
       </p>
@@ -63,10 +64,10 @@ function Calculator({ onOpenModal }: { onOpenModal: () => void }) {
         {/* Left: slider */}
         <div>
           <div className="flex justify-between items-end mb-4">
-            <span className="font-body text-sm" style={{ color: "var(--mist)", opacity: 0.6 }}>
+            <span className="font-body text-sm" style={{ color: "var(--text-muted)" }}>
               Сумма иска
             </span>
-            <span className="font-display text-3xl" style={{ color: "var(--mist)", fontWeight: 300 }}>
+            <span className="font-display text-3xl font-bold" style={{ color: "var(--navy)" }}>
               {formatShort(amount)} ₽
             </span>
           </div>
@@ -81,7 +82,7 @@ function Calculator({ onOpenModal }: { onOpenModal: () => void }) {
             onChange={(e) => setAmount(Number(e.target.value))}
             className="w-full mb-2"
           />
-          <div className="flex justify-between font-body text-xs" style={{ color: "var(--mist-dim)" }}>
+          <div className="flex justify-between font-body text-xs" style={{ color: "var(--text-muted)" }}>
             <span>50 тыс</span>
             <span>5 млн</span>
           </div>
@@ -94,10 +95,11 @@ function Calculator({ onOpenModal }: { onOpenModal: () => void }) {
                 onClick={() => setAmount(ex.sum)}
                 className="font-body text-xs px-3 py-1.5 transition-all duration-200"
                 style={{
-                  border: `1px solid ${amount === ex.sum ? "rgba(239,68,68,0.6)" : "rgba(255,255,255,0.12)"}`,
-                  color: amount === ex.sum ? "#fff" : "var(--mist)",
-                  background: amount === ex.sum ? "rgba(239,68,68,0.12)" : "transparent",
-                  opacity: amount === ex.sum ? 1 : 0.55,
+                  border: `1px solid ${amount === ex.sum ? "var(--blue)" : "var(--border-c)"}`,
+                  color: amount === ex.sum ? "#fff" : "var(--text)",
+                  background: amount === ex.sum ? "var(--blue)" : "transparent",
+                  borderRadius: 4,
+                  fontWeight: amount === ex.sum ? 600 : 400,
                 }}
               >
                 {ex.label}
@@ -109,13 +111,13 @@ function Calculator({ onOpenModal }: { onOpenModal: () => void }) {
           <div
             className="mt-6 p-4 font-body text-xs leading-6"
             style={{
-              background: "rgba(255,255,255,0.03)",
-              border: "1px solid rgba(255,255,255,0.07)",
-              color: "var(--mist)",
-              opacity: 0.6,
+              background: "var(--bg)",
+              border: "1px solid var(--border-c)",
+              color: "var(--text-muted)",
+              borderRadius: 6,
             }}
           >
-            <strong style={{ color: "var(--mist-2)", opacity: 1 }}>Формула:</strong>
+            <strong style={{ color: "var(--navy)" }}>Формула:</strong>
             <br />
             До 500 000 ₽ → 10% (мин. 20 000 ₽)
             <br />
@@ -128,7 +130,7 @@ function Calculator({ onOpenModal }: { onOpenModal: () => void }) {
           <div>
             <p
               className="font-body text-xs tracking-widest uppercase mb-2"
-              style={{ color: "var(--mist-dim)" }}
+              style={{ color: "var(--text-muted)" }}
             >
               Стоимость представительства
             </p>
@@ -136,14 +138,14 @@ function Calculator({ onOpenModal }: { onOpenModal: () => void }) {
               className="font-display mb-1"
               style={{
                 fontSize: "clamp(2.5rem, 5vw, 3.5rem)",
-                fontWeight: 300,
-                color: "var(--red)",
+                fontWeight: 700,
+                color: "var(--success)",
                 lineHeight: 1,
               }}
             >
               {formatRub(fee)}
             </p>
-            <p className="font-body text-xs mt-3" style={{ color: "var(--mist)", opacity: 0.4 }}>
+            <p className="font-body text-xs mt-3" style={{ color: "var(--text-muted)" }}>
               анализ + подготовка + подача документов · под ключ
             </p>
           </div>
@@ -154,7 +156,7 @@ function Calculator({ onOpenModal }: { onOpenModal: () => void }) {
             </button>
             <p
               className="font-body text-xs text-center"
-              style={{ color: "var(--mist)", opacity: 0.3 }}
+              style={{ color: "var(--text-muted)" }}
             >
               Точная стоимость — после изучения материалов
             </p>
@@ -167,16 +169,16 @@ function Calculator({ onOpenModal }: { onOpenModal: () => void }) {
 
 export default function CalculatorSection({ onOpenModal }: { onOpenModal: () => void }) {
   return (
-    <section id="calculator" className="py-24 px-6 md:px-10">
+    <section id="calculator" className="py-24 px-6 md:px-10" style={{ background: "var(--bg)" }}>
       <div className="max-w-6xl mx-auto">
         <div className="mb-10">
           <p
             className="font-body text-xs tracking-widest uppercase mb-3"
-            style={{ color: "var(--red)", letterSpacing: "0.2em" }}
+            style={{ color: "var(--blue)", letterSpacing: "0.2em" }}
           >
             Интерактивный расчёт
           </p>
-          <h2 className="font-display text-4xl lg:text-5xl font-light" style={{ color: "var(--mist)" }}>
+          <h2 className="font-display text-4xl lg:text-5xl" style={{ color: "var(--navy)" }}>
             Калькулятор стоимости
           </h2>
           <div className="gold-line mt-5" />

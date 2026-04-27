@@ -2,16 +2,16 @@ import Icon from "@/components/ui/icon";
 
 export default function ServicesGrid({ onOpenModal }: { onOpenModal: () => void }) {
   return (
-    <section id="services" className="py-24 px-6 md:px-10">
+    <section id="services" className="py-24 px-6 md:px-10" style={{ background: "var(--bg-white)" }}>
       <div className="max-w-6xl mx-auto">
         <div className="mb-12">
           <p
             className="font-body text-xs tracking-widest uppercase mb-3"
-            style={{ color: "var(--red)", letterSpacing: "0.2em" }}
+            style={{ color: "var(--blue)", letterSpacing: "0.2em" }}
           >
             Что делаем
           </p>
-          <h2 className="font-display text-4xl lg:text-5xl font-light" style={{ color: "var(--mist)" }}>
+          <h2 className="font-display text-4xl lg:text-5xl" style={{ color: "var(--navy)" }}>
             Документы под задачи бизнеса
           </h2>
           <div className="gold-line mt-5" />
@@ -19,7 +19,7 @@ export default function ServicesGrid({ onOpenModal }: { onOpenModal: () => void 
 
         <div
           className="grid md:grid-cols-2 lg:grid-cols-4 gap-px"
-          style={{ background: "rgba(255,255,255,0.05)" }}
+          style={{ background: "var(--border-c)" }}
         >
           {[
             { icon: "Gavel", title: "Отзывы по авторским правам", desc: "Правовая позиция + подача в суд. Под ключ." },
@@ -28,13 +28,13 @@ export default function ServicesGrid({ onOpenModal }: { onOpenModal: () => void 
             { icon: "Scale", title: "Судебные документы", desc: "Исковые заявления, ходатайства, жалобы." },
           ].map((s) => (
             <div key={s.title} className="service-card p-7">
-              <div className="mb-4" style={{ color: "var(--red)" }}>
+              <div className="mb-4" style={{ color: "var(--blue)" }}>
                 <Icon name={s.icon} size={20} />
               </div>
-              <p className="font-display text-xl mb-2" style={{ color: "var(--mist)" }}>
+              <p className="font-display text-xl mb-2" style={{ color: "var(--navy)" }}>
                 {s.title}
               </p>
-              <p className="font-body text-sm leading-6" style={{ color: "var(--mist)", opacity: 0.45 }}>
+              <p className="font-body text-sm leading-6" style={{ color: "var(--text-muted)" }}>
                 {s.desc}
               </p>
             </div>

@@ -1,58 +1,70 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 20 10% 6%;
-    --foreground: 45 30% 92%;
+    --background: 210 40% 98%;
+    --foreground: 220 14% 7%;
 
-    --card: 20 8% 9%;
-    --card-foreground: 45 30% 92%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 14% 7%;
 
-    --popover: 20 8% 9%;
-    --popover-foreground: 45 30% 92%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 14% 7%;
 
-    --primary: 43 74% 62%;
-    --primary-foreground: 20 10% 6%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 20 8% 13%;
-    --secondary-foreground: 45 20% 75%;
+    --secondary: 214 32% 91%;
+    --secondary-foreground: 221 39% 20%;
 
-    --muted: 20 8% 13%;
-    --muted-foreground: 45 15% 55%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
 
-    --accent: 43 74% 62%;
-    --accent-foreground: 20 10% 6%;
+    --accent: 221 83% 53%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62.8% 40%;
-    --destructive-foreground: 45 30% 92%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 43 20% 18%;
-    --input: 43 20% 18%;
-    --ring: 43 74% 62%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 221 83% 53%;
 
-    --radius: 0.25rem;
+    --radius: 0.5rem;
 
-    /* ── NEW PALETTE ────────────────────────── */
-    --red: #ef4444;
-    --red-hover: #dc2626;
-    --red-dim: rgba(239, 68, 68, 0.15);
-    --blue-link: #2563eb;
+    /* ── PALETTE ─────────────────────────────── */
+    --navy: #0f2c5a;
+    --navy-hover: #0a1f40;
+    --blue: #2563eb;
+    --blue-hover: #1d4ed8;
+    --blue-dim: rgba(37, 99, 235, 0.12);
 
-    --obsidian: #0f172a;
+    --bg: #f8fafc;
+    --bg-white: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #f1f5f9;
+    --border-c: #e2e8f0;
+
+    --text: #111827;
+    --text-muted: #6b7280;
+
+    --success: #15803d;
+    --success-dim: rgba(21, 128, 61, 0.1);
+
+    /* keep for compatibility */
+    --obsidian: #f8fafc;
     --charcoal: #111827;
-    --surface: #1f2937;
-    --border-c: rgba(255, 255, 255, 0.07);
-
-    --mist: #ffffff;
-    --mist-2: #cbd5f5;
-    --mist-dim: #9ca3af;
-
-    /* keep gold only for accent line/logo */
-    --gold: #f59e0b;
-    --gold-light: #fbbf24;
-    --gold-dim: #92400e;
+    --mist: #111827;
+    --gold: #2563eb;
+    --gold-light: #3b82f6;
+    --red: #2563eb;
+    --red-hover: #1d4ed8;
+    --red-dim: rgba(37, 99, 235, 0.12);
+    --blue-link: #2563eb;
   }
 }
 
@@ -63,9 +75,9 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: "IBM Plex Sans", sans-serif;
-    background-color: var(--obsidian);
-    color: var(--mist);
+    font-family: "Inter", sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
     -webkit-font-smoothing: antialiased;
   }
 
@@ -73,53 +85,33 @@
   h2,
   h3,
   h4 {
-    font-family: "Cormorant", serif;
+    font-family: "Playfair Display", serif;
+    color: var(--navy);
   }
 }
 
 @layer utilities {
   .font-display {
-    font-family: "Cormorant", serif;
+    font-family: "Playfair Display", serif;
   }
   .font-body {
-    font-family: "IBM Plex Sans", sans-serif;
+    font-family: "Inter", sans-serif;
   }
   .text-gold {
-    color: var(--gold);
+    color: var(--blue);
   }
   .text-gold-light {
     color: var(--gold-light);
   }
   .bg-gold {
-    background-color: var(--gold);
+    background-color: var(--blue);
   }
   .border-gold {
-    border-color: var(--gold);
+    border-color: var(--blue);
   }
   .border-gold-dim {
-    border-color: var(--gold-dim);
+    border-color: var(--blue-dim);
   }
-}
-
-/* Premium noise texture overlay */
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 1000;
-  opacity: 0.4;
-}
-
-/* Gold line separator */
-.gold-line {
-  width: 60px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
 
 /* Fade in animation */
@@ -169,24 +161,25 @@ body::before {
   animation: fadeIn 1.2s ease forwards;
 }
 
-/* Primary CTA — red */
+/* Primary CTA — blue */
 .btn-gold {
-  background: var(--red);
+  background: var(--blue);
   color: #ffffff;
-  font-family: "IBM Plex Sans", sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   font-size: 0.75rem;
+  border-radius: 6px;
   transition:
     background 0.2s ease,
     transform 0.15s ease,
     box-shadow 0.2s ease;
 }
 .btn-gold:hover {
-  background: var(--red-hover);
+  background: var(--blue-hover);
   transform: translateY(-1px);
-  box-shadow: 0 8px 28px rgba(239, 68, 68, 0.35);
+  box-shadow: 0 8px 28px rgba(37, 99, 235, 0.35);
 }
 
 /* Service card */
@@ -199,51 +192,51 @@ body::before {
     box-shadow 0.25s ease;
 }
 .service-card:hover {
-  border-color: rgba(239, 68, 68, 0.35);
+  border-color: rgba(37, 99, 235, 0.35);
   transform: translateY(-3px);
   box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(239, 68, 68, 0.08);
+    0 12px 40px rgba(15, 44, 90, 0.1),
+    0 0 0 1px rgba(37, 99, 235, 0.08);
 }
 
-/* Calculator */
+/* Calculator inputs */
 .calc-input {
-  background: rgba(201, 168, 76, 0.05);
-  border: 1px solid rgba(201, 168, 76, 0.2);
-  color: var(--mist);
-  font-family: "IBM Plex Sans", sans-serif;
+  background: var(--surface-2);
+  border: 1px solid var(--border-c);
+  color: var(--text);
+  font-family: "Inter", sans-serif;
   transition:
     border-color 0.3s ease,
     box-shadow 0.3s ease;
 }
 .calc-input:focus {
   outline: none;
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1);
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
 /* FAQ */
 .faq-item {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--border-c);
   transition: background 0.2s ease;
 }
 .faq-item:hover {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--surface-2);
 }
 
-/* Slider custom */
+/* Slider */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
   background: linear-gradient(
     to right,
-    var(--red) 0%,
-    var(--red) var(--range-fill, 0%),
-    rgba(255, 255, 255, 0.1) var(--range-fill, 0%),
-    rgba(255, 255, 255, 0.1) 100%
+    var(--blue) 0%,
+    var(--blue) var(--range-fill, 0%),
+    var(--border-c) var(--range-fill, 0%),
+    var(--border-c) 100%
   );
-  height: 2px;
-  border-radius: 1px;
+  height: 3px;
+  border-radius: 2px;
   cursor: pointer;
 }
 input[type="range"]::-webkit-slider-thumb {
@@ -251,9 +244,9 @@ input[type="range"]::-webkit-slider-thumb {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: var(--red);
-  border: 2px solid var(--obsidian);
-  box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+  background: var(--blue);
+  border: 2px solid #fff;
+  box-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
   transition: transform 0.2s ease;
 }
 input[type="range"]::-webkit-slider-thumb:hover {
@@ -265,17 +258,17 @@ input[type="range"]::-webkit-slider-thumb:hover {
   width: 4px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--obsidian);
+  background: var(--bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(239, 68, 68, 0.4);
+  background: rgba(37, 99, 235, 0.3);
   border-radius: 2px;
 }
 
-/* Accent line (replaces gold-line) */
+/* Accent line */
 .gold-line {
   width: 48px;
-  height: 2px;
-  background: var(--red);
-  border-radius: 1px;
+  height: 3px;
+  background: var(--blue);
+  border-radius: 2px;
 }

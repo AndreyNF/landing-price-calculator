@@ -112,30 +112,30 @@ export default function DocumentModal({ open, onClose }: DocumentModalProps) {
   const inputClass =
     "w-full px-4 py-3 rounded text-sm outline-none transition-colors font-body";
   const inputStyle = {
-    background: "rgba(255,255,255,0.05)",
-    border: "1px solid rgba(255,255,255,0.12)",
-    color: "#fff",
+    background: "var(--bg)",
+    border: "1px solid var(--border-c)",
+    color: "var(--text)",
   };
 
   return (
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
       <DialogContent
         className="max-w-md w-full p-0 overflow-hidden border-0"
-        style={{ background: "var(--navy)", borderRadius: 4 }}
+        style={{ background: "#fff", borderRadius: 8, border: "1px solid var(--border-c)" }}
       >
         <DialogHeader className="px-8 pt-8 pb-0">
           <div className="flex items-center gap-3 mb-1">
-            <div className="w-4 h-px" style={{ background: "var(--red)" }} />
+            <div className="w-4 h-0.5 rounded" style={{ background: "var(--blue)" }} />
             <span
-              className="font-display text-xs tracking-widest uppercase"
-              style={{ color: "var(--red)" }}
+              className="font-body text-xs tracking-widest uppercase font-semibold"
+              style={{ color: "var(--blue)" }}
             >
               Заявка
             </span>
           </div>
           <DialogTitle
             className="font-display text-xl tracking-wide"
-            style={{ color: "#fff" }}
+            style={{ color: "var(--navy)" }}
           >
             Отправить документ
           </DialogTitle>
@@ -182,16 +182,16 @@ export default function DocumentModal({ open, onClose }: DocumentModalProps) {
           <div
             className="rounded cursor-pointer transition-colors flex flex-col items-center justify-center gap-2 py-6"
             style={{
-              border: "1px dashed rgba(255,255,255,0.2)",
-              background: "rgba(255,255,255,0.02)",
+              border: "1px dashed var(--border-c)",
+              background: "var(--bg)",
               pointerEvents: loading ? "none" : "auto",
             }}
             onClick={() => inputRef.current?.click()}
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
           >
-            <Icon name="Upload" size={20} style={{ color: "var(--red)" }} />
-            <span className="text-xs font-body" style={{ color: "rgba(255,255,255,0.4)" }}>
+            <Icon name="Upload" size={20} style={{ color: "var(--blue)" }} />
+            <span className="text-xs font-body" style={{ color: "var(--text-muted)" }}>
               Нажмите или перетащите файлы
             </span>
             <input
@@ -210,14 +210,14 @@ export default function DocumentModal({ open, onClose }: DocumentModalProps) {
                   key={i}
                   className="flex items-center justify-between px-3 py-2 rounded text-xs font-body"
                   style={{
-                    background: "rgba(255,255,255,0.05)",
-                    color: "rgba(255,255,255,0.7)",
+                    background: "var(--bg)",
+                    color: "var(--text)",
                   }}
                 >
                   <div className="flex items-center gap-2 overflow-hidden">
-                    <Icon name="FileText" size={14} style={{ color: "var(--red)", flexShrink: 0 }} />
+                    <Icon name="FileText" size={14} style={{ color: "var(--blue)", flexShrink: 0 }} />
                     <span className="truncate">{f.name}</span>
-                    <span style={{ color: "rgba(255,255,255,0.3)", flexShrink: 0 }}>
+                    <span style={{ color: "var(--text-muted)", flexShrink: 0 }}>
                       {formatSize(f.size)}
                     </span>
                   </div>
@@ -225,8 +225,8 @@ export default function DocumentModal({ open, onClose }: DocumentModalProps) {
                     <button
                       type="button"
                       onClick={() => removeFile(i)}
-                      style={{ color: "rgba(255,255,255,0.3)" }}
-                      className="hover:text-white transition-colors ml-2 flex-shrink-0"
+                      style={{ color: "var(--text-muted)" }}
+                      className="transition-colors ml-2 flex-shrink-0"
                     >
                       <Icon name="X" size={14} />
                     </button>
@@ -238,19 +238,19 @@ export default function DocumentModal({ open, onClose }: DocumentModalProps) {
 
           {loading && (
             <div className="space-y-2">
-              <div className="flex justify-between text-xs font-body" style={{ color: "rgba(255,255,255,0.4)" }}>
+              <div className="flex justify-between text-xs font-body" style={{ color: "var(--text-muted)" }}>
                 <span>{progress < 100 ? "Загружаем файлы..." : "Обрабатываем..."}</span>
                 <span>{progress < 100 ? `${progress}%` : ""}</span>
               </div>
               <div
                 className="w-full rounded-full overflow-hidden"
-                style={{ height: 3, background: "rgba(255,255,255,0.08)" }}
+                style={{ height: 3, background: "var(--border-c)" }}
               >
                 <div
                   className="h-full transition-all duration-300"
                   style={{
                     width: `${progress}%`,
-                    background: "var(--red)",
+                    background: "var(--blue)",
                   }}
                 />
               </div>
