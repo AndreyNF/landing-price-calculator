@@ -116,21 +116,12 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
 
         <div className="max-w-6xl mx-auto px-6 md:px-10 pt-28 pb-20 lg:py-40">
           {/* Badge */}
-          <div
-            className="animate-fade-up inline-flex items-center gap-3 mb-10 px-4 py-2"
-            style={{ border: "1px solid rgba(255,255,255,0.25)", background: "rgba(255,255,255,0.08)", borderRadius: 4 }}
+          <p
+            className="animate-fade-up font-body text-xs tracking-widest uppercase mb-4"
+            style={{ color: "rgba(255,255,255,0.5)", letterSpacing: "0.2em" }}
           >
-            <span
-              className="w-1.5 h-1.5 rounded-full"
-              style={{ background: "#7eb8ff", boxShadow: "0 0 8px #7eb8ff" }}
-            />
-            <span
-              className="font-body text-xs tracking-widest uppercase"
-              style={{ color: "#a8d0ff" }}
-            >
-              Сроки горят? Успеем к дедлайну
-            </span>
-          </div>
+            Сроки горят? Успеем к дедлайну
+          </p>
 
           <h1 className="animate-fade-up-delay-1 mb-6">
             <span
