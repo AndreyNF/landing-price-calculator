@@ -20,9 +20,9 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
       <nav
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 py-4"
         style={{
-          background: "rgba(10,20,50,0.6)",
+          background: "rgba(255,255,255,0.97)",
           backdropFilter: "blur(16px)",
-          borderBottom: "1px solid rgba(255,255,255,0.1)",
+          borderBottom: "1px solid var(--border-c)",
         }}
       >
         <div className="flex items-center">
@@ -35,7 +35,7 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
 
         <div
           className="hidden md:flex items-center gap-8 font-body text-xs tracking-widest uppercase"
-          style={{ color: "rgba(255,255,255,0.6)" }}
+          style={{ color: "var(--text-muted)" }}
         >
           {[["services", "Услуги"], ["price", "Прайс"], ["calculator", "Калькулятор"], ["faq", "FAQ"]].map(
             ([id, label]) => (
@@ -43,9 +43,9 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
                 key={id}
                 onClick={() => scrollTo(id)}
                 className="hover:text-navy transition-colors"
-                style={{ color: "rgba(255,255,255,0.6)" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#ffffff")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.6)")}
+                style={{ color: "var(--text-muted)" }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--navy)")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
               >
                 {label}
               </button>
@@ -59,7 +59,7 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
 
         <button
           className="md:hidden"
-          style={{ color: "#ffffff" }}
+          style={{ color: "var(--navy)" }}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           <Icon name={mobileMenuOpen ? "X" : "Menu"} size={20} />
@@ -71,9 +71,8 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
         <div
           className="fixed top-14 left-0 right-0 z-40 px-6 py-6 space-y-4"
           style={{
-            background: "rgba(10,20,50,0.92)",
-            backdropFilter: "blur(16px)",
-            borderBottom: "1px solid rgba(255,255,255,0.1)",
+            background: "#ffffff",
+            borderBottom: "1px solid var(--border-c)",
           }}
         >
           {[["services", "Услуги"], ["price", "Прайс"], ["calculator", "Калькулятор"], ["faq", "FAQ"]].map(
@@ -82,7 +81,7 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
                 key={id}
                 onClick={() => scrollTo(id)}
                 className="block w-full text-left font-body text-sm py-2"
-                style={{ color: "rgba(255,255,255,0.8)", borderBottom: "1px solid rgba(255,255,255,0.1)" }}
+                style={{ color: "var(--text)", borderBottom: "1px solid var(--border-c)" }}
               >
                 {label}
               </button>
