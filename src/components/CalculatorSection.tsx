@@ -8,7 +8,7 @@ function calcIS(amount: number): number {
   return 50000 + (amount - 500000) * 0.02;
 }
 
-function Calculator() {
+function Calculator({ onOpenModal }: { onOpenModal: () => void }) {
   const [amount, setAmount] = useState(300000);
   const sliderRef = useRef<HTMLInputElement>(null);
 
@@ -149,7 +149,7 @@ function Calculator() {
           </div>
 
           <div className="mt-8 space-y-3">
-            <button className="btn-gold w-full py-4 text-xs">
+            <button className="btn-gold w-full py-4 text-xs" onClick={onOpenModal}>
               Отправить документ
             </button>
             <p
@@ -165,7 +165,7 @@ function Calculator() {
   );
 }
 
-export default function CalculatorSection() {
+export default function CalculatorSection({ onOpenModal }: { onOpenModal: () => void }) {
   return (
     <section id="calculator" className="py-24 px-6 md:px-10">
       <div className="max-w-6xl mx-auto">
@@ -181,7 +181,7 @@ export default function CalculatorSection() {
           </h2>
           <div className="gold-line mt-5" />
         </div>
-        <Calculator />
+        <Calculator onOpenModal={onOpenModal} />
       </div>
     </section>
   );

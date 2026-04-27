@@ -5,6 +5,7 @@ import ProcessSection from "@/components/ProcessSection";
 
 interface PriceSectionProps {
   onScrollTo: (id: string) => void;
+  onOpenModal: () => void;
 }
 
 const DIVIDER = (
@@ -18,15 +19,15 @@ const DIVIDER = (
   </div>
 );
 
-export default function PriceSection({ onScrollTo }: PriceSectionProps) {
+export default function PriceSection({ onScrollTo, onOpenModal }: PriceSectionProps) {
   return (
     <>
-      <ServicesGrid />
-      <PriceCards onScrollTo={onScrollTo} />
+      <ServicesGrid onOpenModal={onOpenModal} />
+      <PriceCards onScrollTo={onScrollTo} onOpenModal={onOpenModal} />
       {DIVIDER}
-      <CalculatorSection />
+      <CalculatorSection onOpenModal={onOpenModal} />
       {DIVIDER}
-      <ProcessSection />
+      <ProcessSection onOpenModal={onOpenModal} />
     </>
   );
 }

@@ -3,9 +3,10 @@ import Icon from "@/components/ui/icon";
 
 interface HeroSectionProps {
   onScrollTo: (id: string) => void;
+  onOpenModal: () => void;
 }
 
-export default function HeroSection({ onScrollTo }: HeroSectionProps) {
+export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const scrollTo = (id: string) => {
@@ -49,7 +50,7 @@ export default function HeroSection({ onScrollTo }: HeroSectionProps) {
           )}
         </div>
 
-        <button className="btn-gold px-5 py-2.5 text-xs hidden md:block">
+        <button className="btn-gold px-5 py-2.5 text-xs hidden md:block" onClick={onOpenModal}>
           Отправить документ
         </button>
 
@@ -83,7 +84,7 @@ export default function HeroSection({ onScrollTo }: HeroSectionProps) {
               </button>
             )
           )}
-          <button className="btn-gold w-full py-3 text-xs mt-2">Отправить документ</button>
+          <button className="btn-gold w-full py-3 text-xs mt-2" onClick={onOpenModal}>Отправить документ</button>
         </div>
       )}
 
@@ -168,7 +169,7 @@ export default function HeroSection({ onScrollTo }: HeroSectionProps) {
           </p>
 
           <div className="animate-fade-up-delay-3 flex flex-col sm:flex-row gap-4">
-            <button className="btn-gold px-10 py-4">
+            <button className="btn-gold px-10 py-4" onClick={onOpenModal}>
               Отправить документ
             </button>
             <button

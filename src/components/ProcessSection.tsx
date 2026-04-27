@@ -1,6 +1,6 @@
 import Icon from "@/components/ui/icon";
 
-export default function ProcessSection() {
+export default function ProcessSection({ onOpenModal }: { onOpenModal: () => void }) {
   return (
     <>
       {/* ── HOW WE WORK ─────────────────────────────────────────────────── */}
@@ -63,7 +63,7 @@ export default function ProcessSection() {
           </div>
 
           <div className="mt-8 text-center">
-            <button className="btn-gold px-10 py-4">Получить решение</button>
+            <button className="btn-gold px-10 py-4" onClick={onOpenModal}>Получить решение</button>
           </div>
         </div>
       </section>
@@ -95,7 +95,7 @@ export default function ProcessSection() {
                   Ошибка в документе<br />
                   <span style={{ color: "var(--red)", fontStyle: "italic" }}>может стоить дорого</span>
                 </h2>
-                <button className="btn-gold px-8 py-4">Отправить документ</button>
+                <button className="btn-gold px-8 py-4" onClick={onOpenModal}>Отправить документ</button>
               </div>
 
               <div className="space-y-4">

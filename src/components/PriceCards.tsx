@@ -2,9 +2,10 @@ import Icon from "@/components/ui/icon";
 
 interface PriceCardsProps {
   onScrollTo: (id: string) => void;
+  onOpenModal: () => void;
 }
 
-export default function PriceCards({ onScrollTo }: PriceCardsProps) {
+export default function PriceCards({ onScrollTo, onOpenModal }: PriceCardsProps) {
   return (
     <section id="price" className="py-24 px-6 md:px-10">
       <div className="max-w-6xl mx-auto">
@@ -165,7 +166,7 @@ export default function PriceCards({ onScrollTo }: PriceCardsProps) {
               ))}
             </div>
 
-            <button className="btn-gold w-full py-3.5 text-xs">
+            <button className="btn-gold w-full py-3.5 text-xs" onClick={onOpenModal}>
               Отправить документ
             </button>
           </div>

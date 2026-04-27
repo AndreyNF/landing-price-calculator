@@ -1,6 +1,6 @@
 import Icon from "@/components/ui/icon";
 
-export default function ServicesGrid() {
+export default function ServicesGrid({ onOpenModal }: { onOpenModal: () => void }) {
   return (
     <section id="services" className="py-24 px-6 md:px-10">
       <div className="max-w-6xl mx-auto">
@@ -42,7 +42,7 @@ export default function ServicesGrid() {
         </div>
 
         <div className="mt-8 text-center">
-          <button className="btn-gold px-10 py-4">Отправить документ</button>
+          <button className="btn-gold px-10 py-4" onClick={onOpenModal}>Отправить документ</button>
         </div>
       </div>
     </section>

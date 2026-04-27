@@ -63,7 +63,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 
 // ─── FAQ SECTION ─────────────────────────────────────────────────────────────
 
-export default function FaqSection() {
+export default function FaqSection({ onOpenModal }: { onOpenModal: () => void }) {
   return (
     <>
       {/* ── FAQ ─────────────────────────────────────────────────────────── */}
@@ -84,7 +84,7 @@ export default function FaqSection() {
               <p className="mt-5 font-body text-sm leading-7" style={{ color: "var(--mist)", opacity: 0.4 }}>
                 Не нашли ответ? Напишите нам — ответим за 1 час.
               </p>
-              <button className="btn-gold mt-6 px-7 py-3 text-xs">Задать вопрос</button>
+              <button className="btn-gold mt-6 px-7 py-3 text-xs" onClick={onOpenModal}>Задать вопрос</button>
             </div>
             <div className="lg:col-span-2">
               {FAQS.map((f) => (
@@ -183,7 +183,7 @@ export default function FaqSection() {
           borderTop: "1px solid rgba(239,68,68,0.2)",
         }}
       >
-        <button className="btn-gold w-full py-4 text-xs">
+        <button className="btn-gold w-full py-4 text-xs" onClick={onOpenModal}>
           Отправить документ
         </button>
       </div>
