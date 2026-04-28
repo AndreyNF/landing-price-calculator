@@ -139,7 +139,7 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
               className="font-display"
               style={{
                 fontSize: "clamp(5rem, 13vw, 11rem)",
-                color: "var(--navy)",
+                color: "var(--blue)",
                 fontStyle: "italic",
                 display: "block",
                 lineHeight: 0.95,
