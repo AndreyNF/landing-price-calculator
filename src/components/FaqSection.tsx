@@ -154,7 +154,7 @@ export default function FaqSection({ onOpenModal }: { onOpenModal: () => void })
 
       {/* ── FOOTER ──────────────────────────────────────────────────────── */}
       <footer
-        className="py-10 px-6 md:px-10"
+        className="py-10 pb-28 md:pb-10 px-6 md:px-10"
         style={{ borderTop: "1px solid var(--border-c)", background: "var(--bg-white)" }}
       >
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-5">
