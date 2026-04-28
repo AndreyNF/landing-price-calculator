@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
+import CookieBanner from "./components/CookieBanner";
 
 const queryClient = new QueryClient();
 
@@ -15,6 +16,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <CookieBanner />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
