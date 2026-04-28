@@ -32,7 +32,7 @@ export default function Privacy() {
             <h2 className="font-display text-lg mb-3" style={{ color: "var(--navy)" }}>1. Общие положения</h2>
             <p>
               Настоящая Политика конфиденциальности (далее — «Политика») определяет порядок обработки
-              персональных данных пользователей сайта <strong>legis24.ru</strong> (далее — «Сайт»),
+              персональных данных пользователей сайта <strong>advokat-vsem.ru</strong> (далее — «Сайт»),
               осуществляемой Адвокатским бюро «Legis24» (далее — «Оператор»), в соответствии с
               Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных».
             </p>
@@ -109,7 +109,7 @@ export default function Privacy() {
             </ul>
             <p className="mt-2">
               Для реализации указанных прав необходимо направить письменный запрос на адрес:{" "}
-              <a href="mailto:info@legis24.ru" style={{ color: "var(--blue)" }}>info@legis24.ru</a>
+              <a href="mailto:info@advokat-vsem.ru" style={{ color: "var(--blue)" }}>info@advokat-vsem.ru</a>
             </p>
           </section>
 
