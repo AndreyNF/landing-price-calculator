@@ -38,13 +38,22 @@ export default function CookieBanner() {
         </a>
         .
       </p>
-      <button
-        onClick={accept}
-        className="flex-shrink-0 px-6 py-2 rounded text-sm font-body font-semibold transition-opacity hover:opacity-80"
-        style={{ background: "var(--gold, #c9a84c)", color: "#fff" }}
-      >
-        Понятно
-      </button>
+      <div className="flex items-center gap-3 flex-shrink-0">
+        <a
+          href="/privacy"
+          className="px-5 py-2 rounded text-sm font-body font-semibold transition-opacity hover:opacity-70"
+          style={{ color: "rgba(255,255,255,0.7)", border: "1px solid rgba(255,255,255,0.2)" }}
+        >
+          Подробнее
+        </a>
+        <button
+          onClick={accept}
+          className="px-6 py-2 rounded text-sm font-body font-semibold transition-opacity hover:opacity-80"
+          style={{ background: "var(--gold, #c9a84c)", color: "#fff" }}
+        >
+          Понятно
+        </button>
+      </div>
     </div>
   );
 }
