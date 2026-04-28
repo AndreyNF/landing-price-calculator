@@ -174,6 +174,13 @@ export default function FaqSection({ onOpenModal }: { onOpenModal: () => void })
             >
               Политика конфиденциальности
             </a>
+            <a
+              href="/terms"
+              className="hover:opacity-70 transition-opacity underline"
+              style={{ color: "var(--text-muted)" }}
+            >
+              Пользовательское соглашение
+            </a>
           </div>
         </div>
       </footer>
