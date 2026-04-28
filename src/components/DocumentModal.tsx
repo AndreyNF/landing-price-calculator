@@ -121,7 +121,7 @@ export default function DocumentModal({ open, onClose }: DocumentModalProps) {
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
       <DialogContent
         className="max-w-md w-full p-0 overflow-hidden border-0"
-        style={{ background: "#fff", borderRadius: 8, border: "1px solid var(--border-c)" }}
+        style={{ background: "rgba(255,255,255,0.92)", backdropFilter: "blur(16px)", borderRadius: 8, border: "1px solid var(--border-c)" }}
       >
         <DialogHeader className="px-8 pt-8 pb-0">
           <div className="flex items-center gap-3 mb-1">

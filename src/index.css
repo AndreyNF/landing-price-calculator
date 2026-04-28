@@ -43,11 +43,11 @@
     --blue-hover: #1d4ed8;
     --blue-dim: rgba(37, 99, 235, 0.12);
 
-    --bg: #f8f6f2;
-    --bg-white: #f5f4f0;
-    --surface: #f5f4f0;
-    --surface-2: #edeae4;
-    --border-c: #ddd9d2;
+    --bg: rgba(248, 246, 242, 0.82);
+    --bg-white: rgba(245, 244, 240, 0.85);
+    --surface: rgba(245, 244, 240, 0.85);
+    --surface-2: rgba(237, 234, 228, 0.88);
+    --border-c: rgba(221, 217, 210, 0.9);
 
     --text: #111827;
     --text-muted: #6b7280;

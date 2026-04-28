@@ -12,7 +12,7 @@ const Index = () => {
   };
 
   return (
-    <div style={{ background: "var(--obsidian)", minHeight: "100vh" }}>
+    <div style={{ minHeight: "100vh" }}>
       <HeroSection onScrollTo={scrollTo} onOpenModal={() => setModalOpen(true)} />
       <PriceSection onScrollTo={scrollTo} onOpenModal={() => setModalOpen(true)} />
       <FaqSection onOpenModal={() => setModalOpen(true)} />

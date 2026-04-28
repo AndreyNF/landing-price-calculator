@@ -178,7 +178,7 @@ export default function FaqSection({ onOpenModal }: { onOpenModal: () => void })
       <div
         className="fixed bottom-0 left-0 right-0 md:hidden z-40 p-4"
         style={{
-          background: "rgba(255,255,255,0.97)",
+          background: "rgba(248,246,242,0.92)",
           borderTop: "1px solid var(--border-c)",
           backdropFilter: "blur(12px)",
         }}
