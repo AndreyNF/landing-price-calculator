@@ -1,32 +1,52 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Icon from "@/components/ui/icon";
 
 const BOT_USERNAME = "intelectpro_bot";
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
+  const widgetRef = useRef<HTMLDivElement>(null);
+  const scriptLoaded = useRef(false);
+
+  useEffect(() => {
+    if (open && widgetRef.current && !scriptLoaded.current) {
+      scriptLoaded.current = true;
+      const script = document.createElement("script");
+      script.async = true;
+      script.src = "https://telegram.org/js/telegram-widget.js?22";
+      script.setAttribute("data-telegram-discussion", BOT_USERNAME);
+      script.setAttribute("data-comments-limit", "5");
+      script.setAttribute("data-height", "480");
+      script.setAttribute("data-color", "2563EB");
+      script.setAttribute("data-dark-color", "0F2C5A");
+      widgetRef.current.appendChild(script);
+    }
+  }, [open]);
 
   return (
     <>
-      {/* Всплывающая карточка */}
+      {/* Окно чата */}
       {open && (
         <div
           className="fixed z-50 flex flex-col"
           style={{
-            bottom: 80,
+            bottom: 88,
             right: 16,
             width: "calc(100vw - 32px)",
-            maxWidth: 320,
-            background: "var(--bg, #f8f6f2)",
+            maxWidth: 380,
+            height: "min(560px, calc(100dvh - 120px))",
+            background: "#fff",
             border: "1px solid var(--border-c)",
             borderRadius: 16,
-            boxShadow: "0 12px 40px rgba(15,44,90,0.16)",
+            boxShadow: "0 12px 40px rgba(15,44,90,0.18)",
             overflow: "hidden",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
           {/* Шапка */}
           <div
-            className="flex items-center gap-3 px-4 py-3"
+            className="flex items-center gap-3 px-4 py-3 shrink-0"
             style={{ background: "var(--blue)", color: "#fff" }}
           >
             <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center shrink-0">
@@ -36,33 +56,30 @@ export default function ChatWidget() {
               <p className="font-semibold text-sm">ИИ-консультант</p>
               <p className="text-xs opacity-80">@{BOT_USERNAME}</p>
             </div>
+            <a
+              href={`https://t.me/${BOT_USERNAME}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="opacity-70 hover:opacity-100 transition-opacity mr-2"
+              title="Открыть в Telegram"
+            >
+              <Icon name="ExternalLink" size={16} color="#fff" />
+            </a>
             <button
               onClick={() => setOpen(false)}
               className="opacity-70 hover:opacity-100 transition-opacity"
+              aria-label="Закрыть"
             >
               <Icon name="X" size={18} color="#fff" />
             </button>
           </div>
 
-          {/* Тело */}
-          <div className="px-4 py-4 flex flex-col gap-3">
-            <p className="text-sm leading-relaxed" style={{ color: "var(--text)" }}>
-              Привет! Я ИИ-консультант. Задайте любой вопрос — отвечу мгновенно прямо в Telegram.
-            </p>
-            <a
-              href={`https://t.me/${BOT_USERNAME}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-semibold transition-opacity hover:opacity-90 active:opacity-80"
-              style={{ background: "var(--blue)", color: "#fff" }}
-            >
-              <Icon name="Send" size={16} color="#fff" />
-              Открыть в Telegram
-            </a>
-            <p className="text-xs text-center" style={{ color: "var(--text-muted)" }}>
-              Бесплатно · Без регистрации
-            </p>
-          </div>
+          {/* Виджет Telegram */}
+          <div
+            ref={widgetRef}
+            className="flex-1 overflow-y-auto"
+            style={{ minHeight: 0 }}
+          />
         </div>
       )}
 
