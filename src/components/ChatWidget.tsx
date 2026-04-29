@@ -133,7 +133,7 @@ export default function ChatWidget() {
       {/* Кнопка-пузырь */}
       <button
         onClick={() => setOpen((v) => !v)}
-        aria-label="Открыть чат"
+        
         className="fixed bottom-20 right-4 md:bottom-8 md:right-8 z-50 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
         style={{ background: "var(--blue)" }}
       >
