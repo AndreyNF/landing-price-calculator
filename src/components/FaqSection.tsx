@@ -182,6 +182,13 @@ export default function FaqSection({ onOpenModal }: { onOpenModal: () => void })
             >
               Пользовательское соглашение
             </a>
+            <a
+              href="/offer"
+              className="hover:opacity-70 transition-opacity underline"
+              style={{ color: "var(--text-muted)" }}
+            >
+              Публичная оферта
+            </a>
           </div>
         </div>
       </footer>
