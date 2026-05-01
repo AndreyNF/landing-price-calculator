@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
@@ -167,7 +168,7 @@ export default function FaqSection({ onOpenModal }: { onOpenModal: () => void })
           <p className="font-body text-xs" style={{ color: "var(--text-muted)" }}>
             © 2024 Legis24. Адвокатское бюро. Все права защищены.
           </p>
-          <div className="flex gap-5 font-body text-xs" style={{ color: "var(--text-muted)" }}>
+          <div className="flex flex-wrap gap-5 font-body text-xs justify-center" style={{ color: "var(--text-muted)" }}>
             <a
               href="/privacy"
               className="hover:opacity-70 transition-opacity underline"
@@ -189,6 +190,14 @@ export default function FaqSection({ onOpenModal }: { onOpenModal: () => void })
             >
               Публичная оферта
             </a>
+            <Link
+              to="/cabinet"
+              className="flex items-center gap-1 font-semibold transition-opacity hover:opacity-70"
+              style={{ color: "var(--blue)" }}
+            >
+              <Icon name="LayoutDashboard" size={13} />
+              Кабинет
+            </Link>
           </div>
         </div>
       </footer>
