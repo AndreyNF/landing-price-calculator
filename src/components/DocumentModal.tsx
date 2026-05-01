@@ -27,11 +27,20 @@ interface FieldError {
   name?: string;
   phone?: string;
   email?: string;
+  inn?: string;
 }
 
 interface DadataSuggestion {
   value: string;
   data?: Record<string, unknown>;
+}
+
+interface InnInfo {
+  name: string;
+  type: string;
+  kpp?: string;
+  ogrn?: string;
+  address?: string;
 }
 
 function formatSize(bytes: number) {
@@ -72,6 +81,13 @@ function validateEmail(v: string): string | undefined {
   return undefined;
 }
 
+function validateInn(v: string): string | undefined {
+  if (!v.trim()) return undefined;
+  const digits = v.replace(/\D/g, "");
+  if (digits.length !== 10 && digits.length !== 12) return "ИНН должен содержать 10 или 12 цифр";
+  return undefined;
+}
+
 function useDadata(type: "fio" | "email", query: string, enabled: boolean) {
   const [suggestions, setSuggestions] = useState<DadataSuggestion[]>([]);
 
@@ -88,10 +104,7 @@ function useDadata(type: "fio" | "email", query: string, enabled: boolean) {
     const timer = setTimeout(() => {
       fetch(url, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${DADATA_TOKEN}`,
-        },
+        headers: { "Content-Type": "application/json", Authorization: `Token ${DADATA_TOKEN}` },
         body: JSON.stringify({ query, count: 5 }),
       })
         .then((r) => r.json())
@@ -127,10 +140,7 @@ function SuggestDropdown({ suggestions, onSelect }: SuggestDropdownProps) {
           key={i}
           className="px-4 py-2.5 cursor-pointer transition-colors"
           style={{ color: "var(--text)", borderBottom: i < suggestions.length - 1 ? "1px solid var(--border-c)" : "none" }}
-          onMouseDown={(e) => {
-            e.preventDefault();
-            onSelect(s.value);
-          }}
+          onMouseDown={(e) => { e.preventDefault(); onSelect(s.value); }}
           onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "var(--bg)")}
           onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = "#fff")}
         >
@@ -145,6 +155,9 @@ export default function DocumentModal({ open, onClose }: DocumentModalProps) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [inn, setInn] = useState("");
+  const [innInfo, setInnInfo] = useState<InnInfo | null>(null);
+  const [innChecking, setInnChecking] = useState(false);
   const [message, setMessage] = useState("");
   const [files, setFiles] = useState<FileItem[]>([]);
   const [consent, setConsent] = useState(false);
@@ -159,16 +172,65 @@ export default function DocumentModal({ open, onClose }: DocumentModalProps) {
   const nameSuggest = useDadata("fio", name, nameFocus);
   const emailSuggest = useDadata("email", email, emailFocus);
 
+  const checkInn = useCallback(async (value: string) => {
+    const digits = value.replace(/\D/g, "");
+    if (!DADATA_TOKEN || (digits.length !== 10 && digits.length !== 12)) {
+      setInnInfo(null);
+      return;
+    }
+    setInnChecking(true);
+    setInnInfo(null);
+    try {
+      const res = await fetch("https://suggestions.dadata.ru/suggestions/api/4_1/rs/findById/party", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Token ${DADATA_TOKEN}` },
+        body: JSON.stringify({ query: digits, count: 1 }),
+      });
+      const data = await res.json();
+      const s = data.suggestions?.[0];
+      if (s) {
+        setInnInfo({
+          name: s.value,
+          type: s.data?.type === "INDIVIDUAL" ? "ИП" : "Организация",
+          kpp: s.data?.kpp || undefined,
+          ogrn: s.data?.ogrn || undefined,
+          address: (s.data?.address as { value?: string })?.value || undefined,
+        });
+        setErrors((e) => ({ ...e, inn: undefined }));
+      } else {
+        setInnInfo(null);
+        setErrors((e) => ({ ...e, inn: "ИНН не найден в реестре" }));
+      }
+    } catch {
+      setInnInfo(null);
+    } finally {
+      setInnChecking(false);
+    }
+  }, []);
+
   const validate = useCallback((): FieldError => ({
     name: validateName(name),
     phone: validatePhone(phone),
     email: validateEmail(email),
-  }), [name, phone, email]);
+    inn: validateInn(inn),
+  }), [name, phone, email, inn]);
 
   const blurField = (field: string) => {
     setTouched((t) => ({ ...t, [field]: true }));
     const errs = validate();
     setErrors(errs);
+  };
+
+  const handleInnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const digits = e.target.value.replace(/\D/g, "").slice(0, 12);
+    setInn(digits);
+    setInnInfo(null);
+    setErrors((er) => ({ ...er, inn: undefined }));
+  };
+
+  const handleInnBlur = () => {
+    blurField("inn");
+    checkInn(inn);
   };
 
   const handleFiles = (selected: FileList | null) => {
@@ -177,17 +239,13 @@ export default function DocumentModal({ open, onClose }: DocumentModalProps) {
       const reader = new FileReader();
       reader.onload = (e) => {
         const base64 = (e.target?.result as string).split(",")[1];
-        setFiles((prev) => [
-          ...prev,
-          { name: file.name, type: file.type, data: base64, size: file.size },
-        ]);
+        setFiles((prev) => [...prev, { name: file.name, type: file.type, data: base64, size: file.size }]);
       };
       reader.readAsDataURL(file);
     });
   };
 
-  const removeFile = (i: number) =>
-    setFiles((prev) => prev.filter((_, idx) => idx !== i));
+  const removeFile = (i: number) => setFiles((prev) => prev.filter((_, idx) => idx !== i));
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
@@ -200,11 +258,11 @@ export default function DocumentModal({ open, onClose }: DocumentModalProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setTouched({ name: true, phone: true, email: true });
+    setTouched({ name: true, phone: true, email: true, inn: true });
     const errs = validate();
     setErrors(errs);
 
-    if (errs.name || errs.phone || errs.email) {
+    if (errs.name || errs.phone || errs.email || errs.inn) {
       toast.error("Проверьте правильность заполнения полей");
       return;
     }
@@ -216,35 +274,26 @@ export default function DocumentModal({ open, onClose }: DocumentModalProps) {
     setProgress(0);
 
     try {
-      const body = JSON.stringify({ name, phone, email, message, files });
+      const body = JSON.stringify({ name, phone, email, inn, innInfo, message, files });
 
       await new Promise<void>((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         xhr.open("POST", API_URL);
         xhr.setRequestHeader("Content-Type", "application/json");
-
         xhr.upload.onprogress = (event) => {
-          if (event.lengthComputable) {
-            setProgress(Math.round((event.loaded / event.total) * 90));
-          }
+          if (event.lengthComputable) setProgress(Math.round((event.loaded / event.total) * 90));
         };
-
         xhr.onload = () => {
           setProgress(100);
-          if (xhr.status >= 200 && xhr.status < 300) {
-            resolve();
-          } else {
-            reject(new Error(xhr.responseText));
-          }
+          if (xhr.status >= 200 && xhr.status < 300) { resolve(); } else { reject(new Error(xhr.responseText)); }
         };
-
         xhr.onerror = () => reject(new Error("Network error"));
         xhr.send(body);
       });
 
       toast.success("Заявка отправлена! Мы свяжемся с вами в ближайшее время.");
-      setName(""); setPhone(""); setEmail(""); setMessage(""); setFiles([]);
-      setErrors({}); setTouched({});
+      setName(""); setPhone(""); setEmail(""); setInn(""); setInnInfo(null);
+      setMessage(""); setFiles([]); setErrors({}); setTouched({});
       onClose();
     } catch {
       toast.error("Ошибка отправки. Попробуйте ещё раз.");
@@ -254,8 +303,7 @@ export default function DocumentModal({ open, onClose }: DocumentModalProps) {
     }
   };
 
-  const inputBase =
-    "w-full px-4 py-3 rounded text-sm outline-none transition-colors font-body";
+  const inputBase = "w-full px-4 py-3 rounded text-sm outline-none transition-colors font-body";
 
   const inputStyle = (field: keyof FieldError) => ({
     background: "var(--bg)",
@@ -272,17 +320,11 @@ export default function DocumentModal({ open, onClose }: DocumentModalProps) {
         <DialogHeader className="px-8 pt-8 pb-0">
           <div className="flex items-center gap-3 mb-1">
             <div className="w-4 h-0.5 rounded" style={{ background: "var(--blue)" }} />
-            <span
-              className="font-body text-xs tracking-widest uppercase font-semibold"
-              style={{ color: "var(--blue)" }}
-            >
+            <span className="font-body text-xs tracking-widest uppercase font-semibold" style={{ color: "var(--blue)" }}>
               Заявка
             </span>
           </div>
-          <DialogTitle
-            className="font-display text-xl tracking-wide"
-            style={{ color: "var(--navy)" }}
-          >
+          <DialogTitle className="font-display text-xl tracking-wide" style={{ color: "var(--navy)" }}>
             Отправить документ
           </DialogTitle>
         </DialogHeader>
@@ -305,8 +347,7 @@ export default function DocumentModal({ open, onClose }: DocumentModalProps) {
             {nameFocus && <SuggestDropdown suggestions={nameSuggest.suggestions} onSelect={(v) => { setName(v); nameSuggest.clear(); }} />}
             {touched.name && errors.name && (
               <p className="text-xs mt-1 flex items-center gap-1" style={{ color: "#ef4444" }}>
-                <Icon name="CircleAlert" size={12} />
-                {errors.name}
+                <Icon name="CircleAlert" size={12} />{errors.name}
               </p>
             )}
           </div>
@@ -325,8 +366,7 @@ export default function DocumentModal({ open, onClose }: DocumentModalProps) {
             />
             {touched.phone && errors.phone && (
               <p className="text-xs mt-1 flex items-center gap-1" style={{ color: "#ef4444" }}>
-                <Icon name="CircleAlert" size={12} />
-                {errors.phone}
+                <Icon name="CircleAlert" size={12} />{errors.phone}
               </p>
             )}
           </div>
@@ -348,9 +388,62 @@ export default function DocumentModal({ open, onClose }: DocumentModalProps) {
             {emailFocus && <SuggestDropdown suggestions={emailSuggest.suggestions} onSelect={(v) => { setEmail(v); emailSuggest.clear(); }} />}
             {touched.email && errors.email && (
               <p className="text-xs mt-1 flex items-center gap-1" style={{ color: "#ef4444" }}>
-                <Icon name="CircleAlert" size={12} />
-                {errors.email}
+                <Icon name="CircleAlert" size={12} />{errors.email}
               </p>
+            )}
+          </div>
+
+          {/* INN */}
+          <div>
+            <div className="relative">
+              <input
+                className={inputBase}
+                style={{ ...inputStyle("inn"), paddingRight: "2.5rem" }}
+                placeholder="ИНН (необязательно)"
+                value={inn}
+                onChange={handleInnChange}
+                onBlur={handleInnBlur}
+                disabled={loading}
+                inputMode="numeric"
+                maxLength={12}
+              />
+              <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                {innChecking && (
+                  <Icon name="LoaderCircle" size={16} className="animate-spin" style={{ color: "var(--text-muted)" }} />
+                )}
+                {!innChecking && innInfo && (
+                  <Icon name="CircleCheck" size={16} style={{ color: "var(--success)" }} />
+                )}
+                {!innChecking && touched.inn && errors.inn && (
+                  <Icon name="CircleAlert" size={16} style={{ color: "#ef4444" }} />
+                )}
+              </div>
+            </div>
+
+            {touched.inn && errors.inn && !innChecking && (
+              <p className="text-xs mt-1 flex items-center gap-1" style={{ color: "#ef4444" }}>
+                <Icon name="CircleAlert" size={12} />{errors.inn}
+              </p>
+            )}
+
+            {innInfo && (
+              <div
+                className="mt-2 rounded-lg px-4 py-3 text-xs space-y-1"
+                style={{ background: "var(--success-dim)", border: "1px solid rgba(21,128,61,0.15)" }}
+              >
+                <p className="font-semibold flex items-center gap-1.5" style={{ color: "var(--success)" }}>
+                  <Icon name="Building2" size={13} />
+                  {innInfo.name}
+                </p>
+                <p style={{ color: "var(--success)" }}>
+                  {innInfo.type}
+                  {innInfo.kpp && ` · КПП: ${innInfo.kpp}`}
+                  {innInfo.ogrn && ` · ОГРН: ${innInfo.ogrn}`}
+                </p>
+                {innInfo.address && (
+                  <p style={{ color: "var(--success)", opacity: 0.8 }}>{innInfo.address}</p>
+                )}
+              </div>
             )}
           </div>
 
@@ -367,7 +460,7 @@ export default function DocumentModal({ open, onClose }: DocumentModalProps) {
 
           {/* File upload */}
           <div
-            className="rounded cursor-pointer transition-colors flex flex-col items-center justify-center gap-2 py-6"
+            className="rounded cursor-pointer flex flex-col items-center justify-center gap-2 py-6"
             style={{
               border: "1px dashed var(--border-c)",
               background: "var(--bg)",
@@ -381,35 +474,20 @@ export default function DocumentModal({ open, onClose }: DocumentModalProps) {
             <span className="text-xs font-body" style={{ color: "var(--text-muted)" }}>
               Нажмите или перетащите файлы
             </span>
-            <input
-              ref={inputRef}
-              type="file"
-              multiple
-              className="hidden"
-              onChange={(e) => handleFiles(e.target.files)}
-            />
+            <input ref={inputRef} type="file" multiple className="hidden" onChange={(e) => handleFiles(e.target.files)} />
           </div>
 
           {files.length > 0 && (
             <div className="space-y-2">
               {files.map((f, i) => (
-                <div
-                  key={i}
-                  className="flex items-center justify-between px-3 py-2 rounded text-xs font-body"
-                  style={{ background: "var(--bg)", color: "var(--text)" }}
-                >
+                <div key={i} className="flex items-center justify-between px-3 py-2 rounded text-xs font-body" style={{ background: "var(--bg)", color: "var(--text)" }}>
                   <div className="flex items-center gap-2 overflow-hidden">
                     <Icon name="FileText" size={14} style={{ color: "var(--blue)", flexShrink: 0 }} />
                     <span className="truncate">{f.name}</span>
                     <span style={{ color: "var(--text-muted)", flexShrink: 0 }}>{formatSize(f.size)}</span>
                   </div>
                   {!loading && (
-                    <button
-                      type="button"
-                      onClick={() => removeFile(i)}
-                      style={{ color: "var(--text-muted)" }}
-                      className="transition-colors ml-2 flex-shrink-0"
-                    >
+                    <button type="button" onClick={() => removeFile(i)} style={{ color: "var(--text-muted)" }} className="ml-2 flex-shrink-0">
                       <Icon name="X" size={14} />
                     </button>
                   )}
@@ -425,10 +503,7 @@ export default function DocumentModal({ open, onClose }: DocumentModalProps) {
                 <span>{progress < 100 ? `${progress}%` : ""}</span>
               </div>
               <div className="w-full rounded-full h-1" style={{ background: "var(--border-c)" }}>
-                <div
-                  className="h-1 rounded-full transition-all duration-300"
-                  style={{ width: `${progress}%`, background: "var(--blue)" }}
-                />
+                <div className="h-1 rounded-full transition-all duration-300" style={{ width: `${progress}%`, background: "var(--blue)" }} />
               </div>
             </div>
           )}
@@ -436,28 +511,17 @@ export default function DocumentModal({ open, onClose }: DocumentModalProps) {
           {/* Consent */}
           <label className="flex items-start gap-3 cursor-pointer select-none">
             <div className="relative mt-0.5 flex-shrink-0">
-              <input
-                type="checkbox"
-                checked={consent}
-                onChange={(e) => setConsent(e.target.checked)}
-                className="sr-only"
-                disabled={loading}
-              />
+              <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="sr-only" disabled={loading} />
               <div
                 className="w-4 h-4 rounded flex items-center justify-center transition-all"
-                style={{
-                  background: consent ? "var(--blue)" : "var(--bg)",
-                  border: `1px solid ${consent ? "var(--blue)" : "var(--border-c)"}`,
-                }}
+                style={{ background: consent ? "var(--blue)" : "var(--bg)", border: `1px solid ${consent ? "var(--blue)" : "var(--border-c)"}` }}
               >
                 {consent && <Icon name="Check" size={11} style={{ color: "#fff" }} />}
               </div>
             </div>
             <span className="text-xs font-body leading-relaxed" style={{ color: "var(--text-muted)" }}>
               Я соглашаюсь на обработку персональных данных в соответствии с{" "}
-              <a href="/privacy" target="_blank" className="underline" style={{ color: "var(--blue)" }}>
-                Политикой конфиденциальности
-              </a>
+              <a href="/privacy" target="_blank" className="underline" style={{ color: "var(--blue)" }}>Политикой конфиденциальности</a>
             </span>
           </label>
 
