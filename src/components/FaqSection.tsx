@@ -135,13 +135,7 @@ export default function FaqSection({ onOpenModal }: { onOpenModal: () => void })
               Отправьте документ — скажем, как действовать
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button
-                className="flex items-center justify-center gap-3 px-10 py-4 font-body font-semibold text-xs tracking-widest uppercase transition-all duration-200"
-                style={{ background: "#25D366", color: "#fff", borderRadius: 6 }}
-              >
-                <Icon name="MessageCircle" size={16} />
-                WhatsApp
-              </button>
+
               <a
                 href="https://t.me/intelectpro_bot"
                 target="_blank"
