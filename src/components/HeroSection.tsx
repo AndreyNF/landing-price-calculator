@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 
 interface HeroSectionProps {
@@ -51,6 +52,15 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
               </button>
             )
           )}
+          <Link
+            to="/blog"
+            className="transition-colors"
+            style={{ color: "var(--text-muted)" }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--navy)")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
+          >
+            Блог
+          </Link>
         </div>
 
         <button className="btn-gold px-5 py-2.5 text-xs hidden md:block" onClick={onOpenModal}>
@@ -87,6 +97,14 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
               </button>
             )
           )}
+          <Link
+            to="/blog"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block w-full text-left font-body text-sm py-2"
+            style={{ color: "var(--text)", borderBottom: "1px solid var(--border-c)" }}
+          >
+            Блог
+          </Link>
           <button className="btn-gold w-full py-3 text-xs mt-2" onClick={onOpenModal}>Отправить документ</button>
         </div>
       )}
