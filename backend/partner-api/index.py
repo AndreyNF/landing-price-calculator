@@ -305,7 +305,18 @@ def handler(event: dict, context) -> dict:
             (client_id, user["id"], user["role"]),
         )
         conn.commit()
+        # получаем имя партнёра для уведомления
+        partner_info = get_or_create_partner(conn, user["id"])
         conn.close()
+        partner_name = (partner_info or {}).get("short_name") or (partner_info or {}).get("full_name") or user["login"]
+        send_tg(
+            f"📋 Новый клиент от партнёра\n"
+            f"<b>Партнёр:</b> {partner_name}\n"
+            f"<b>Клиент:</b> {full_name}\n"
+            f"<b>ИНН:</b> {inn or '—'}\n"
+            f"<b>Телефон:</b> {body.get('phone') or '—'}\n"
+            f"<b>Email:</b> {body.get('email') or '—'}"
+        )
         return ok({"ok": True, "client_id": client_id})
 
     # ── GET CLIENT ────────────────────────────────────────────────────────────
