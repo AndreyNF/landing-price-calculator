@@ -15,6 +15,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState<"client" | "partner">("client");
+  const [consent, setConsent] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,6 +25,10 @@ export default function Login() {
     }
     if (tab === "register" && password.length < 6) {
       toast.error("Пароль должен быть не менее 6 символов");
+      return;
+    }
+    if (tab === "register" && !consent) {
+      toast.error("Необходимо принять условия соглашения");
       return;
     }
 
@@ -181,9 +186,33 @@ export default function Login() {
             </div>
           )}
 
+          {tab === "register" && (
+            <label className="flex items-start gap-3 cursor-pointer select-none">
+              <div
+                onClick={() => setConsent(c => !c)}
+                className="flex-shrink-0 w-5 h-5 rounded flex items-center justify-center mt-0.5 transition-all"
+                style={{
+                  background: consent ? "var(--navy)" : "var(--bg)",
+                  border: `2px solid ${consent ? "var(--navy)" : "var(--border-c)"}`,
+                }}>
+                {consent && <Icon name="Check" size={12} style={{ color: "#fff" }} />}
+              </div>
+              <span className="text-xs leading-relaxed" style={{ color: "var(--text-muted)" }}>
+                Я принимаю условия{" "}
+                <Link to="/privacy" target="_blank" className="underline transition-opacity hover:opacity-70" style={{ color: "var(--navy)" }}>
+                  политики конфиденциальности
+                </Link>{" "}
+                и{" "}
+                <Link to="/terms" target="_blank" className="underline transition-opacity hover:opacity-70" style={{ color: "var(--navy)" }}>
+                  пользовательского соглашения
+                </Link>
+              </span>
+            </label>
+          )}
+
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || (tab === "register" && !consent)}
             className="w-full py-3 rounded-lg text-sm font-semibold transition-all duration-200 mt-2"
             style={{
               background: loading ? "var(--border-c)" : "var(--navy)",
