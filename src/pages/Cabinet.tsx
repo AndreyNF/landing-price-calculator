@@ -300,7 +300,7 @@ export default function Cabinet() {
   }
 
   return (
-    <div style={{ background: "var(--bg)", minHeight: "100vh" }}>
+    <div className="theme-light" style={{ minHeight: "100vh" }}>
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-10 py-3 md:py-4"
         style={{ background: "rgba(255,255,255,0.97)", backdropFilter: "blur(16px)", borderBottom: "1px solid var(--border-c)" }}>
         <Link to="/">

@@ -59,8 +59,7 @@ export default function Login() {
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center px-4"
-      style={{ background: "var(--bg)" }}
+      className="theme-light min-h-screen flex flex-col items-center justify-center px-4"
     >
       {/* Logo */}
       <Link to="/" className="mb-8">

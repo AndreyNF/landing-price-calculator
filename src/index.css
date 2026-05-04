@@ -378,3 +378,25 @@ input[type="range"]::-webkit-slider-thumb:hover {
   backdrop-filter: blur(12px);
   border: 1px solid rgba(212, 175, 55, 0.12);
 }
+
+/* ── LIGHT THEME для кабинета ─────────────────── */
+.theme-light {
+  --navy: #0f2c5a;
+  --navy-hover: #0a1f40;
+  --blue: #2563eb;
+  --blue-hover: #1d4ed8;
+  --blue-dim: rgba(37, 99, 235, 0.12);
+  --gold: #2563eb;
+  --gold-dim: rgba(37, 99, 235, 0.1);
+  --bg: #f8f6f2;
+  --bg-white: #ffffff;
+  --surface: #f5f4f0;
+  --surface-2: #ede9e4;
+  --border-c: rgba(221, 217, 210, 0.9);
+  --text: #111827;
+  --text-muted: #6b7280;
+  --success: #15803d;
+  --success-dim: rgba(21, 128, 61, 0.1);
+  background-color: #f8f6f2;
+  color: #111827;
+}
