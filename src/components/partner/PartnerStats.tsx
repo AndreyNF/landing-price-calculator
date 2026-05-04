@@ -53,18 +53,18 @@ export default function PartnerStats({ sessionId, missingCount = 0, onGoToProfil
         </div>
       )}
       {/* Top cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         {[
           { icon: "Users", label: "Всего клиентов", value: stats.total, color: "var(--blue)" },
           { icon: "TrendingUp", label: "Конверсия", value: `${conversion}%`, color: "var(--success)" },
           { icon: "Wallet", label: "Начислено", value: fmtMoney(stats.total_reward), color: "#7c3aed" },
           { icon: "BadgeCheck", label: "Выплачено", value: fmtMoney(stats.paid_reward), color: "var(--success)" },
         ].map((c) => (
-          <div key={c.label} className="rounded-2xl p-5" style={{ background: "var(--bg-white)", border: "1px solid var(--border-c)" }}>
-            <div className="w-9 h-9 rounded-lg flex items-center justify-center mb-3" style={{ background: `${c.color}18` }}>
-              <Icon name={c.icon as "Users"} size={18} style={{ color: c.color }} />
+          <div key={c.label} className="rounded-2xl p-4 md:p-5" style={{ background: "var(--bg-white)", border: "1px solid var(--border-c)" }}>
+            <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg flex items-center justify-center mb-2 md:mb-3" style={{ background: `${c.color}18` }}>
+              <Icon name={c.icon as "Users"} size={16} style={{ color: c.color }} />
             </div>
-            <p className="text-2xl font-bold mb-1" style={{ color: "var(--navy)" }}>{c.value}</p>
+            <p className="text-xl md:text-2xl font-bold mb-0.5 md:mb-1" style={{ color: "var(--navy)" }}>{c.value}</p>
             <p className="text-xs" style={{ color: "var(--text-muted)" }}>{c.label}</p>
           </div>
         ))}

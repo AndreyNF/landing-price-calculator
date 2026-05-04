@@ -320,15 +320,15 @@ export default function Cabinet() {
 
   return (
     <div style={{ background: "var(--bg)", minHeight: "100vh" }}>
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 py-4"
+      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-10 py-3 md:py-4"
         style={{ background: "rgba(255,255,255,0.97)", backdropFilter: "blur(16px)", borderBottom: "1px solid var(--border-c)" }}>
         <Link to="/">
           <img src="https://cdn.poehali.dev/projects/ec09f91e-5c19-456f-a8f1-620fce7cd143/bucket/269a5714-3147-42ee-9d3a-43b1f31ad3e8.jpeg"
-            alt="Legis24" style={{ height: 48, width: "auto", mixBlendMode: "multiply" }} />
+            alt="Legis24" style={{ height: 36, width: "auto", mixBlendMode: "multiply" }} />
         </Link>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 md:gap-4">
           {user && (
-            <div className="hidden md:flex items-center gap-2">
+            <div className="flex items-center gap-1.5 md:gap-2">
               {user.role === "admin" && (
                 <span className="text-xs px-2 py-0.5 rounded-full font-semibold" style={{ background: "var(--blue-dim)", color: "var(--blue)" }}>
                   Admin
@@ -339,34 +339,34 @@ export default function Cabinet() {
                   Партнёр
                 </span>
               )}
-              <span className="text-xs" style={{ color: "var(--text-muted)" }}>{user.login}</span>
+              <span className="hidden sm:inline text-xs" style={{ color: "var(--text-muted)" }}>{user.login}</span>
             </div>
           )}
-          <button onClick={handleLogout} className="flex items-center gap-1.5 text-sm font-medium transition-colors" style={{ color: "var(--text-muted)" }}
+          <button onClick={handleLogout} className="flex items-center gap-1 text-sm font-medium transition-colors" style={{ color: "var(--text-muted)" }}
             onMouseEnter={(e) => (e.currentTarget.style.color = "#ef4444")}
             onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}>
             <Icon name="LogOut" size={15} />
-            Выйти
+            <span className="hidden sm:inline">Выйти</span>
           </button>
         </div>
       </nav>
 
-      <div className="pt-28 pb-20 px-6 md:px-10 max-w-5xl mx-auto">
+      <div className="pt-20 md:pt-28 pb-16 md:pb-20 px-4 md:px-10 max-w-5xl mx-auto">
         {user?.role === "admin"
           ? (
             <>
-              <div className="mb-8">
-                <p className="text-xs tracking-widest uppercase font-semibold mb-2" style={{ color: "var(--blue)" }}>Администратор</p>
-                <h1 className="text-3xl md:text-4xl font-bold mb-6" style={{ fontFamily: "Playfair Display, serif", color: "var(--navy)" }}>
+              <div className="mb-6 md:mb-8">
+                <p className="text-xs tracking-widest uppercase font-semibold mb-1.5" style={{ color: "var(--blue)" }}>Администратор</p>
+                <h1 className="text-2xl md:text-4xl font-bold mb-4 md:mb-6" style={{ fontFamily: "Playfair Display, serif", color: "var(--navy)" }}>
                   Панель управления
                 </h1>
-                <div className="flex gap-2">
+                <div className="flex gap-2 overflow-x-auto pb-1">
                   {([
                     { key: "submissions", label: "Заявки клиентов", icon: "Inbox" },
                     { key: "partners",    label: "Партнёры",        icon: "Handshake" },
                   ] as const).map((t) => (
                     <button key={t.key} onClick={() => setAdminTab(t.key)}
-                      className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all"
+                      className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all flex-shrink-0"
                       style={{
                         background: adminTab === t.key ? "var(--navy)" : "var(--bg-white)",
                         color: adminTab === t.key ? "#fff" : "var(--text-muted)",

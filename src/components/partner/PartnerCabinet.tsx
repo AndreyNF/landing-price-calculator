@@ -46,26 +46,26 @@ export default function PartnerCabinet({ sessionId, userLogin, isAdmin = false, 
   return (
     <div>
       {/* Hero */}
-      <div className="mb-8">
-        <p className="text-xs tracking-widest uppercase font-semibold mb-3" style={{ color: "var(--blue)" }}>Партнёрский кабинет</p>
-        <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-2" style={{ fontFamily: "Playfair Display, serif", color: "var(--navy)" }}>
-          Добро пожаловать, {userLogin}
+      <div className="mb-5 md:mb-8">
+        <p className="text-xs tracking-widest uppercase font-semibold mb-1.5" style={{ color: "var(--blue)" }}>Партнёрский кабинет</p>
+        <h1 className="text-2xl md:text-4xl font-bold leading-tight mb-1" style={{ fontFamily: "Playfair Display, serif", color: "var(--navy)" }}>
+          {userLogin}
         </h1>
-        <p style={{ color: "var(--text-muted)" }}>Управляйте клиентами, отслеживайте статусы сделок и получайте вознаграждения.</p>
+        <p className="text-sm hidden sm:block" style={{ color: "var(--text-muted)" }}>Управляйте клиентами, отслеживайте статусы сделок и получайте вознаграждения.</p>
       </div>
 
       {/* Tabs */}
       {!selectedClientId && (
-        <div className="flex gap-2 mb-7 flex-wrap">
+        <div className="flex gap-2 mb-5 md:mb-7 overflow-x-auto pb-1">
           {TABS.map(t => (
             <button key={t.key} onClick={() => setTab(t.key)}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all"
+              className="flex items-center gap-1.5 md:gap-2 px-3 md:px-5 py-2 md:py-2.5 rounded-xl text-xs md:text-sm font-semibold transition-all flex-shrink-0"
               style={{
                 background: tab === t.key ? "var(--navy)" : "var(--bg-white)",
                 color: tab === t.key ? "#fff" : "var(--text-muted)",
                 border: `1px solid ${tab === t.key ? "var(--navy)" : "var(--border-c)"}`,
               }}>
-              <Icon name={t.icon as "BarChart2"} size={15} />
+              <Icon name={t.icon as "BarChart2"} size={14} />
               {t.label}
             </button>
           ))}
@@ -73,7 +73,7 @@ export default function PartnerCabinet({ sessionId, userLogin, isAdmin = false, 
       )}
 
       {/* Content */}
-      <div className="rounded-2xl p-6 md:p-8" style={{ background: "var(--bg-white)", border: "1px solid var(--border-c)" }}>
+      <div className="rounded-2xl p-4 md:p-8" style={{ background: "var(--bg-white)", border: "1px solid var(--border-c)" }}>
         {selectedClientId ? (
           <ClientCard
             sessionId={sessionId}

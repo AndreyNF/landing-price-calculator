@@ -174,23 +174,25 @@ export default function ClientList({ sessionId, onSelectClient, partnerId }: Pro
   return (
     <div>
       {/* Toolbar */}
-      <div className="flex flex-wrap gap-3 mb-5">
-        <div className="relative flex-1 min-w-48">
-          <Icon name="Search" size={15} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: "var(--text-muted)" }} />
-          <input className="w-full pl-9 pr-4 py-2.5 rounded-lg text-sm outline-none"
-            style={inputStyle} placeholder="Поиск по ФИО, ИНН, телефону..."
-            value={q} onChange={e => setQ(e.target.value)} />
+      <div className="flex flex-col sm:flex-row gap-2 mb-5">
+        <div className="flex gap-2 flex-1">
+          <div className="relative flex-1">
+            <Icon name="Search" size={15} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: "var(--text-muted)" }} />
+            <input className="w-full pl-9 pr-4 py-2.5 rounded-lg text-sm outline-none"
+              style={inputStyle} placeholder="Поиск..."
+              value={q} onChange={e => setQ(e.target.value)} />
+          </div>
+          <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)}
+            className="px-2 py-2.5 rounded-lg text-sm outline-none flex-shrink-0"
+            style={inputStyle}>
+            <option value="">Все</option>
+            {(Object.entries(DEAL_STATUS_META) as [DealStatus, typeof DEAL_STATUS_META[DealStatus]][]).map(([k, v]) => (
+              <option key={k} value={k}>{v.label}</option>
+            ))}
+          </select>
         </div>
-        <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)}
-          className="px-3 py-2.5 rounded-lg text-sm outline-none"
-          style={inputStyle}>
-          <option value="">Все статусы</option>
-          {(Object.entries(DEAL_STATUS_META) as [DealStatus, typeof DEAL_STATUS_META[DealStatus]][]).map(([k, v]) => (
-            <option key={k} value={k}>{v.label}</option>
-          ))}
-        </select>
         <button onClick={() => setShowAdd(true)}
-          className="px-5 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-2"
+          className="w-full sm:w-auto px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center justify-center gap-2"
           style={{ background: "var(--blue)", color: "#fff" }}>
           <Icon name="UserPlus" size={15} />
           Добавить клиента
