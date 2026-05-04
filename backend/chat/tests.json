@@ -1,0 +1,16 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Poll missing session returns 400",
+      "method": "GET",
+      "path": "/?session_id=",
+      "expectedStatus": 400
+    }
+  ]
+}

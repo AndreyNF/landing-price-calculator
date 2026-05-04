@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { toast } from "sonner";
 import ContractorCheck from "@/components/ContractorCheck";
+import PartnerCabinet from "@/components/partner/PartnerCabinet";
 
 const AUTH_URL = "https://functions.poehali.dev/cf442b6d-1511-4826-a129-d63da8e9dfa0";
 const ADMIN_URL = "https://functions.poehali.dev/2fb10b23-2471-4f73-a39f-315ed4c51e8c";
@@ -331,6 +332,11 @@ export default function Cabinet() {
                   Admin
                 </span>
               )}
+              {user.role === "partner" && (
+                <span className="text-xs px-2 py-0.5 rounded-full font-semibold" style={{ background: "rgba(124,58,237,0.12)", color: "#7c3aed" }}>
+                  Партнёр
+                </span>
+              )}
               <span className="text-xs" style={{ color: "var(--text-muted)" }}>{user.login}</span>
             </div>
           )}
@@ -356,6 +362,8 @@ export default function Cabinet() {
               <AdminPanel sessionId={sessionId} />
             </>
           )
+          : user?.role === "partner"
+          ? <PartnerCabinet sessionId={sessionId} userLogin={user.login} isAdmin={false} />
           : user
           ? <ClientCabinet user={user} />
           : null
