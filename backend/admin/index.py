@@ -164,4 +164,17 @@ def handler(event: dict, context) -> dict:
         conn.close()
         return ok({"ok": True})
 
+    # ── УДАЛЕНИЕ ЗАЯВКИ ───────────────────────────────────────────────────────
+    if action == "delete_submission":
+        sub_id = body.get("id")
+        if not sub_id:
+            return err("Не указан id", 400)
+        conn = get_conn()
+        cur = conn.cursor()
+        cur.execute(f"DELETE FROM {SCHEMA}.form_submission_files WHERE submission_id = %s", (sub_id,))
+        cur.execute(f"DELETE FROM {SCHEMA}.form_submissions WHERE id = %s", (sub_id,))
+        conn.commit()
+        conn.close()
+        return ok({"ok": True})
+
     return err("Неизвестное действие", 400)

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Icon from "@/components/ui/icon";
+import { toast } from "sonner";
 import {
   apiPartner, DEAL_STATUS_META, DOC_CATEGORIES, fmtDate, fmtMoney, fmtFileSize,
   DADATA_TOKEN,
@@ -57,6 +58,8 @@ export default function ClientCard({ sessionId, clientId, isAdmin, onBack }: Pro
   const [settingStatus, setSettingStatus] = useState(false);
 
   const [ddLoading, setDdLoading] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [ddData, setDdData] = useState<Record<string, unknown> | null>(null);
 
   const load = async () => {
@@ -126,6 +129,14 @@ export default function ClientCard({ sessionId, clientId, isAdmin, onBack }: Pro
     setSettingStatus(false);
   };
 
+  const handleDelete = async () => {
+    setDeleting(true);
+    const data = await apiPartner(sessionId, { action: "delete_client", client_id: clientId });
+    setDeleting(false);
+    if (data.ok) { toast.success("Клиент удалён"); onBack(); }
+    else toast.error(data.error || "Ошибка удаления");
+  };
+
   if (loading) return (
     <div className="flex items-center justify-center py-20">
       <Icon name="LoaderCircle" size={32} className="animate-spin" style={{ color: "var(--blue)" }} />
@@ -163,6 +174,11 @@ export default function ClientCard({ sessionId, clientId, isAdmin, onBack }: Pro
                 Статус
               </button>
             )}
+            <button onClick={() => setDeleteConfirm(true)}
+              className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
+              style={{ background: "rgba(239,68,68,0.08)", color: "#ef4444", border: "1px solid rgba(239,68,68,0.2)" }}>
+              <Icon name="Trash2" size={13} />
+            </button>
           </div>
         </div>
       </div>
@@ -387,6 +403,34 @@ export default function ClientCard({ sessionId, clientId, isAdmin, onBack }: Pro
                 style={{ background: "var(--blue)", color: "#fff" }}>
                 {settingStatus ? <Icon name="LoaderCircle" size={16} className="animate-spin" /> : null}
                 Сохранить
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Подтверждение удаления */}
+      {deleteConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: "rgba(0,0,0,0.5)" }}>
+          <div className="rounded-2xl p-6 w-full max-w-sm" style={{ background: "#fff", border: "1px solid var(--border-c)" }}>
+            <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: "rgba(239,68,68,0.1)" }}>
+              <Icon name="Trash2" size={22} style={{ color: "#ef4444" }} />
+            </div>
+            <h3 className="font-bold text-center mb-2" style={{ color: "var(--navy)" }}>Удалить клиента?</h3>
+            <p className="text-sm text-center mb-5" style={{ color: "var(--text-muted)" }}>
+              Будут удалены все данные, документы и история переписки. Отменить нельзя.
+            </p>
+            <div className="flex gap-3">
+              <button onClick={() => setDeleteConfirm(false)}
+                className="flex-1 py-2.5 rounded-xl text-sm font-semibold"
+                style={{ background: "var(--bg)", color: "var(--text)", border: "1px solid var(--border-c)" }}>
+                Отмена
+              </button>
+              <button onClick={handleDelete} disabled={deleting}
+                className="flex-1 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2"
+                style={{ background: "#ef4444", color: "#fff" }}>
+                {deleting ? <Icon name="LoaderCircle" size={15} className="animate-spin" /> : <Icon name="Trash2" size={15} />}
+                Удалить
               </button>
             </div>
           </div>

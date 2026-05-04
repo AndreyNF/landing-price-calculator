@@ -88,6 +88,8 @@ export default function SubmissionCard({ submissionId, sessionId, onClose, onUpd
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState<Partial<FullSubmission>>({});
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   // DaData
   const [partySugg, setPartySugg] = useState<DDSugg[]>([]);
@@ -172,6 +174,19 @@ export default function SubmissionCard({ submissionId, sessionId, onClose, onUpd
     setSaving(false);
     if (d.ok) { toast.success("Сохранено"); onUpdated(); }
     else toast.error(d.error || "Ошибка сохранения");
+  };
+
+  const handleDelete = async () => {
+    setDeleting(true);
+    const res = await fetch(ADMIN_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Session-Id": sessionId },
+      body: JSON.stringify({ action: "delete_submission", id: submissionId }),
+    });
+    const d = await res.json();
+    setDeleting(false);
+    if (d.ok) { toast.success("Заявка удалена"); onUpdated(); }
+    else toast.error(d.error || "Ошибка удаления");
   };
 
   if (loading) return (
@@ -353,6 +368,12 @@ export default function SubmissionCard({ submissionId, sessionId, onClose, onUpd
             <span className="text-xs font-semibold" style={{ color: statusMeta.color }}>{statusMeta.label}</span>
           </div>
           <div className="flex gap-2">
+            <button onClick={() => setDeleteConfirm(true)}
+              className="px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-1.5"
+              style={{ background: "rgba(239,68,68,0.08)", color: "#ef4444", border: "1px solid rgba(239,68,68,0.2)" }}>
+              <Icon name="Trash2" size={14} />
+              Удалить
+            </button>
             <button onClick={onClose} className="px-4 py-2 rounded-lg text-sm font-medium"
               style={{ background: "var(--bg-white)", color: "var(--text-muted)", border: "1px solid var(--border-c)" }}>
               Закрыть
@@ -366,6 +387,34 @@ export default function SubmissionCard({ submissionId, sessionId, onClose, onUpd
           </div>
         </div>
       </div>
+
+      {/* Подтверждение удаления */}
+      {deleteConfirm && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4" style={{ background: "rgba(0,0,0,0.5)" }}>
+          <div className="rounded-2xl p-6 w-full max-w-sm" style={{ background: "#fff", border: "1px solid var(--border-c)" }}>
+            <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: "rgba(239,68,68,0.1)" }}>
+              <Icon name="Trash2" size={22} style={{ color: "#ef4444" }} />
+            </div>
+            <h3 className="font-bold text-center mb-2" style={{ color: "var(--navy)" }}>Удалить заявку?</h3>
+            <p className="text-sm text-center mb-5" style={{ color: "var(--text-muted)" }}>
+              Заявка и все прикреплённые файлы будут удалены. Отменить нельзя.
+            </p>
+            <div className="flex gap-3">
+              <button onClick={() => setDeleteConfirm(false)}
+                className="flex-1 py-2.5 rounded-xl text-sm font-semibold"
+                style={{ background: "var(--bg)", color: "var(--text)", border: "1px solid var(--border-c)" }}>
+                Отмена
+              </button>
+              <button onClick={handleDelete} disabled={deleting}
+                className="flex-1 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2"
+                style={{ background: "#ef4444", color: "#fff" }}>
+                {deleting ? <Icon name="LoaderCircle" size={15} className="animate-spin" /> : <Icon name="Trash2" size={15} />}
+                Удалить
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

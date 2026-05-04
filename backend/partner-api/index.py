@@ -574,4 +574,29 @@ def handler(event: dict, context) -> dict:
         conn.close()
         return ok({"partners": partners, "total": total, "page": page})
 
+    # ── DELETE CLIENT ─────────────────────────────────────────────────────────
+    if action == "delete_client":
+        client_id = body.get("client_id")
+        if not client_id:
+            return err("Не указан client_id")
+        conn = get_conn()
+        cur = conn.cursor()
+        if not is_admin:
+            cur.execute(
+                f"""SELECT pc.id FROM {SCHEMA}.partner_clients pc
+                    JOIN {SCHEMA}.partners p ON p.id = pc.partner_id
+                    WHERE pc.id = %s AND p.user_id = %s""",
+                (client_id, user["id"]),
+            )
+            if not cur.fetchone():
+                conn.close()
+                return err("Доступ запрещён", 403)
+        cur.execute(f"DELETE FROM {SCHEMA}.partner_client_comments WHERE client_id = %s", (client_id,))
+        cur.execute(f"DELETE FROM {SCHEMA}.partner_client_statuses WHERE client_id = %s", (client_id,))
+        cur.execute(f"DELETE FROM {SCHEMA}.partner_client_docs WHERE client_id = %s", (client_id,))
+        cur.execute(f"DELETE FROM {SCHEMA}.partner_clients WHERE id = %s", (client_id,))
+        conn.commit()
+        conn.close()
+        return ok({"ok": True})
+
     return err("Неизвестное действие", 400)
