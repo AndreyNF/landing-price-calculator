@@ -844,4 +844,18 @@ def handler(event: dict, context) -> dict:
         conn.close()
         return ok({"ok": True})
 
+    # ── DELETE PAYMENT (admin only) ────────────────────────────────────────────
+    if action == "delete_payment":
+        if not is_admin:
+            return err("Только администратор", 403)
+        payment_id = body.get("id")
+        if not payment_id:
+            return err("Не указан id")
+        conn = get_conn()
+        cur = conn.cursor()
+        cur.execute(f"DELETE FROM {SCHEMA}.partner_payments WHERE id = %s", (payment_id,))
+        conn.commit()
+        conn.close()
+        return ok({"ok": True})
+
     return err("Неизвестное действие", 400)

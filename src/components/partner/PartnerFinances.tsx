@@ -54,6 +54,7 @@ export default function PartnerFinances({ sessionId, partnerId, isAdmin }: Props
 
   // Смена статуса выплаты по клиенту
   const [togglingId, setTogglingId] = useState<number | null>(null);
+  const [deletingPaymentId, setDeletingPaymentId] = useState<number | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -92,6 +93,18 @@ export default function PartnerFinances({ sessionId, partnerId, isAdmin }: Props
     } else {
       toast.error(data.error || "Ошибка");
     }
+  };
+
+  const handleDeletePayment = async (id: number) => {
+    setDeletingPaymentId(id);
+    const data = await apiPartner(sessionId, { action: "delete_payment", id });
+    if (data.ok) {
+      setPayments(prev => prev.filter(p => p.id !== id));
+      load();
+    } else {
+      toast.error(data.error || "Ошибка");
+    }
+    setDeletingPaymentId(null);
   };
 
   if (loading) return (
@@ -241,6 +254,15 @@ export default function PartnerFinances({ sessionId, partnerId, isAdmin }: Props
                     {p.note && <p className="text-xs" style={{ color: "var(--text-muted)" }}>{p.note}</p>}
                   </div>
                 </div>
+                {isAdmin && (
+                  <button onClick={() => handleDeletePayment(p.id)} disabled={deletingPaymentId === p.id}
+                    className="flex-shrink-0 transition-opacity hover:opacity-70"
+                    style={{ color: "#ef4444" }}>
+                    {deletingPaymentId === p.id
+                      ? <Icon name="LoaderCircle" size={15} className="animate-spin" />
+                      : <Icon name="Trash2" size={15} />}
+                  </button>
+                )}
               </div>
             ))}
           </div>
