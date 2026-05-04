@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Icon from "@/components/ui/icon";
 import {
   apiPartner, DEAL_STATUS_META, fmtDate, fmtMoney,
@@ -6,7 +6,9 @@ import {
   type Client, type DealStatus,
 } from "./types";
 
-const SUGGEST_URL = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/findById/party";
+const SUGGEST_PARTY = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/party";
+const FIND_PARTY    = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/findById/party";
+const SUGGEST_FIO   = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/fio";
 
 interface Props {
   sessionId: string;
@@ -26,6 +28,48 @@ const EMPTY_FORM: AddForm = {
 const INPUT = "w-full px-4 py-3 rounded-lg text-sm outline-none transition-all font-body";
 const inputStyle = { background: "var(--bg)", border: "1px solid var(--border-c)", color: "var(--text)" };
 
+interface DDSugg { value: string; data: Record<string, unknown> }
+
+async function ddFetch(url: string, body: object): Promise<DDSugg[]> {
+  if (!DADATA_TOKEN) return [];
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Token ${DADATA_TOKEN}` },
+    body: JSON.stringify(body),
+  }).catch(() => null);
+  if (!res) return [];
+  const d = await res.json();
+  return d.suggestions || [];
+}
+
+function DaDropdown({ suggestions, onSelect, loading }: {
+  suggestions: DDSugg[];
+  onSelect: (s: DDSugg) => void;
+  loading?: boolean;
+}) {
+  if (loading) return (
+    <div className="absolute right-3 top-1/2 -translate-y-1/2">
+      <Icon name="LoaderCircle" size={14} className="animate-spin" style={{ color: "var(--text-muted)" }} />
+    </div>
+  );
+  if (!suggestions.length) return null;
+  return (
+    <ul className="absolute left-0 right-0 z-[100] rounded-xl overflow-hidden text-sm mt-1"
+      style={{ background: "#fff", border: "1px solid var(--border-c)", boxShadow: "0 8px 24px rgba(0,0,0,0.12)", top: "100%" }}>
+      {suggestions.map((s, i) => (
+        <li key={i} onMouseDown={() => onSelect(s)}
+          className="px-4 py-2.5 cursor-pointer"
+          style={{ borderBottom: i < suggestions.length - 1 ? "1px solid var(--border-c)" : "none" }}
+          onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "var(--bg)")}
+          onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = "#fff")}>
+          <p className="font-medium truncate text-sm" style={{ color: "var(--navy)" }}>{s.value}</p>
+          {s.data.inn && <p className="text-xs" style={{ color: "var(--text-muted)" }}>ИНН: {String(s.data.inn)}</p>}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export default function ClientList({ sessionId, onSelectClient }: Props) {
   const [clients, setClients] = useState<Client[]>([]);
   const [total, setTotal] = useState(0);
@@ -37,7 +81,18 @@ export default function ClientList({ sessionId, onSelectClient }: Props) {
   const [form, setForm] = useState<AddForm>(EMPTY_FORM);
   const [adding, setAdding] = useState(false);
   const [addError, setAddError] = useState("");
-  const [ddName, setDdName] = useState("");
+
+  // DaData: party по ИНН
+  const [partySugg, setPartySugg] = useState<DDSugg[]>([]);
+  const [partyOpen, setPartyOpen] = useState(false);
+  const [partyLoading, setPartyLoading] = useState(false);
+  const partyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // DaData: ФИО контактного лица
+  const [fioSugg, setFioSugg] = useState<DDSugg[]>([]);
+  const [fioOpen, setFioOpen] = useState(false);
+  const [fioLoading, setFioLoading] = useState(false);
+  const fioTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const load = useCallback(async (p: number) => {
     setLoading(true);
@@ -50,22 +105,49 @@ export default function ClientList({ sessionId, onSelectClient }: Props) {
   useEffect(() => { setPage(1); }, [q, statusFilter]);
   useEffect(() => { load(page); }, [load, page]);
 
-  // DaData lookup при вводе ИНН в форме добавления
+  // DaData: ИНН → party
   useEffect(() => {
-    const inn = form.inn.trim();
-    if (inn.length < 10 || !DADATA_TOKEN) { setDdName(""); return; }
-    fetch(SUGGEST_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Token ${DADATA_TOKEN}` },
-      body: JSON.stringify({ query: inn, count: 1 }),
-    }).then(r => r.json()).then(d => {
-      const s = d.suggestions?.[0];
-      if (s) {
-        setDdName(s.value);
-        if (!form.full_name) setForm(prev => ({ ...prev, full_name: s.value }));
-      }
-    }).catch(() => {});
-  }, [form.inn]);
+    if (!showAdd) return;
+    if (partyTimer.current) clearTimeout(partyTimer.current);
+    const v = form.inn.trim();
+    if (!v || v.length < 3) { setPartySugg([]); return; }
+    setPartyLoading(true);
+    partyTimer.current = setTimeout(async () => {
+      const url = v.length >= 10 ? FIND_PARTY : SUGGEST_PARTY;
+      const s = await ddFetch(url, { query: v, count: 7 });
+      setPartySugg(s); setPartyOpen(true); setPartyLoading(false);
+    }, 250);
+  }, [form.inn, showAdd]);
+
+  // DaData: ФИО контактного лица
+  useEffect(() => {
+    if (!showAdd) return;
+    if (fioTimer.current) clearTimeout(fioTimer.current);
+    const v = form.contact_person.trim();
+    if (!v || v.length < 2) { setFioSugg([]); return; }
+    setFioLoading(true);
+    fioTimer.current = setTimeout(async () => {
+      const s = await ddFetch(SUGGEST_FIO, { query: v, count: 5 });
+      setFioSugg(s); setFioOpen(true); setFioLoading(false);
+    }, 300);
+  }, [form.contact_person, showAdd]);
+
+  const applyParty = (s: DDSugg) => {
+    const d = s.data;
+    const mgmt = d.management as Record<string, string> | null;
+    setForm(prev => ({
+      ...prev,
+      inn: String(d.inn || prev.inn),
+      full_name: String((d.name as Record<string, string>)?.full_with_opf || s.value),
+      contact_person: mgmt?.name || prev.contact_person,
+    }));
+    setPartyOpen(false); setPartySugg([]);
+  };
+
+  const applyFio = (s: DDSugg) => {
+    setForm(prev => ({ ...prev, contact_person: s.value }));
+    setFioOpen(false); setFioSugg([]);
+  };
 
   const setF = (k: keyof AddForm) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setForm(prev => ({ ...prev, [k]: e.target.value }));
@@ -80,7 +162,7 @@ export default function ClientList({ sessionId, onSelectClient }: Props) {
     if (data.error) { setAddError(data.error); return; }
     setShowAdd(false);
     setForm(EMPTY_FORM);
-    setDdName("");
+    setPartySugg([]); setFioSugg([]);
     load(1);
   };
 
@@ -215,14 +297,35 @@ export default function ClientList({ sessionId, onSelectClient }: Props) {
               </button>
             </div>
             <form onSubmit={handleAdd} className="p-6 space-y-4">
+              {/* ИНН с DaData — вне grid чтобы дропдаун не обрезался */}
               <div>
-                <label className="block text-xs font-semibold mb-1.5" style={{ color: "var(--text-muted)" }}>ИНН (для автозаполнения)</label>
-                <input className={INPUT} style={inputStyle} placeholder="Введите ИНН" value={form.inn} onChange={setF("inn")} />
-                {ddName && <p className="text-xs mt-1 font-medium" style={{ color: "var(--blue)" }}>✓ {ddName}</p>}
+                <label className="block text-xs font-semibold mb-1.5" style={{ color: "var(--text-muted)" }}>
+                  ИНН <span className="font-normal">(название и контакт подтянутся автоматически)</span>
+                </label>
+                <div className="relative">
+                  <input className={INPUT} style={inputStyle}
+                    placeholder="Введите ИНН или название организации"
+                    value={form.inn} onChange={setF("inn")}
+                    onFocus={() => partySugg.length > 0 && setPartyOpen(true)}
+                    onBlur={() => setTimeout(() => setPartyOpen(false), 150)} />
+                  <DaDropdown suggestions={partyOpen ? partySugg : []} onSelect={applyParty} loading={partyLoading} />
+                </div>
               </div>
               <div>
                 <label className="block text-xs font-semibold mb-1.5" style={{ color: "var(--text-muted)" }}>ФИО / Наименование <span style={{ color: "#ef4444" }}>*</span></label>
                 <input className={INPUT} style={inputStyle} placeholder="Иванов Иван Иванович" value={form.full_name} onChange={setF("full_name")} />
+              </div>
+              {/* Контактное лицо с DaData ФИО — вне grid */}
+              <div>
+                <label className="block text-xs font-semibold mb-1.5" style={{ color: "var(--text-muted)" }}>Контактное лицо</label>
+                <div className="relative">
+                  <input className={INPUT} style={inputStyle}
+                    placeholder="Иванов Иван — ФИО подскажем"
+                    value={form.contact_person} onChange={setF("contact_person")}
+                    onFocus={() => fioSugg.length > 0 && setFioOpen(true)}
+                    onBlur={() => setTimeout(() => setFioOpen(false), 150)} />
+                  <DaDropdown suggestions={fioOpen ? fioSugg : []} onSelect={applyFio} loading={fioLoading} />
+                </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -233,10 +336,6 @@ export default function ClientList({ sessionId, onSelectClient }: Props) {
                   <label className="block text-xs font-semibold mb-1.5" style={{ color: "var(--text-muted)" }}>Email</label>
                   <input className={INPUT} style={inputStyle} placeholder="email@mail.ru" value={form.email} onChange={setF("email")} />
                 </div>
-              </div>
-              <div>
-                <label className="block text-xs font-semibold mb-1.5" style={{ color: "var(--text-muted)" }}>Контактное лицо</label>
-                <input className={INPUT} style={inputStyle} placeholder="Имя, должность" value={form.contact_person} onChange={setF("contact_person")} />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
