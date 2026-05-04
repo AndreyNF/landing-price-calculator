@@ -32,9 +32,8 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
 
         {/* Logo */}
         <div className="flex items-center">
-          <span className="font-display text-xl font-bold tracking-wider" style={{ color: "var(--gold)" }}>
-            LEGIS<span style={{ color: "var(--text)" }}>24</span>
-          </span>
+          <img src="https://cdn.poehali.dev/projects/ec09f91e-5c19-456f-a8f1-620fce7cd143/bucket/ab52ccb9-db9a-405f-97a2-aabaac530445.jpg"
+            alt="Legis24" style={{ height: 40, width: "auto", borderRadius: 6 }} />
         </div>
 
         {/* Desktop nav */}
