@@ -164,6 +164,45 @@ def handler(event: dict, context) -> dict:
             err = e.read().decode()
             print("sendDocument error:", err)
 
+    # Отправляем email через Resend
+    resend_key = os.environ.get('RESEND_API_KEY', '')
+    if resend_key:
+        try:
+            inn_html = ""
+            if inn:
+                inn_html = f"<tr><td><b>ИНН:</b></td><td>{inn}" + (f" ({inn_company})" if inn_company else "") + "</td></tr>"
+            email_html = f"""
+            <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
+              <h2 style="color:#0d1826;border-bottom:2px solid #d4af37;padding-bottom:8px">Новая заявка с сайта Legis24</h2>
+              <table style="width:100%;border-collapse:collapse;margin-top:16px">
+                <tr><td style="padding:8px 0;color:#666;width:120px"><b>Имя:</b></td><td style="padding:8px 0">{name}</td></tr>
+                <tr><td style="padding:8px 0;color:#666"><b>Телефон:</b></td><td style="padding:8px 0">{phone}</td></tr>
+                <tr><td style="padding:8px 0;color:#666"><b>Email:</b></td><td style="padding:8px 0">{email}</td></tr>
+                {inn_html}
+                {"<tr><td style='padding:8px 0;color:#666'><b>Сообщение:</b></td><td style='padding:8px 0'>" + message + "</td></tr>" if message else ""}
+                <tr><td style="padding:8px 0;color:#666"><b>Файлов:</b></td><td style="padding:8px 0">{len(files)}</td></tr>
+              </table>
+            </div>
+            """
+            email_req = urllib.request.Request(
+                'https://api.resend.com/emails',
+                data=json.dumps({
+                    'from': 'Legis24 <noreply@poehali.dev>',
+                    'to': ['order@advokat-vsem.ru'],
+                    'subject': f'Новая заявка от {name}',
+                    'html': email_html,
+                }).encode(),
+                headers={
+                    'Authorization': f'Bearer {resend_key}',
+                    'Content-Type': 'application/json',
+                },
+                method='POST'
+            )
+            eresp = urllib.request.urlopen(email_req)
+            print("Resend response:", eresp.read().decode())
+        except Exception as e:
+            print("Resend error:", e)
+
     return {
         'statusCode': 200,
         'headers': {'Access-Control-Allow-Origin': '*'},
