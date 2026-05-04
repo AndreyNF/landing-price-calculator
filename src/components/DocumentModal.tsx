@@ -152,7 +152,7 @@ export default function DocumentModal({ open, onClose }: DocumentModalProps) {
             Отправить документ
           </h2>
           <p style={{ color: "rgba(255,255,255,0.38)", fontSize: 13, marginTop: 6 }}>
-            Загрузите материалы — оценим задачу и предложим решение
+            Подготовим документ за 24 часа после проверки
           </p>
         </div>
 
@@ -273,7 +273,12 @@ export default function DocumentModal({ open, onClose }: DocumentModalProps) {
             onMouseEnter={(e) => { if (!loading) { (e.currentTarget).style.boxShadow = "0 6px 36px rgba(212,175,55,0.55)"; (e.currentTarget).style.transform = "translateY(-1px)"; } }}
             onMouseLeave={(e) => { (e.currentTarget).style.boxShadow = "0 4px 28px rgba(212,175,55,0.35)"; (e.currentTarget).style.transform = "none"; }}
           >
-            {loading ? "Отправляем..." : "Отправить документ"}
+            <span style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+              {loading
+                ? <><Icon name="LoaderCircle" size={15} />Отправляем...</>
+                : <><Icon name="Send" size={15} />Отправить документ</>
+              }
+            </span>
           </button>
 
           {/* Privacy */}
