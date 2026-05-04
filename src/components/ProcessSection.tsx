@@ -29,7 +29,7 @@ export default function ProcessSection({ onOpenModal }: { onOpenModal: () => voi
             ].map(step => (
               <div key={step.num} className="service-card p-8 lg:p-10" style={{ background: "var(--dark-card)" }}>
                 <div className="flex items-start justify-between mb-8">
-                  <span className="font-display" style={{ fontSize: "4rem", color: "rgba(212,175,55,0.45)", fontWeight: 700, lineHeight: 1 }}>
+                  <span className="font-display" style={{ fontSize: "4rem", color: "rgba(212,175,55,0.8)", fontWeight: 700, lineHeight: 1 }}>
                     {step.num}
                   </span>
                   <div className="w-9 h-9 flex items-center justify-center rounded"
