@@ -18,7 +18,7 @@ export default function Blog() {
           <img
             src="https://cdn.poehali.dev/projects/ec09f91e-5c19-456f-a8f1-620fce7cd143/bucket/9f3ffbe2-117b-415c-bd94-81fb0c9183e9.png"
             alt="Legis24"
-            style={{ height: 48, width: "auto", borderRadius: 6 }}
+            style={{ height: 48, width: "auto" }}
           />
         </Link>
         <Link
