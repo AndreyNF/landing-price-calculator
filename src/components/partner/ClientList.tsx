@@ -15,6 +15,7 @@ const SUGGEST_FIO   = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/sugg
 interface Props {
   sessionId: string;
   onSelectClient: (id: number) => void;
+  partnerId?: number;
 }
 
 interface AddForm {
@@ -72,7 +73,7 @@ function DaDropdown({ suggestions, onSelect, loading }: {
   );
 }
 
-export default function ClientList({ sessionId, onSelectClient }: Props) {
+export default function ClientList({ sessionId, onSelectClient, partnerId }: Props) {
   const [clients, setClients] = useState<Client[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -98,11 +99,11 @@ export default function ClientList({ sessionId, onSelectClient }: Props) {
 
   const load = useCallback(async (p: number) => {
     setLoading(true);
-    const data = await apiPartner(sessionId, { action: "get_clients", page: p, q, status: statusFilter });
+    const data = await apiPartner(sessionId, { action: "get_clients", page: p, q, status: statusFilter, ...(partnerId ? { partner_id: partnerId } : {}) });
     setClients(data.clients || []);
     setTotal(data.total || 0);
     setLoading(false);
-  }, [sessionId, q, statusFilter]);
+  }, [sessionId, q, statusFilter, partnerId]);
 
   useEffect(() => { setPage(1); }, [q, statusFilter]);
   useEffect(() => { load(page); }, [load, page]);

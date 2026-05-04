@@ -2,19 +2,19 @@ import { useState, useEffect } from "react";
 import Icon from "@/components/ui/icon";
 import { apiPartner, DEAL_STATUS_META, fmtMoney, type Stats, type DealStatus } from "./types";
 
-interface Props { sessionId: string; missingCount?: number; onGoToProfile?: () => void }
+interface Props { sessionId: string; missingCount?: number; onGoToProfile?: () => void; partnerId?: number }
 
-export default function PartnerStats({ sessionId, missingCount = 0, onGoToProfile }: Props) {
+export default function PartnerStats({ sessionId, missingCount = 0, onGoToProfile, partnerId }: Props) {
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      const data = await apiPartner(sessionId, { action: "get_stats" });
+      const data = await apiPartner(sessionId, { action: "get_stats", ...(partnerId ? { partner_id: partnerId } : {}) });
       if (data.stats) setStats(data.stats);
       setLoading(false);
     })();
-  }, [sessionId]);
+  }, [sessionId, partnerId]);
 
   if (loading) return (
     <div className="flex items-center justify-center py-8">

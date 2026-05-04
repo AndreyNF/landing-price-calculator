@@ -12,6 +12,7 @@ interface Props {
   sessionId: string;
   userLogin: string;
   isAdmin?: boolean;
+  partnerId?: number;
 }
 
 const TABS: { key: Tab; label: string; icon: string }[] = [
@@ -25,7 +26,7 @@ const REQUIRED_FIELDS = [
   "bank_bik", "bank_account", "contact_name", "contact_phone", "contact_email",
 ];
 
-export default function PartnerCabinet({ sessionId, userLogin, isAdmin = false }: Props) {
+export default function PartnerCabinet({ sessionId, userLogin, isAdmin = false, partnerId }: Props) {
   const [tab, setTab] = useState<Tab>("stats");
   const [selectedClientId, setSelectedClientId] = useState<number | null>(null);
   const [missingCount, setMissingCount] = useState(0);
@@ -82,8 +83,8 @@ export default function PartnerCabinet({ sessionId, userLogin, isAdmin = false }
           />
         ) : (
           <>
-            {tab === "stats"   && <PartnerStats sessionId={sessionId} missingCount={missingCount} onGoToProfile={() => setTab("profile")} />}
-            {tab === "clients" && <ClientList sessionId={sessionId} onSelectClient={setSelectedClientId} />}
+            {tab === "stats"   && <PartnerStats sessionId={sessionId} missingCount={missingCount} onGoToProfile={() => setTab("profile")} partnerId={partnerId} />}
+            {tab === "clients" && <ClientList sessionId={sessionId} onSelectClient={setSelectedClientId} partnerId={partnerId} />}
             {tab === "profile" && <PartnerProfile sessionId={sessionId} isAdmin={isAdmin} />}
           </>
         )}

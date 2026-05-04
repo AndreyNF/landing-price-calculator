@@ -46,6 +46,7 @@ export default function AdminPartners({ sessionId }: Props) {
   const [q, setQ] = useState("");
   const [qInput, setQInput] = useState("");
   const [selectedLogin, setSelectedLogin] = useState<string | null>(null);
+  const [selectedPartnerId, setSelectedPartnerId] = useState<number | null>(null);
   const [statusChanging, setStatusChanging] = useState<number | null>(null);
 
   const load = useCallback(async (p: number, search: string) => {
@@ -86,7 +87,7 @@ export default function AdminPartners({ sessionId }: Props) {
           <Icon name="ArrowLeft" size={15} />
           Назад к списку партнёров
         </button>
-        <PartnerCabinet sessionId={sessionId} userLogin={selectedLogin} isAdmin={true} />
+        <PartnerCabinet sessionId={sessionId} userLogin={selectedLogin} isAdmin={true} partnerId={selectedPartnerId ?? undefined} />
       </div>
     );
   }
@@ -217,7 +218,7 @@ export default function AdminPartners({ sessionId }: Props) {
                         </td>
                         <td className="px-5 py-3">
                           <button
-                            onClick={() => setSelectedLogin(p.login)}
+                            onClick={() => { setSelectedLogin(p.login); setSelectedPartnerId(p.partner_id); }}
                             className="flex items-center gap-1 text-xs font-medium transition-opacity hover:opacity-70"
                             style={{ color: "var(--blue)" }}>
                             Открыть
@@ -236,7 +237,7 @@ export default function AdminPartners({ sessionId }: Props) {
               {partners.map((p) => {
                 const st = STATUS_LABELS[p.status || ""] || { text: "Не заполнен", color: "var(--text-muted)", bg: "var(--bg)" };
                 return (
-                  <div key={p.user_id} className="px-5 py-4" onClick={() => setSelectedLogin(p.login)}>
+                  <div key={p.user_id} className="px-5 py-4" onClick={() => { setSelectedLogin(p.login); setSelectedPartnerId(p.partner_id); }}>
                     <div className="flex items-start justify-between mb-1">
                       <div>
                         <p className="font-semibold text-sm" style={{ color: "var(--navy)" }}>{p.short_name || p.full_name || p.login}</p>
