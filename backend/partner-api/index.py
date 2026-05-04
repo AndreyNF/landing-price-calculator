@@ -508,4 +508,52 @@ def handler(event: dict, context) -> dict:
             }
         })
 
+    # ── GET PARTNERS (admin only) ─────────────────────────────────────────────
+    if action == "get_partners":
+        if not is_admin:
+            return err("Только администратор", 403)
+        conn = get_conn()
+        cur = conn.cursor()
+        page = max(1, int(body.get("page", 1)))
+        limit = 20
+        offset = (page - 1) * limit
+        q_filter = body.get("q", "").strip()
+
+        where = "WHERE 1=1"
+        params = []
+        if q_filter:
+            where += " AND (u.login ILIKE %s OR p.full_name ILIKE %s OR p.inn ILIKE %s OR p.contact_phone ILIKE %s)"
+            like = f"%{q_filter}%"
+            params.extend([like, like, like, like])
+
+        cur.execute(
+            f"""SELECT COUNT(*) FROM {SCHEMA}.users u
+                LEFT JOIN {SCHEMA}.partners p ON p.user_id = u.id
+                {where} AND u.role = 'partner'""",
+            params,
+        )
+        total = cur.fetchone()[0]
+
+        cur.execute(
+            f"""SELECT u.id as user_id, u.login, u.role,
+                       p.id as partner_id, p.status, p.partner_type,
+                       p.full_name, p.short_name, p.inn, p.ref_code,
+                       p.contact_name, p.contact_phone, p.contact_email,
+                       (SELECT COUNT(*) FROM {SCHEMA}.partner_clients pc WHERE pc.partner_id = p.id) as clients_count,
+                       (SELECT COALESCE(SUM(partner_reward),0) FROM {SCHEMA}.partner_clients pc WHERE pc.partner_id = p.id) as total_reward
+                FROM {SCHEMA}.users u
+                LEFT JOIN {SCHEMA}.partners p ON p.user_id = u.id
+                {where} AND u.role = 'partner'
+                ORDER BY u.id DESC
+                LIMIT %s OFFSET %s""",
+            params + [limit, offset],
+        )
+        cols = ["user_id", "login", "role", "partner_id", "status", "partner_type",
+                "full_name", "short_name", "inn", "ref_code",
+                "contact_name", "contact_phone", "contact_email",
+                "clients_count", "total_reward"]
+        partners = [dict(zip(cols, row)) for row in cur.fetchall()]
+        conn.close()
+        return ok({"partners": partners, "total": total, "page": page})
+
     return err("Неизвестное действие", 400)

@@ -4,6 +4,7 @@ import Icon from "@/components/ui/icon";
 import { toast } from "sonner";
 import ContractorCheck from "@/components/ContractorCheck";
 import PartnerCabinet from "@/components/partner/PartnerCabinet";
+import AdminPartners from "@/components/admin/AdminPartners";
 
 const AUTH_URL = "https://functions.poehali.dev/cf442b6d-1511-4826-a129-d63da8e9dfa0";
 const ADMIN_URL = "https://functions.poehali.dev/2fb10b23-2471-4f73-a39f-315ed4c51e8c";
@@ -276,6 +277,7 @@ export default function Cabinet() {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [checking, setChecking] = useState(true);
+  const [adminTab, setAdminTab] = useState<"submissions" | "partners">("submissions");
   const sessionId = localStorage.getItem("session_id") || "";
 
   useEffect(() => {
@@ -355,11 +357,28 @@ export default function Cabinet() {
             <>
               <div className="mb-8">
                 <p className="text-xs tracking-widest uppercase font-semibold mb-2" style={{ color: "var(--blue)" }}>Администратор</p>
-                <h1 className="text-3xl md:text-4xl font-bold" style={{ fontFamily: "Playfair Display, serif", color: "var(--navy)" }}>
+                <h1 className="text-3xl md:text-4xl font-bold mb-6" style={{ fontFamily: "Playfair Display, serif", color: "var(--navy)" }}>
                   Панель управления
                 </h1>
+                <div className="flex gap-2">
+                  {([
+                    { key: "submissions", label: "Заявки клиентов", icon: "Inbox" },
+                    { key: "partners",    label: "Партнёры",        icon: "Handshake" },
+                  ] as const).map((t) => (
+                    <button key={t.key} onClick={() => setAdminTab(t.key)}
+                      className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all"
+                      style={{
+                        background: adminTab === t.key ? "var(--navy)" : "var(--bg-white)",
+                        color: adminTab === t.key ? "#fff" : "var(--text-muted)",
+                        border: `1px solid ${adminTab === t.key ? "var(--navy)" : "var(--border-c)"}`,
+                      }}>
+                      <Icon name={t.icon as "Inbox"} size={15} />
+                      {t.label}
+                    </button>
+                  ))}
+                </div>
               </div>
-              <AdminPanel sessionId={sessionId} />
+              {adminTab === "submissions" ? <AdminPanel sessionId={sessionId} /> : <AdminPartners sessionId={sessionId} />}
             </>
           )
           : user?.role === "partner"
