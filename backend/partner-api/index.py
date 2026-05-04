@@ -781,10 +781,10 @@ def handler(event: dict, context) -> dict:
         for p in payments:
             p["amount"] = float(p["amount"])
 
-        # Сводка
+        # Сводка — paid_reward считаем через реальные выплаты
         total_reward   = sum(c["partner_reward"] or 0 for c in clients)
-        paid_reward    = sum(c["partner_reward"] or 0 for c in clients if c["reward_paid"])
         total_payments = sum(p["amount"] for p in payments)
+        pending_reward = max(0, total_reward - total_payments)
 
         conn.close()
         return ok({
@@ -792,8 +792,8 @@ def handler(event: dict, context) -> dict:
             "payments": payments,
             "summary": {
                 "total_reward": total_reward,
-                "paid_reward": paid_reward,
-                "pending_reward": total_reward - paid_reward,
+                "paid_reward": total_payments,
+                "pending_reward": pending_reward,
                 "total_payments": total_payments,
             },
         })

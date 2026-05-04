@@ -70,16 +70,6 @@ export default function PartnerFinances({ sessionId, partnerId, isAdmin }: Props
     setTogglingId(clientId);
     await apiPartner(sessionId, { action: "set_reward_paid", client_id: clientId, paid: !current });
     setClients(prev => prev.map(c => c.id === clientId ? { ...c, reward_paid: !current } : c));
-    setSummary(prev => {
-      if (!prev) return prev;
-      const client = clients.find(c => c.id === clientId);
-      const reward = client?.partner_reward || 0;
-      return {
-        ...prev,
-        paid_reward: current ? prev.paid_reward - reward : prev.paid_reward + reward,
-        pending_reward: current ? prev.pending_reward + reward : prev.pending_reward - reward,
-      };
-    });
     setTogglingId(null);
   };
 
