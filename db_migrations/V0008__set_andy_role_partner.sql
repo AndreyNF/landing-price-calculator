@@ -1,0 +1,1 @@
+UPDATE t_p60076574_landing_price_calcul.users SET role = 'partner' WHERE login = 'andy';
