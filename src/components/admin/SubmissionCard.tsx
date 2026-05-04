@@ -10,11 +10,11 @@ const SUGGEST_PARTY = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/sugg
 const FIND_PARTY = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/findById/party";
 
 const STATUS_OPTIONS = [
-  { value: "new",        label: "Новая",           color: "#6b7280" },
-  { value: "in_work",    label: "В работе",         color: "#2563eb" },
-  { value: "waiting",    label: "Ожидает ответа",   color: "#d97706" },
-  { value: "done",       label: "Завершена",        color: "#16a34a" },
-  { value: "cancelled",  label: "Отменена",         color: "#ef4444" },
+  { value: "new",         label: "Новый",            color: "#6b7280", bg: "rgba(107,114,128,0.1)" },
+  { value: "negotiation", label: "Переговоры",        color: "#d97706", bg: "rgba(217,119,6,0.1)"   },
+  { value: "contract",    label: "Договор заключён",  color: "#2563eb", bg: "rgba(37,99,235,0.1)"   },
+  { value: "paid",        label: "Оплата поступила",  color: "#16a34a", bg: "rgba(22,163,74,0.1)"   },
+  { value: "done",        label: "Завершён",          color: "#15803d", bg: "rgba(21,128,61,0.1)"   },
 ];
 
 const INPUT = "w-full px-3 py-2.5 rounded-lg text-sm outline-none transition-all font-body";
@@ -209,11 +209,11 @@ export default function SubmissionCard({ submissionId, sessionId, onClose, onUpd
               {STATUS_OPTIONS.map(s => (
                 <button key={s.value} type="button"
                   onClick={() => setForm(prev => ({ ...prev, status: s.value }))}
-                  className="px-3 py-1 rounded-full text-xs font-semibold transition-all border"
+                  className="px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
                   style={{
-                    background: (form.status || "new") === s.value ? s.color : "transparent",
+                    background: (form.status || "new") === s.value ? s.color : s.bg,
                     color: (form.status || "new") === s.value ? "#fff" : s.color,
-                    borderColor: s.color,
+                    border: `1px solid ${s.color}50`,
                   }}>
                   {s.label}
                 </button>
