@@ -187,6 +187,26 @@ def handler(event: dict, context) -> dict:
         )
         return ok({"partner": partner, "ok": True})
 
+    # ── GET REF LINK ──────────────────────────────────────────────────────────
+    if action == "get_ref_link":
+        conn = get_conn()
+        cur = conn.cursor()
+        cur.execute(f"SELECT id, ref_code FROM {SCHEMA}.partners WHERE user_id = %s", (user["id"],))
+        row = cur.fetchone()
+        if not row:
+            conn.close()
+            return err("Профиль партнёра не найден")
+        partner_id, ref_code = row
+        if not ref_code:
+            ref_code = generate_ref_code(user["login"])
+            cur.execute(
+                f"UPDATE {SCHEMA}.partners SET ref_code = %s WHERE id = %s",
+                (ref_code, partner_id),
+            )
+            conn.commit()
+        conn.close()
+        return ok({"ref_code": ref_code})
+
     # ── GET CLIENTS ───────────────────────────────────────────────────────────
     if action == "get_clients":
         conn = get_conn()

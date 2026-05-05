@@ -7,8 +7,9 @@ import PartnerFinances from "./PartnerFinances";
 import ClientList from "./ClientList";
 import ClientCard from "./ClientCard";
 import { apiPartner } from "./types";
+import PartnerReferral from "./PartnerReferral";
 
-type Tab = "stats" | "clients" | "finances" | "rates" | "profile";
+type Tab = "stats" | "clients" | "finances" | "rates" | "referral" | "profile";
 
 interface Props {
   sessionId: string;
@@ -18,11 +19,12 @@ interface Props {
 }
 
 const TABS: { key: Tab; label: string; icon: string }[] = [
-  { key: "stats",    label: "Статистика",  icon: "BarChart2" },
-  { key: "clients",  label: "Мои клиенты", icon: "Users" },
-  { key: "finances", label: "Финансы",     icon: "Wallet" },
-  { key: "rates",    label: "Тарифы",      icon: "Percent" },
-  { key: "profile",  label: "Профиль",     icon: "Settings" },
+  { key: "stats",    label: "Статистика",        icon: "BarChart2" },
+  { key: "clients",  label: "Мои клиенты",       icon: "Users" },
+  { key: "finances", label: "Финансы",           icon: "Wallet" },
+  { key: "rates",    label: "Тарифы",            icon: "Percent" },
+  { key: "referral", label: "Реферальная ссылка", icon: "Link2" },
+  { key: "profile",  label: "Профиль",           icon: "Settings" },
 ];
 
 const REQUIRED_FIELDS = [
@@ -107,6 +109,7 @@ export default function PartnerCabinet({ sessionId, userLogin, isAdmin = false, 
             {tab === "rates" && !resolvedPartnerId && (
               <p className="text-sm text-center py-8" style={{ color: "var(--text-muted)" }}>Сначала заполните профиль партнёра</p>
             )}
+            {tab === "referral" && <PartnerReferral sessionId={sessionId} />}
             {tab === "profile" && <PartnerProfile sessionId={sessionId} isAdmin={isAdmin} />}
           </>
         )}
