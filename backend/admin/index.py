@@ -83,11 +83,11 @@ def handler(event: dict, context) -> dict:
         cur.execute(f"SELECT COUNT(*) FROM {SCHEMA}.form_submissions WHERE created_at >= NOW() - INTERVAL '7 days'")
         submissions_7d = cur.fetchone()[0]
 
-        # Партнёры
-        cur.execute(f"SELECT COUNT(*) FROM {SCHEMA}.partners")
+        # Партнёры (исключаем admin-пользователей)
+        cur.execute(f"SELECT COUNT(*) FROM {SCHEMA}.partners p JOIN {SCHEMA}.users u ON u.id = p.user_id WHERE u.role != 'admin'")
         partners_total = cur.fetchone()[0]
 
-        cur.execute(f"SELECT COUNT(*) FROM {SCHEMA}.partners WHERE status = 'active'")
+        cur.execute(f"SELECT COUNT(*) FROM {SCHEMA}.partners p JOIN {SCHEMA}.users u ON u.id = p.user_id WHERE p.status = 'active' AND u.role != 'admin'")
         partners_active = cur.fetchone()[0]
 
         # Клиенты партнёров
