@@ -8,6 +8,15 @@
       "expectedStatus": 401,
       "expectedBody": {"error": "string"},
       "bodyMatcher": "partial"
+    },
+    {
+      "name": "Dashboard without session returns 401",
+      "method": "POST",
+      "path": "/",
+      "body": {"action": "dashboard"},
+      "expectedStatus": 401,
+      "expectedBody": {"error": "string"},
+      "bodyMatcher": "partial"
     }
   ]
 }

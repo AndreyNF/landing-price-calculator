@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import ContractorCheck from "@/components/ContractorCheck";
 import PartnerCabinet from "@/components/partner/PartnerCabinet";
 import AdminPartners from "@/components/admin/AdminPartners";
+import AdminDashboard from "@/components/admin/AdminDashboard";
 import ClientList from "@/components/partner/ClientList";
 import ClientCard from "@/components/partner/ClientCard";
 import SubmissionCard from "@/components/admin/SubmissionCard";
@@ -257,7 +258,7 @@ export default function Cabinet() {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [checking, setChecking] = useState(true);
-  const [adminTab, setAdminTab] = useState<"submissions" | "partners" | "clients">("submissions");
+  const [adminTab, setAdminTab] = useState<"dashboard" | "submissions" | "partners" | "clients">("dashboard");
   const [selectedClientId, setSelectedClientId] = useState<number | null>(null);
   const sessionId = localStorage.getItem("session_id") || "";
 
@@ -343,9 +344,10 @@ export default function Cabinet() {
                 </h1>
                 <div className="flex gap-2 overflow-x-auto pb-1">
                   {([
-                    { key: "submissions", label: "Заявки с сайта", icon: "Inbox" },
+                    { key: "dashboard",   label: "Дашборд",          icon: "LayoutDashboard" },
+                    { key: "submissions", label: "Заявки с сайта",   icon: "Inbox" },
                     { key: "clients",     label: "Клиенты партнёров", icon: "Users" },
-                    { key: "partners",    label: "Партнёры",        icon: "Handshake" },
+                    { key: "partners",    label: "Партнёры",         icon: "Handshake" },
                   ] as const).map((t) => (
                     <button key={t.key} onClick={() => { setAdminTab(t.key); setSelectedClientId(null); }}
                       className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all flex-shrink-0"
@@ -360,6 +362,7 @@ export default function Cabinet() {
                   ))}
                 </div>
               </div>
+              {adminTab === "dashboard" && <AdminDashboard sessionId={sessionId} />}
               {adminTab === "submissions" && <AdminPanel sessionId={sessionId} />}
               {adminTab === "clients" && (
                 <div className="rounded-2xl p-4 md:p-6" style={{ background: "var(--bg-white)", border: "1px solid var(--border-c)" }}>

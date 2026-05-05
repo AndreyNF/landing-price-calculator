@@ -71,6 +71,68 @@ def handler(event: dict, context) -> dict:
 
     action = body.get("action") or (event.get("queryStringParameters") or {}).get("action", "")
 
+    # ── ДАШБОРД ───────────────────────────────────────────────────────────────
+    if action == "dashboard":
+        conn = get_conn()
+        cur = conn.cursor()
+
+        # Заявки с сайта
+        cur.execute(f"SELECT COUNT(*) FROM {SCHEMA}.form_submissions")
+        submissions_total = cur.fetchone()[0]
+
+        cur.execute(f"SELECT COUNT(*) FROM {SCHEMA}.form_submissions WHERE created_at >= NOW() - INTERVAL '7 days'")
+        submissions_7d = cur.fetchone()[0]
+
+        # Партнёры
+        cur.execute(f"SELECT COUNT(*) FROM {SCHEMA}.partners")
+        partners_total = cur.fetchone()[0]
+
+        cur.execute(f"SELECT COUNT(*) FROM {SCHEMA}.partners WHERE status = 'active'")
+        partners_active = cur.fetchone()[0]
+
+        # Клиенты партнёров
+        cur.execute(f"SELECT COUNT(*) FROM {SCHEMA}.partner_clients")
+        clients_total = cur.fetchone()[0]
+
+        cur.execute(f"SELECT COUNT(*) FROM {SCHEMA}.partner_clients WHERE current_status = 'done'")
+        clients_done = cur.fetchone()[0]
+
+        # Суммы контрактов (deal_amount по клиентам)
+        cur.execute(f"SELECT COALESCE(SUM(deal_amount), 0) FROM {SCHEMA}.partner_clients WHERE deal_amount IS NOT NULL")
+        contracts_sum = float(cur.fetchone()[0])
+
+        cur.execute(f"SELECT COALESCE(SUM(deal_amount), 0) FROM {SCHEMA}.partner_clients WHERE deal_amount IS NOT NULL AND current_status IN ('paid', 'done')")
+        contracts_paid_sum = float(cur.fetchone()[0])
+
+        # Вознаграждения партнёрам
+        cur.execute(f"SELECT COALESCE(SUM(partner_reward), 0) FROM {SCHEMA}.partner_clients WHERE partner_reward IS NOT NULL")
+        rewards_total = float(cur.fetchone()[0])
+
+        cur.execute(f"SELECT COALESCE(SUM(partner_reward), 0) FROM {SCHEMA}.partner_clients WHERE reward_paid = TRUE")
+        rewards_paid = float(cur.fetchone()[0])
+
+        rewards_pending = rewards_total - rewards_paid
+
+        # Выплаты через partner_payments
+        cur.execute(f"SELECT COALESCE(SUM(amount), 0) FROM {SCHEMA}.partner_payments")
+        payments_sum = float(cur.fetchone()[0])
+
+        conn.close()
+        return ok({
+            "submissions_total": submissions_total,
+            "submissions_7d": submissions_7d,
+            "partners_total": partners_total,
+            "partners_active": partners_active,
+            "clients_total": clients_total,
+            "clients_done": clients_done,
+            "contracts_sum": contracts_sum,
+            "contracts_paid_sum": contracts_paid_sum,
+            "rewards_total": rewards_total,
+            "rewards_paid": rewards_paid,
+            "rewards_pending": rewards_pending,
+            "payments_sum": payments_sum,
+        })
+
     # ── СПИСОК ЗАЯВОК ─────────────────────────────────────────────────────────
     if action == "submissions":
         page = int(body.get("page", 1))
