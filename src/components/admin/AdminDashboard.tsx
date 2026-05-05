@@ -1,10 +1,26 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Component, type ReactNode } from "react";
 import Icon from "@/components/ui/icon";
 import {
   AreaChart, Area, BarChart, Bar,
   XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, Legend,
 } from "recharts";
+
+class ChartErrorBoundary extends Component<{ children: ReactNode }, { error: boolean }> {
+  constructor(props: { children: ReactNode }) {
+    super(props);
+    this.state = { error: false };
+  }
+  static getDerivedStateFromError() { return { error: true }; }
+  render() {
+    if (this.state.error) return (
+      <div className="flex items-center justify-center h-32 rounded-xl" style={{ background: "var(--bg)", color: "var(--text-muted)" }}>
+        <p className="text-xs">График недоступен</p>
+      </div>
+    );
+    return this.props.children;
+  }
+}
 
 const C_BLUE = "#2563eb";
 const C_PURPLE = "#7c3aed";
@@ -167,7 +183,8 @@ export default function AdminDashboard({ sessionId }: { sessionId: string }) {
       {/* График динамики */}
       <section>
         <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "var(--text-muted)" }}>Динамика за 30 дней</p>
-        <div className="rounded-2xl p-5" style={{ background: "var(--bg-white)", border: "1px solid var(--border-c)" }}>
+        <div className="rounded-2xl p-3 md:p-5" style={{ background: "var(--bg-white)", border: "1px solid var(--border-c)", minHeight: 240 }}>
+          <ChartErrorBoundary>
           <ResponsiveContainer width="100%" height={200}>
             <AreaChart data={combinedChart} margin={{ top: 4, right: 4, left: -24, bottom: 0 }}>
               <defs>
@@ -229,6 +246,7 @@ export default function AdminDashboard({ sessionId }: { sessionId: string }) {
               />
             </AreaChart>
           </ResponsiveContainer>
+          </ChartErrorBoundary>
         </div>
       </section>
 
@@ -314,7 +332,8 @@ export default function AdminDashboard({ sessionId }: { sessionId: string }) {
       {/* Столбчатый график по неделям */}
       <section>
         <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "var(--text-muted)" }}>Заявки по неделям</p>
-        <div className="rounded-2xl p-5" style={{ background: "var(--bg-white)", border: "1px solid var(--border-c)" }}>
+        <div className="rounded-2xl p-3 md:p-5" style={{ background: "var(--bg-white)", border: "1px solid var(--border-c)", minHeight: 200 }}>
+          <ChartErrorBoundary>
           <ResponsiveContainer width="100%" height={160}>
             <BarChart
               data={[0, 1, 2, 3].map(weekIdx => {
@@ -346,6 +365,7 @@ export default function AdminDashboard({ sessionId }: { sessionId: string }) {
               <Bar dataKey="Клиенты" fill={C_PURPLE} radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
+          </ChartErrorBoundary>
         </div>
       </section>
     </div>

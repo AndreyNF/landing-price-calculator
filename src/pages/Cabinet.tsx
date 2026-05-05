@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, Component, type ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { toast } from "sonner";
@@ -12,6 +12,24 @@ import SubmissionCard from "@/components/admin/SubmissionCard";
 
 const AUTH_URL = "https://functions.poehali.dev/cf442b6d-1511-4826-a129-d63da8e9dfa0";
 const ADMIN_URL = "https://functions.poehali.dev/2fb10b23-2471-4f73-a39f-315ed4c51e8c";
+
+class SectionErrorBoundary extends Component<{ children: ReactNode; label?: string }, { error: boolean }> {
+  constructor(props: { children: ReactNode; label?: string }) {
+    super(props);
+    this.state = { error: false };
+  }
+  static getDerivedStateFromError() { return { error: true }; }
+  render() {
+    if (this.state.error) return (
+      <div className="rounded-2xl p-8 text-center" style={{ background: "var(--bg-white)", border: "1px solid var(--border-c)" }}>
+        <Icon name="AlertCircle" size={28} className="mx-auto mb-3" style={{ color: "#ef4444" }} />
+        <p className="text-sm font-medium" style={{ color: "var(--navy)" }}>Ошибка загрузки раздела</p>
+        <p className="text-xs mt-1" style={{ color: "var(--text-muted)" }}>Попробуйте обновить страницу</p>
+      </div>
+    );
+    return this.props.children;
+  }
+}
 
 interface User {
   id: number;
@@ -372,26 +390,28 @@ export default function Cabinet() {
                   ))}
                 </div>
               </div>
-              {adminTab === "dashboard" && <AdminDashboard sessionId={sessionId} />}
-              {adminTab === "submissions" && <AdminPanel sessionId={sessionId} />}
+              {adminTab === "dashboard" && <SectionErrorBoundary><AdminDashboard sessionId={sessionId} /></SectionErrorBoundary>}
+              {adminTab === "submissions" && <SectionErrorBoundary><AdminPanel sessionId={sessionId} /></SectionErrorBoundary>}
               {adminTab === "clients" && (
-                <div className="rounded-2xl p-4 md:p-6" style={{ background: "var(--bg-white)", border: "1px solid var(--border-c)" }}>
-                  {selectedClientId ? (
-                    <ClientCard
-                      sessionId={sessionId}
-                      clientId={selectedClientId}
-                      isAdmin={true}
-                      onBack={() => setSelectedClientId(null)}
-                    />
-                  ) : (
-                    <ClientList
-                      sessionId={sessionId}
-                      onSelectClient={setSelectedClientId}
-                    />
-                  )}
-                </div>
+                <SectionErrorBoundary>
+                  <div className="rounded-2xl p-4 md:p-6" style={{ background: "var(--bg-white)", border: "1px solid var(--border-c)" }}>
+                    {selectedClientId ? (
+                      <ClientCard
+                        sessionId={sessionId}
+                        clientId={selectedClientId}
+                        isAdmin={true}
+                        onBack={() => setSelectedClientId(null)}
+                      />
+                    ) : (
+                      <ClientList
+                        sessionId={sessionId}
+                        onSelectClient={setSelectedClientId}
+                      />
+                    )}
+                  </div>
+                </SectionErrorBoundary>
               )}
-              {adminTab === "partners" && <AdminPartners sessionId={sessionId} />}
+              {adminTab === "partners" && <SectionErrorBoundary><AdminPartners sessionId={sessionId} /></SectionErrorBoundary>}
             </>
           )
           : user?.role === "partner"
