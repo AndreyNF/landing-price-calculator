@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, Component, type ReactNode } from "react";
+import React, { useEffect, useState, useCallback, Component, type ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { toast } from "sonner";
@@ -13,18 +13,22 @@ import SubmissionCard from "@/components/admin/SubmissionCard";
 const AUTH_URL = "https://functions.poehali.dev/cf442b6d-1511-4826-a129-d63da8e9dfa0";
 const ADMIN_URL = "https://functions.poehali.dev/2fb10b23-2471-4f73-a39f-315ed4c51e8c";
 
-class SectionErrorBoundary extends Component<{ children: ReactNode; label?: string }, { error: boolean }> {
+class SectionErrorBoundary extends Component<{ children: ReactNode; label?: string }, { error: boolean; msg: string }> {
   constructor(props: { children: ReactNode; label?: string }) {
     super(props);
-    this.state = { error: false };
+    this.state = { error: false, msg: "" };
   }
-  static getDerivedStateFromError() { return { error: true }; }
+  static getDerivedStateFromError(e: Error) { return { error: true, msg: e?.message || "" }; }
+  componentDidCatch(e: Error, info: React.ErrorInfo) { console.error("[SectionErrorBoundary]", e, info); }
   render() {
     if (this.state.error) return (
       <div className="rounded-2xl p-8 text-center" style={{ background: "var(--bg-white)", border: "1px solid var(--border-c)" }}>
         <Icon name="AlertCircle" size={28} className="mx-auto mb-3" style={{ color: "#ef4444" }} />
         <p className="text-sm font-medium" style={{ color: "var(--navy)" }}>Ошибка загрузки раздела</p>
-        <p className="text-xs mt-1" style={{ color: "var(--text-muted)" }}>Попробуйте обновить страницу</p>
+        {this.state.msg && <p className="text-xs mt-1 font-mono px-3 py-1 rounded" style={{ color: "#ef4444", background: "rgba(239,68,68,0.06)" }}>{this.state.msg}</p>}
+        <button onClick={() => this.setState({ error: false, msg: "" })} className="mt-4 text-xs px-4 py-2 rounded-lg font-medium" style={{ background: "var(--blue)", color: "#fff" }}>
+          Попробовать снова
+        </button>
       </div>
     );
     return this.props.children;

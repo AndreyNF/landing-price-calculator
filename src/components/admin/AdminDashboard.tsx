@@ -6,12 +6,13 @@ import {
   ResponsiveContainer, Legend,
 } from "recharts";
 
-class ChartErrorBoundary extends Component<{ children: ReactNode }, { error: boolean }> {
+class ChartErrorBoundary extends Component<{ children: ReactNode }, { error: boolean; msg: string }> {
   constructor(props: { children: ReactNode }) {
     super(props);
-    this.state = { error: false };
+    this.state = { error: false, msg: "" };
   }
-  static getDerivedStateFromError() { return { error: true }; }
+  static getDerivedStateFromError(e: Error) { return { error: true, msg: e?.message || "" }; }
+  componentDidCatch(e: Error) { console.error("[ChartErrorBoundary]", e); }
   render() {
     if (this.state.error) return (
       <div className="flex items-center justify-center h-32 rounded-xl" style={{ background: "var(--bg)", color: "var(--text-muted)" }}>
