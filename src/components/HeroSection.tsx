@@ -79,7 +79,7 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="fixed top-[60px] left-0 right-0 z-40 px-6 py-6 space-y-1"
+        <div className="fixed top-[94px] left-0 right-0 z-40 px-6 py-6 space-y-1"
           style={{ background: "#080f1e", borderBottom: "1px solid rgba(212,175,55,0.15)" }}>
           {NAV_LINKS.map(([id, label]) => (
             <button key={id} onClick={() => scrollTo(id)}
