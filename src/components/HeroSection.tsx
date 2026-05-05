@@ -133,7 +133,7 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
             style={{ left: `${pct}%`, background: "linear-gradient(to bottom, transparent 5%, rgba(212,175,55,0.06) 50%, transparent 95%)" }} />
         ))}
 
-        <div className="relative max-w-6xl mx-auto px-6 md:px-12 pt-32 pb-24 lg:py-44 w-full">
+        <div className="relative max-w-6xl mx-auto px-6 md:px-12 pt-24 pb-24 lg:py-36 w-full">
 
           {/* Badge */}
           <div className="animate-fade-up inline-flex items-center gap-2 mb-8">
