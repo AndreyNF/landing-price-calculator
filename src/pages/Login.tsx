@@ -213,7 +213,7 @@ export default function Login() {
               </div>
               {lawyerTypeRequested && (
                 <p className="text-xs mt-1.5" style={{ color: "var(--text-muted)" }}>
-                  Доступ к тарифам для юристов будет открыт после подтверждения администратором
+                  Доступ к тарифам для юристов/адвокатов будет открыт после подтверждения администратором
                 </p>
               )}
             </div>
