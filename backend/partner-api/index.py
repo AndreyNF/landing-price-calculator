@@ -904,6 +904,7 @@ def handler(event: dict, context) -> dict:
         cur.execute(f"DELETE FROM {SCHEMA}.partner_client_comments WHERE client_id = %s", (client_id,))
         cur.execute(f"DELETE FROM {SCHEMA}.partner_client_statuses WHERE client_id = %s", (client_id,))
         cur.execute(f"DELETE FROM {SCHEMA}.partner_client_docs WHERE client_id = %s", (client_id,))
+        cur.execute(f"DELETE FROM {SCHEMA}.partner_client_services WHERE client_id = %s", (client_id,))
         cur.execute(f"DELETE FROM {SCHEMA}.partner_clients WHERE id = %s", (client_id,))
         conn.commit()
         conn.close()
