@@ -1,0 +1,1 @@
+ALTER TABLE t_p60076574_landing_price_calcul.users ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP DEFAULT NOW();
