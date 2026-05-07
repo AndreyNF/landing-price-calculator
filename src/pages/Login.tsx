@@ -37,6 +37,7 @@ export default function Login() {
   const [showEmailPassword, setShowEmailPassword] = useState(false);
   const [verifyCode, setVerifyCode] = useState("");
   const [needVerify, setNeedVerify] = useState(false);
+  const [emailConsent, setEmailConsent] = useState(false);
   const [resetStep, setResetStep] = useState<"email" | "code">("email");
   const [resetCode, setResetCode] = useState("");
   const [resetNewPassword, setResetNewPassword] = useState("");
@@ -103,6 +104,7 @@ export default function Login() {
     e.preventDefault();
     if (!emailField.trim() || !emailPassword) { toast.error("Заполните все поля"); return; }
     if (emailPassword.length < 6) { toast.error("Пароль должен быть не менее 6 символов"); return; }
+    if (!emailConsent) { toast.error("Необходимо принять условия соглашения"); return; }
     const result = await emailAuth.register({ email: emailField.trim(), password: emailPassword, name: emailName || undefined });
     if (!result.success && emailAuth.error) { toast.error(emailAuth.error); return; }
     if (result.emailVerificationRequired) {
@@ -363,9 +365,21 @@ export default function Login() {
                     </button>
                   </div>
                 </div>
-                <button type="submit" disabled={emailAuth.isLoading}
+                <label className="flex items-start gap-3 cursor-pointer select-none">
+                  <div
+                    onClick={() => setEmailConsent(!emailConsent)}
+                    className="w-4 h-4 rounded border flex-shrink-0 mt-0.5 flex items-center justify-center transition-all cursor-pointer"
+                    style={{ background: emailConsent ? "var(--navy)" : "transparent", borderColor: emailConsent ? "var(--navy)" : "var(--border-c)" }}>
+                    {emailConsent && <Icon name="Check" size={10} style={{ color: "#fff" }} />}
+                  </div>
+                  <span className="text-xs leading-relaxed" style={{ color: "var(--text-muted)" }}>
+                    Я принимаю условия{" "}
+                    <Link to="/offer" className="underline" style={{ color: "var(--navy)" }}>пользовательского соглашения</Link>
+                  </span>
+                </label>
+                <button type="submit" disabled={emailAuth.isLoading || !emailConsent}
                   className="w-full py-3 rounded-lg text-sm font-semibold transition-all duration-200 mt-2"
-                  style={{ background: emailAuth.isLoading ? "var(--border-c)" : "var(--navy)", color: "#fff", opacity: emailAuth.isLoading ? 0.7 : 1 }}>
+                  style={{ background: emailAuth.isLoading ? "var(--border-c)" : "var(--navy)", color: "#fff", opacity: (emailAuth.isLoading || !emailConsent) ? 0.7 : 1 }}>
                   {emailAuth.isLoading ? "Загрузка..." : "Создать аккаунт"}
                 </button>
               </form>
