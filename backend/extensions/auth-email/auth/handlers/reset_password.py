@@ -38,8 +38,8 @@ def handle(event: dict, origin: str = '*') -> dict:
             user_id = user[0]
             now = datetime.utcnow().isoformat()
 
-            # Delete old tokens
-            execute(f"DELETE FROM {S}password_reset_tokens WHERE user_id = {escape(user_id)}")
+            # Invalidate old tokens
+            execute(f"UPDATE {S}password_reset_tokens SET expires_at = '2000-01-01' WHERE user_id = {escape(user_id)}")
 
             # Generate and store new code
             reset_code = generate_code()
@@ -99,9 +99,9 @@ def handle(event: dict, origin: str = '*') -> dict:
             WHERE id = {escape(user_id)}
         """)
 
-        # Cleanup tokens
-        execute(f"DELETE FROM {S}password_reset_tokens WHERE user_id = {escape(user_id)}")
-        execute(f"DELETE FROM {S}refresh_tokens WHERE user_id = {escape(user_id)}")
+        # Invalidate tokens
+        execute(f"UPDATE {S}password_reset_tokens SET expires_at = '2000-01-01' WHERE user_id = {escape(user_id)}")
+        execute(f"UPDATE {S}refresh_tokens SET expires_at = '2000-01-01' WHERE user_id = {escape(user_id)}")
 
         return response(200, {'message': 'Пароль успешно изменён'}, origin)
 

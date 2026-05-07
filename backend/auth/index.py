@@ -189,4 +189,34 @@ def handler(event: dict, context) -> dict:
             conn.close()
         return ok({"ok": True})
 
+    # ── VK LOGIN ──────────────────────────────────────────────────────────────
+    if action == "vk_login":
+        vk_id = str(body.get("vk_id") or "").strip()
+        vk_login = body.get("login") or f"vk_{vk_id}"
+        if not vk_id:
+            return err("Не передан vk_id", 400)
+        conn = get_conn()
+        cur = conn.cursor()
+        cur.execute(f"SELECT id, login, role FROM {SCHEMA}.users WHERE vk_id = %s", (vk_id,))
+        row = cur.fetchone()
+        if row:
+            user_id, user_login, user_role = row
+        else:
+            cur.execute(
+                f"INSERT INTO {SCHEMA}.users (vk_id, login, password_hash, role) VALUES (%s, %s, %s, %s) RETURNING id",
+                (vk_id, vk_login, "", "client"),
+            )
+            user_id = cur.fetchone()[0]
+            user_login = vk_login
+            user_role = "client"
+        sid = make_session_id()
+        expires = datetime.utcnow() + timedelta(days=30)
+        cur.execute(
+            f"INSERT INTO {SCHEMA}.sessions (id, user_id, expires_at) VALUES (%s, %s, %s)",
+            (sid, user_id, expires),
+        )
+        conn.commit()
+        conn.close()
+        return ok({"session_id": sid, "user": {"id": user_id, "login": user_login, "role": user_role}})
+
     return err("Неизвестное действие", 400)

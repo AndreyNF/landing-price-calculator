@@ -17,8 +17,8 @@ def _send_verification_code(user_id: int, email: str, S: str) -> dict:
     code = generate_code()
     expires_at = (datetime.utcnow() + timedelta(hours=VERIFICATION_CODE_HOURS)).isoformat()
 
-    # Delete old codes
-    execute(f"DELETE FROM {S}email_verification_tokens WHERE user_id = {escape(user_id)}")
+    # Invalidate old codes by setting expires_at to past
+    execute(f"UPDATE {S}email_verification_tokens SET expires_at = '2000-01-01' WHERE user_id = {escape(user_id)}")
 
     # Store new code
     execute(f"""
@@ -88,8 +88,8 @@ def handle(event: dict, origin: str = '*') -> dict:
     now = datetime.utcnow().isoformat()
 
     user_id = execute_returning(f"""
-        INSERT INTO {S}users (email, password_hash, name, email_verified, created_at, updated_at)
-        VALUES ({escape(email)}, {escape(password_hash)}, {escape(name or None)}, {escape(not email_enabled)}, {escape(now)}, {escape(now)})
+        INSERT INTO {S}users (email, login, password_hash, name, email_verified, created_at, updated_at)
+        VALUES ({escape(email)}, {escape(email)}, {escape(password_hash)}, {escape(name or None)}, {escape(not email_enabled)}, {escape(now)}, {escape(now)})
         RETURNING id
     """)
 

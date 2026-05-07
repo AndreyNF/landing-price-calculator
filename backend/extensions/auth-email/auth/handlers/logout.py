@@ -15,6 +15,6 @@ def handle(event: dict, origin: str = '*') -> dict:
     if refresh_token:
         token_hash = hash_token(refresh_token)
         S = get_schema()
-        execute(f"DELETE FROM {S}refresh_tokens WHERE token_hash = {escape(token_hash)}")
+        execute(f"UPDATE {S}refresh_tokens SET expires_at = '2000-01-01' WHERE token_hash = {escape(token_hash)}")
 
     return response(200, {'message': 'Logged out successfully'}, origin)
