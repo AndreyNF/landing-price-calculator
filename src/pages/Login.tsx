@@ -2,6 +2,10 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { toast } from "sonner";
+import { useVkAuth } from "@/components/extensions/vk-auth/useVkAuth";
+import VkLoginButton from "@/components/extensions/vk-auth/VkLoginButton";
+
+const VK_AUTH_URL = "https://functions.poehali.dev/86f3f05d-2e0a-462a-aa06-2c00d428c502";
 
 const AUTH_URL = "https://functions.poehali.dev/cf442b6d-1511-4826-a129-d63da8e9dfa0";
 
@@ -9,6 +13,15 @@ const INPUT_BASE = "w-full px-4 py-3 rounded-lg text-sm outline-none transition-
 
 export default function Login() {
   const navigate = useNavigate();
+
+  const vkAuth = useVkAuth({
+    apiUrls: {
+      authUrl: `${VK_AUTH_URL}?action=auth-url`,
+      callback: `${VK_AUTH_URL}?action=callback`,
+      refresh: `${VK_AUTH_URL}?action=refresh`,
+      logout: `${VK_AUTH_URL}?action=logout`,
+    },
+  });
   const [tab, setTab] = useState<"login" | "register">("login");
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
@@ -266,6 +279,22 @@ export default function Login() {
               : "Создать аккаунт"}
           </button>
         </form>
+
+        {/* Разделитель */}
+        <div className="flex items-center gap-3 mt-4">
+          <div className="flex-1 h-px" style={{ background: "var(--border-c)" }} />
+          <span className="text-xs" style={{ color: "var(--text-muted)" }}>или</span>
+          <div className="flex-1 h-px" style={{ background: "var(--border-c)" }} />
+        </div>
+
+        {/* VK */}
+        <div className="mt-3">
+          <VkLoginButton
+            onClick={vkAuth.login}
+            isLoading={vkAuth.isLoading}
+            className="w-full"
+          />
+        </div>
       </div>
 
       <Link

@@ -13,6 +13,7 @@ import Blog from "./pages/Blog";
 import Article from "./pages/Article";
 import Cabinet from "./pages/Cabinet";
 import Login from "./pages/Login";
+import VkCallback from "./pages/VkCallback";
 import CookieBanner from "./components/CookieBanner";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
           <Route path="/blog/:slug" element={<Article />} />
           <Route path="/cabinet" element={<Cabinet />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/auth/vk/callback" element={<VkCallback />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
