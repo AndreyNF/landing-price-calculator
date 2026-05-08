@@ -6,6 +6,8 @@ import Icon from "@/components/ui/icon";
 export default function Article() {
   const { slug } = useParams<{ slug: string }>();
   const article = articles.find((a) => a.slug === slug);
+  const currentIndex = articles.findIndex((a) => a.slug === slug);
+  const nextArticle = articles[currentIndex + 1] || articles[0];
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -162,11 +164,30 @@ export default function Article() {
           ))}
         </div>
 
+        {/* Next Article */}
+        {nextArticle && nextArticle.slug !== slug && (
+          <div className="mt-14 pt-10" style={{ borderTop: "1px solid var(--border-c)" }}>
+            <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: "var(--text-muted)" }}>
+              Следующая статья
+            </p>
+            <Link
+              to={`/blog/${nextArticle.slug}`}
+              className="flex items-center justify-between rounded-2xl px-6 py-5 transition-all duration-200"
+              style={{ background: "var(--blue)", border: "1px solid var(--blue)" }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "var(--blue-hover)")}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = "var(--blue)")}
+            >
+              <div>
+                <p className="text-xs mb-1" style={{ color: "rgba(255,255,255,0.6)" }}>{nextArticle.category}</p>
+                <p className="font-semibold text-base" style={{ color: "#fff" }}>{nextArticle.title}</p>
+              </div>
+              <Icon name="ArrowRight" size={20} style={{ color: "#fff", flexShrink: 0 }} />
+            </Link>
+          </div>
+        )}
+
         {/* Other Articles */}
-        <div
-          className="mt-14 pt-10"
-          style={{ borderTop: "1px solid var(--border-c)" }}
-        >
+        <div className="mt-10 pt-10" style={{ borderTop: "1px solid var(--border-c)" }}>
           <h3
             className="text-xl font-bold mb-6"
             style={{ fontFamily: "Playfair Display, serif", color: "var(--navy)" }}
@@ -180,18 +201,18 @@ export default function Article() {
                 <Link
                   key={a.id}
                   to={`/blog/${a.slug}`}
-                  className="flex items-center justify-between rounded-xl px-5 py-4 transition-all duration-200 group"
+                  className="flex items-center justify-between rounded-xl px-5 py-4 transition-all duration-200"
                   style={{
-                    background: "var(--bg-white)",
-                    border: "1px solid var(--border-c)",
+                    background: "#f1f5f9",
+                    border: "1px solid #e2e8f0",
                   }}
                   onMouseEnter={(e) => {
                     (e.currentTarget as HTMLElement).style.borderColor = "rgba(37,99,235,0.3)";
-                    (e.currentTarget as HTMLElement).style.background = "#fff";
+                    (e.currentTarget as HTMLElement).style.background = "#e8f0fe";
                   }}
                   onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = "var(--border-c)";
-                    (e.currentTarget as HTMLElement).style.background = "var(--bg-white)";
+                    (e.currentTarget as HTMLElement).style.borderColor = "#e2e8f0";
+                    (e.currentTarget as HTMLElement).style.background = "#f1f5f9";
                   }}
                 >
                   <div>
