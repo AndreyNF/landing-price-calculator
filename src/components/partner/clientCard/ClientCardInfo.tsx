@@ -71,6 +71,51 @@ export default function ClientCardInfo({
         )}
       </Section>
 
+      {/* Источник клиента */}
+      {(client.source === 'referral' || client.source === 'self' || client.user_id) && (
+        <Section title="Источник" icon="Link">
+          {client.source === 'referral' && (
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                style={{ background: "rgba(124,58,237,0.1)" }}>
+                <Icon name="Share2" size={15} style={{ color: "#7c3aed" }} />
+              </div>
+              <div>
+                <p className="text-sm font-semibold" style={{ color: "var(--navy)" }}>Реферальная ссылка</p>
+                <p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>
+                  Клиент зарегистрировался по реферальной ссылке партнёра
+                  {client.ref_code && <span> (код: <b>{client.ref_code}</b>)</span>}
+                </p>
+              </div>
+            </div>
+          )}
+          {(client.source === 'self' || (client.user_id && client.source !== 'referral' && client.source !== 'partner')) && (
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                style={{ background: "var(--blue-dim)" }}>
+                <Icon name="UserCheck" size={15} style={{ color: "var(--blue)" }} />
+              </div>
+              <div>
+                <p className="text-sm font-semibold" style={{ color: "var(--navy)" }}>Самостоятельная регистрация</p>
+                <p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>
+                  Клиент зарегистрировался через сайт самостоятельно
+                </p>
+              </div>
+            </div>
+          )}
+          {client.user_id && (
+            <div className="mt-3 pt-3" style={{ borderTop: "1px solid var(--border-c)" }}>
+              <p className="text-xs mb-1" style={{ color: "var(--text-muted)" }}>Аккаунт на сайте</p>
+              <div className="flex flex-wrap gap-x-4 gap-y-1">
+                {client.user_login && <Row label="Логин" value={client.user_login} />}
+                {client.user_email && <Row label="Email" value={client.user_email} />}
+                {client.user_name && <Row label="Имя" value={client.user_name} />}
+              </div>
+            </div>
+          )}
+        </Section>
+      )}
+
       {/* DaData: данные юр. лица */}
       {client.inn && (
         <Section title="Данные организации (ФНС)" icon="Building">

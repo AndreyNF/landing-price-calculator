@@ -70,6 +70,12 @@ export interface ClientDetail extends Client {
   notes?: string;
   dadata_raw?: unknown;
   partner_contact?: string;
+  source?: string;
+  user_id?: number | null;
+  ref_code?: string | null;
+  user_login?: string | null;
+  user_email?: string | null;
+  user_name?: string | null;
 }
 
 export interface StatusEntry {

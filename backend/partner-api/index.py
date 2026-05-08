@@ -429,9 +429,12 @@ def handler(event: dict, context) -> dict:
                        pc.contact_person, pc.current_status, pc.deal_amount,
                        pc.partner_reward, pc.reward_paid, pc.notes, pc.source,
                        pc.created_at, pc.updated_at, pc.dadata_raw,
-                       p.short_name as partner_name, p.contact_name as p_contact
+                       p.short_name as partner_name, p.contact_name as p_contact,
+                       pc.user_id, pc.ref_code,
+                       u.login as user_login, u.email as user_email, u.name as user_name
                 FROM {SCHEMA}.partner_clients pc
                 JOIN {SCHEMA}.partners p ON p.id = pc.partner_id
+                LEFT JOIN {SCHEMA}.users u ON u.id = pc.user_id
                 WHERE pc.id = %s""",
             (client_id,),
         )
@@ -442,7 +445,8 @@ def handler(event: dict, context) -> dict:
         cols = ["id", "full_name", "inn", "phone", "email", "contact_person",
                 "current_status", "deal_amount", "partner_reward", "reward_paid",
                 "notes", "source", "created_at", "updated_at", "dadata_raw",
-                "partner_name", "partner_contact"]
+                "partner_name", "partner_contact",
+                "user_id", "ref_code", "user_login", "user_email", "user_name"]
         client = dict(zip(cols, row))
 
         # История статусов

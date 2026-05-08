@@ -145,6 +145,20 @@ def handler(event: dict, context) -> dict:
                 (user_id, ref_code, lawyer_type_requested, ref_partner_id),
             )
 
+        # Если клиент пришёл по реферальной ссылке — создаём запись в partner_clients
+        ref_code_client = body.get("ref_code") if role == "client" else None
+        if ref_code_client:
+            cur.execute(f"SELECT id FROM {SCHEMA}.partners WHERE ref_code = %s", (ref_code_client,))
+            ref_row = cur.fetchone()
+            if ref_row:
+                ref_partner_id = ref_row[0]
+                cur.execute(
+                    f"""INSERT INTO {SCHEMA}.partner_clients
+                        (partner_id, full_name, phone, email, source, user_id, ref_code)
+                        VALUES (%s, %s, %s, %s, 'referral', %s, %s)""",
+                    (ref_partner_id, login, None, None, user_id, ref_code_client),
+                )
+
         sid = make_session_id()
         expires = datetime.utcnow() + timedelta(days=30)
         cur.execute(

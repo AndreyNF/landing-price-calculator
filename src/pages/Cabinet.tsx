@@ -380,7 +380,7 @@ export default function Cabinet() {
                     { key: "dashboard",   label: "Дашборд",           icon: "LayoutDashboard" },
                     { key: "submissions", label: "Заявки с сайта",    icon: "Inbox" },
                     { key: "users",       label: "Пользователи",      icon: "UserCircle" },
-                    { key: "clients",     label: "Клиенты партнёров", icon: "Users" },
+                    { key: "clients",     label: "Клиенты",           icon: "Users" },
                     { key: "partners",    label: "Партнёры",          icon: "Handshake" },
                   ] as const).map((t) => (
                     <button key={t.key} onClick={() => { setAdminTab(t.key); setSelectedClientId(null); }}
