@@ -145,18 +145,33 @@ def handler(event: dict, context) -> dict:
                 (user_id, ref_code, lawyer_type_requested, ref_partner_id),
             )
 
-        # Если клиент пришёл по реферальной ссылке — создаём запись в partner_clients
-        ref_code_client = body.get("ref_code") if role == "client" else None
-        if ref_code_client:
-            cur.execute(f"SELECT id FROM {SCHEMA}.partners WHERE ref_code = %s", (ref_code_client,))
-            ref_row = cur.fetchone()
-            if ref_row:
-                ref_partner_id = ref_row[0]
+        # Добавляем клиента в partner_clients (реферал или самостоятельная регистрация)
+        if role == "client":
+            ref_code_client = (body.get("ref_code") or "").strip().upper() or None
+            sys_partner_id = None
+            ref_partner_id = None
+            source = 'self'
+
+            if ref_code_client:
+                cur.execute(f"SELECT id FROM {SCHEMA}.partners WHERE ref_code = %s", (ref_code_client,))
+                ref_row = cur.fetchone()
+                if ref_row:
+                    ref_partner_id = ref_row[0]
+                    source = 'referral'
+
+            # Берём системного партнёра как fallback
+            if not ref_partner_id:
+                cur.execute(f"SELECT id FROM {SCHEMA}.partners WHERE ref_code = 'SYSTEM' LIMIT 1")
+                sys_row = cur.fetchone()
+                sys_partner_id = sys_row[0] if sys_row else None
+
+            target_partner = ref_partner_id or sys_partner_id
+            if target_partner:
                 cur.execute(
                     f"""INSERT INTO {SCHEMA}.partner_clients
-                        (partner_id, full_name, phone, email, source, user_id, ref_code)
-                        VALUES (%s, %s, %s, %s, 'referral', %s, %s)""",
-                    (ref_partner_id, login, None, None, user_id, ref_code_client),
+                        (partner_id, full_name, source, user_id, ref_code)
+                        VALUES (%s, %s, %s, %s, %s)""",
+                    (target_partner, login, source, user_id, ref_code_client),
                 )
 
         sid = make_session_id()
@@ -223,6 +238,15 @@ def handler(event: dict, context) -> dict:
             user_id = cur.fetchone()[0]
             user_login = vk_login
             user_role = "client"
+            # Добавляем нового VK-клиента в partner_clients
+            cur.execute(f"SELECT id FROM {SCHEMA}.partners WHERE ref_code = 'SYSTEM' LIMIT 1")
+            sys_row = cur.fetchone()
+            if sys_row:
+                cur.execute(
+                    f"""INSERT INTO {SCHEMA}.partner_clients (partner_id, full_name, source, user_id)
+                        VALUES (%s, %s, 'self', %s)""",
+                    (sys_row[0], vk_login, user_id),
+                )
         sid = make_session_id()
         expires = datetime.utcnow() + timedelta(days=30)
         cur.execute(

@@ -293,8 +293,15 @@ def handler(event: dict, context) -> dict:
         q_filter = body.get("q", "").strip()
         status_filter = body.get("status", "")
 
-        where = "WHERE pc.partner_id = %s" if not is_admin or partner_id else "WHERE 1=1"
-        params = [partner_id] if partner_id else []
+        where = "WHERE 1=1"
+        params = []
+
+        if not is_admin:
+            where += " AND pc.partner_id = %s"
+            params.append(partner_id)
+        elif partner_id:
+            where += " AND pc.partner_id = %s"
+            params.append(partner_id)
 
         if status_filter:
             where += " AND pc.current_status = %s"
@@ -313,9 +320,10 @@ def handler(event: dict, context) -> dict:
             f"""SELECT pc.id, pc.full_name, pc.inn, pc.phone, pc.email,
                        pc.current_status, pc.deal_amount, pc.partner_reward,
                        pc.reward_paid, pc.created_at, pc.updated_at,
-                       p.short_name as partner_name
+                       CASE WHEN p.ref_code = 'SYSTEM' THEN NULL ELSE p.short_name END as partner_name,
+                       pc.source, pc.user_id
                 FROM {SCHEMA}.partner_clients pc
-                JOIN {SCHEMA}.partners p ON p.id = pc.partner_id
+                LEFT JOIN {SCHEMA}.partners p ON p.id = pc.partner_id
                 {where}
                 ORDER BY pc.created_at DESC
                 LIMIT %s OFFSET %s""",
@@ -323,7 +331,7 @@ def handler(event: dict, context) -> dict:
         )
         cols = ["id", "full_name", "inn", "phone", "email", "current_status",
                 "deal_amount", "partner_reward", "reward_paid", "created_at",
-                "updated_at", "partner_name"]
+                "updated_at", "partner_name", "source", "user_id"]
         clients = [dict(zip(cols, row)) for row in cur.fetchall()]
         conn.close()
         return ok({"clients": clients, "total": total, "page": page})
@@ -429,11 +437,12 @@ def handler(event: dict, context) -> dict:
                        pc.contact_person, pc.current_status, pc.deal_amount,
                        pc.partner_reward, pc.reward_paid, pc.notes, pc.source,
                        pc.created_at, pc.updated_at, pc.dadata_raw,
-                       p.short_name as partner_name, p.contact_name as p_contact,
+                       CASE WHEN p.ref_code = 'SYSTEM' THEN NULL ELSE p.short_name END as partner_name,
+                       p.contact_name as p_contact,
                        pc.user_id, pc.ref_code,
                        u.login as user_login, u.email as user_email, u.name as user_name
                 FROM {SCHEMA}.partner_clients pc
-                JOIN {SCHEMA}.partners p ON p.id = pc.partner_id
+                LEFT JOIN {SCHEMA}.partners p ON p.id = pc.partner_id
                 LEFT JOIN {SCHEMA}.users u ON u.id = pc.user_id
                 WHERE pc.id = %s""",
             (client_id,),

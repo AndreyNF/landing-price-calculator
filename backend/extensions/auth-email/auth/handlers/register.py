@@ -93,6 +93,18 @@ def handle(event: dict, origin: str = '*') -> dict:
         RETURNING id
     """)
 
+    # Добавляем клиента в partner_clients
+    try:
+        from utils.db import query_one, execute
+        sys_partner = query_one(f"SELECT id FROM {S}partners WHERE ref_code = 'SYSTEM' LIMIT 1")
+        if sys_partner:
+            execute(f"""
+                INSERT INTO {S}partner_clients (partner_id, full_name, email, source, user_id)
+                VALUES ({sys_partner[0]}, {escape(name or email)}, {escape(email)}, 'self', {escape(user_id)})
+            """)
+    except Exception:
+        pass
+
     result = {
         'user_id': user_id,
         'message': 'Регистрация успешна',
