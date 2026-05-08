@@ -8,6 +8,10 @@ export default function Article() {
   const article = articles.find((a) => a.slug === slug);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [slug]);
+
+  useEffect(() => {
     if (!article) return;
     const title = article.metaTitle || article.title + " | Legis24";
     const desc = article.metaDescription || article.excerpt;
