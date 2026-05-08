@@ -20,7 +20,11 @@ export default function PartnerProfile({ sessionId, onSaved, isAdmin = false, pa
     legal_address: "", director_name: "", bank_name: "", bank_bik: "", bank_account: "",
     bank_corr: "", contact_name: "", contact_phone: "", contact_email: "",
     referral_fee_percent: "0",
+    individual_full_name: "", individual_birth_date: "", individual_passport_series: "",
+    individual_passport_number: "", individual_passport_issued_by: "",
+    individual_passport_issued_date: "", individual_registration_address: "", individual_snils: "",
   });
+  const [isLawyer, setIsLawyer] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
   const [showMissing, setShowMissing] = useState(false);
@@ -71,8 +75,18 @@ export default function PartnerProfile({ sessionId, onSaved, isAdmin = false, pa
           contact_name: p.contact_name || "", contact_phone: p.contact_phone || "",
           contact_email: p.contact_email || "",
           referral_fee_percent: String(p.referral_fee_percent ?? 0),
+          individual_full_name: p.individual_full_name || "",
+          individual_birth_date: p.individual_birth_date || "",
+          individual_passport_series: p.individual_passport_series || "",
+          individual_passport_number: p.individual_passport_number || "",
+          individual_passport_issued_by: p.individual_passport_issued_by || "",
+          individual_passport_issued_date: p.individual_passport_issued_date || "",
+          individual_registration_address: p.individual_registration_address || "",
+          individual_snils: p.individual_snils || "",
         };
         setForm(f);
+        const lType = (data.partner as Record<string, unknown>).lawyer_type as string | null;
+        setIsLawyer(!!lType && lType !== "none");
         const missing = REQUIRED_FIELDS.filter(rf => !f[rf.key]);
         setShowMissing(missing.length > 0);
       }
@@ -246,7 +260,7 @@ export default function PartnerProfile({ sessionId, onSaved, isAdmin = false, pa
       )}
 
       <ProfileSectionRequisites
-        form={form} set={set} isMissing={isMissing}
+        form={form} set={set} setForm={setForm} isMissing={isMissing} isLawyer={isLawyer}
         partySugg={partySugg} partyOpen={partyOpen} partyLoading={partyLoading}
         setPartyOpen={setPartyOpen} applyParty={applyParty}
         addrSugg={addrSugg} addrOpen={addrOpen} addrLoading={addrLoading}

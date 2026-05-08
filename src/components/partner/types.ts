@@ -2,12 +2,13 @@ export const PARTNER_API = "https://functions.poehali.dev/d3a180ca-4111-4be5-ae8
 
 export const DADATA_TOKEN = import.meta.env.VITE_DADATA_API_KEY || "";
 
-export type PartnerType = "legal" | "ip" | "self_employed";
+export type PartnerType = "legal" | "ip" | "self_employed" | "individual";
 
 export const PARTNER_TYPE_LABELS: Record<PartnerType, string> = {
   legal: "Юридическое лицо",
   ip: "Индивидуальный предприниматель",
   self_employed: "Самозанятый",
+  individual: "Физическое лицо",
 };
 
 export type DealStatus = "new" | "negotiation" | "contract" | "paid" | "done";
@@ -48,6 +49,14 @@ export interface Partner {
   contact_email?: string;
   ref_code?: string;
   dadata_raw?: unknown;
+  individual_full_name?: string;
+  individual_birth_date?: string;
+  individual_passport_series?: string;
+  individual_passport_number?: string;
+  individual_passport_issued_by?: string;
+  individual_passport_issued_date?: string;
+  individual_registration_address?: string;
+  individual_snils?: string;
 }
 
 export interface Client {
