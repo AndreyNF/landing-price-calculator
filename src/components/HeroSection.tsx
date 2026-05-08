@@ -47,11 +47,15 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
               {label}
             </button>
           ))}
-          <Link to="/blog" className="transition-colors"
+          <Link to="/blog" className="relative transition-colors flex items-center gap-1.5"
             style={{ color: "#ffffff" }}
             onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "var(--gold)"}
             onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#ffffff"}>
             Блог
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold tracking-wider uppercase"
+              style={{ background: "var(--gold)", color: "#0d1826", lineHeight: 1 }}>
+              New
+            </span>
           </Link>
         </div>
 
@@ -89,9 +93,13 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
             </button>
           ))}
           <Link to="/blog" onClick={() => setMobileMenuOpen(false)}
-            className="block w-full text-left font-body text-sm py-3"
+            className="flex items-center gap-2 w-full font-body text-sm py-3"
             style={{ color: "var(--text)", borderBottom: "1px solid rgba(212,175,55,0.08)" }}>
             Блог
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold tracking-wider uppercase"
+              style={{ background: "var(--gold)", color: "#0d1826", lineHeight: 1 }}>
+              New
+            </span>
           </Link>
           <Link to="/login" onClick={() => setMobileMenuOpen(false)}
             className="flex items-center gap-2 w-full font-body text-sm py-3"
