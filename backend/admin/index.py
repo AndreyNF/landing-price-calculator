@@ -300,4 +300,19 @@ def handler(event: dict, context) -> dict:
         ]
         return ok({"users": users, "total": total, "page": page, "limit": limit})
 
+    # ── СМЕНА РОЛИ ПОЛЬЗОВАТЕЛЯ ───────────────────────────────────────────────
+    if action == "set_user_role":
+        target_id = body.get("user_id")
+        new_role = body.get("role")
+        if not target_id or new_role not in ("client", "partner", "admin"):
+            return err("Неверные параметры", 400)
+        if int(target_id) == user["id"]:
+            return err("Нельзя изменить роль самому себе", 400)
+        conn = get_conn()
+        cur = conn.cursor()
+        cur.execute(f"UPDATE {SCHEMA}.users SET role = %s WHERE id = %s", (new_role, target_id))
+        conn.commit()
+        conn.close()
+        return ok({"ok": True})
+
     return err("Неизвестное действие", 400)

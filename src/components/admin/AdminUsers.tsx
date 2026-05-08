@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import Icon from "@/components/ui/icon";
+import { toast } from "sonner";
 
 const ADMIN_URL = "https://functions.poehali.dev/2fb10b23-2471-4f73-a39f-315ed4c51e8c";
 
@@ -14,23 +15,63 @@ interface UserRow {
   last_login_at: string | null;
 }
 
+const ROLES = [
+  { value: "client",  label: "Клиент",  color: "var(--blue)",  bg: "var(--blue-dim)" },
+  { value: "partner", label: "Партнёр", color: "#7c3aed",       bg: "rgba(124,58,237,0.1)" },
+  { value: "admin",   label: "Админ",   color: "#ef4444",       bg: "rgba(239,68,68,0.1)" },
+];
+
 function fmt(iso: string | null) {
   if (!iso) return "—";
   return new Date(iso).toLocaleString("ru-RU", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
 }
 
-function RoleBadge({ role }: { role: string }) {
-  const map: Record<string, { label: string; color: string; bg: string }> = {
-    admin:   { label: "Админ",   color: "#ef4444", bg: "rgba(239,68,68,0.1)" },
-    partner: { label: "Партнёр", color: "#7c3aed", bg: "rgba(124,58,237,0.1)" },
-    client:  { label: "Клиент",  color: "var(--blue)", bg: "var(--blue-dim)" },
+function RoleSelect({ userId, currentRole, sessionId, onChanged }: {
+  userId: number; currentRole: string; sessionId: string; onChanged: (newRole: string) => void;
+}) {
+  const [saving, setSaving] = useState(false);
+
+  const handleChange = async (newRole: string) => {
+    if (newRole === currentRole) return;
+    setSaving(true);
+    try {
+      const res = await fetch(ADMIN_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Session-Id": sessionId },
+        body: JSON.stringify({ action: "set_user_role", user_id: userId, role: newRole }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        onChanged(newRole);
+        toast.success("Роль изменена");
+      } else {
+        toast.error(data.error || "Ошибка");
+      }
+    } finally {
+      setSaving(false);
+    }
   };
-  const s = map[role] || { label: role, color: "var(--text-muted)", bg: "var(--bg)" };
+
+  const r = ROLES.find(x => x.value === currentRole) || ROLES[0];
+
   return (
-    <span className="text-xs px-2 py-0.5 rounded-full font-semibold"
-      style={{ color: s.color, background: s.bg }}>
-      {s.label}
-    </span>
+    <div className="relative inline-flex items-center gap-1">
+      <select
+        value={currentRole}
+        disabled={saving}
+        onChange={e => handleChange(e.target.value)}
+        className="text-xs font-semibold px-2 py-0.5 rounded-full appearance-none cursor-pointer pr-5 outline-none"
+        style={{ color: r.color, background: r.bg, border: "none" }}
+      >
+        {ROLES.map(role => (
+          <option key={role.value} value={role.value}>{role.label}</option>
+        ))}
+      </select>
+      {saving
+        ? <Icon name="LoaderCircle" size={11} className="animate-spin absolute right-1 pointer-events-none" style={{ color: r.color }} />
+        : <Icon name="ChevronDown" size={11} className="absolute right-1 pointer-events-none" style={{ color: r.color }} />
+      }
+    </div>
   );
 }
 
@@ -60,6 +101,10 @@ export default function AdminUsers({ sessionId }: { sessionId: string }) {
 
   useEffect(() => { load(page, search); }, [load, page, search]);
 
+  const updateRole = (userId: number, newRole: string) => {
+    setUsers(prev => prev.map(u => u.id === userId ? { ...u, role: newRole } : u));
+  };
+
   const totalPages = Math.ceil(total / 30);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -70,13 +115,12 @@ export default function AdminUsers({ sessionId }: { sessionId: string }) {
 
   return (
     <div>
-      {/* Header + search */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
         <div>
           <h2 className="text-lg font-bold" style={{ color: "var(--navy)" }}>Пользователи</h2>
           <p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>Всего: {total}</p>
         </div>
-        <form onSubmit={handleSearch} className="flex gap-2 sm:ml-auto">
+        <form onSubmit={handleSearch} className="flex gap-2 sm:ml-auto flex-wrap">
           <input
             value={inputVal}
             onChange={e => setInputVal(e.target.value)}
@@ -131,13 +175,13 @@ export default function AdminUsers({ sessionId }: { sessionId: string }) {
                         )}
                       </td>
                       <td className="px-4 py-3 text-sm" style={{ color: "var(--text)" }}>{u.name || "—"}</td>
-                      <td className="px-4 py-3"><RoleBadge role={u.role} /></td>
+                      <td className="px-4 py-3">
+                        <RoleSelect userId={u.id} currentRole={u.role} sessionId={sessionId} onChanged={r => updateRole(u.id, r)} />
+                      </td>
                       <td className="px-4 py-3 text-xs" style={{ color: "var(--text-muted)" }}>
                         {u.vk_id ? (
                           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
-                            style={{ background: "rgba(0,119,255,0.1)", color: "#0077ff" }}>
-                            VK
-                          </span>
+                            style={{ background: "rgba(0,119,255,0.1)", color: "#0077ff" }}>VK</span>
                         ) : "—"}
                       </td>
                       <td className="px-4 py-3 text-xs" style={{ color: "var(--text-muted)" }}>{fmt(u.created_at)}</td>
@@ -152,9 +196,9 @@ export default function AdminUsers({ sessionId }: { sessionId: string }) {
             <div className="md:hidden divide-y" style={{ borderColor: "var(--border-c)" }}>
               {users.map(u => (
                 <div key={u.id} className="px-4 py-3.5">
-                  <div className="flex items-center justify-between gap-2 mb-1">
+                  <div className="flex items-center justify-between gap-2 mb-1.5">
                     <p className="font-semibold text-sm" style={{ color: "var(--navy)" }}>{u.name || u.login}</p>
-                    <RoleBadge role={u.role} />
+                    <RoleSelect userId={u.id} currentRole={u.role} sessionId={sessionId} onChanged={r => updateRole(u.id, r)} />
                   </div>
                   <p className="text-xs mb-0.5" style={{ color: "var(--text-muted)" }}>{u.login}</p>
                   {u.email && <p className="text-xs mb-0.5" style={{ color: "var(--text-muted)" }}>{u.email}</p>}
