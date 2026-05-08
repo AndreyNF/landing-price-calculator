@@ -6,6 +6,7 @@ export const FIND_PARTY    = "https://suggestions.dadata.ru/suggestions/api/4_1/
 export const SUGGEST_BANK  = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/bank";
 export const SUGGEST_ADDR  = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address";
 export const SUGGEST_FIO   = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/fio";
+export const SUGGEST_FMS   = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/fms_unit";
 
 export const INPUT = "w-full px-4 py-3 rounded-lg text-sm outline-none transition-all font-body";
 export const inputStyle = { background: "var(--bg)", border: "1px solid var(--border-c)", color: "var(--text)" };
@@ -72,6 +73,7 @@ export function DaDropdown({ suggestions, onSelect, loading }: {
           <p className="font-medium truncate" style={{ color: "var(--navy)" }}>{s.value}</p>
           {s.data.inn && <p className="text-xs" style={{ color: "var(--text-muted)" }}>ИНН: {String(s.data.inn)}</p>}
           {s.data.bic && <p className="text-xs" style={{ color: "var(--text-muted)" }}>БИК: {String(s.data.bic)}</p>}
+          {s.data.code && <p className="text-xs" style={{ color: "var(--text-muted)" }}>Код: {String(s.data.code)}</p>}
         </li>
       ))}
     </ul>

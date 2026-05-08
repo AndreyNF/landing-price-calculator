@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import Icon from "@/components/ui/icon";
 import { PARTNER_TYPE_LABELS, type PartnerType } from "./types";
-import { Field, DaDropdown, INPUT, inputStyle, inputStyleMissing, type DDSuggestion, SUGGEST_FIO, SUGGEST_ADDR, ddFetch } from "./ProfileShared";
+import { Field, DaDropdown, INPUT, inputStyle, inputStyleMissing, type DDSuggestion, SUGGEST_FIO, SUGGEST_ADDR, SUGGEST_FMS, ddFetch } from "./ProfileShared";
 
 interface Props {
   form: Record<string, string>;
@@ -47,6 +47,12 @@ export default function ProfileSectionRequisites({
   const [regAddrLoading, setRegAddrLoading] = useState(false);
   const regAddrTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // DaData: подразделение МВД (кем выдан паспорт)
+  const [fmsSugg, setFmsSugg] = useState<DDSuggestion[]>([]);
+  const [fmsOpen, setFmsOpen] = useState(false);
+  const [fmsLoading, setFmsLoading] = useState(false);
+  const fmsTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const isIndividual = form.partner_type === "individual";
 
   useEffect(() => {
@@ -81,6 +87,27 @@ export default function ProfileSectionRequisites({
   const applyRegAddr = (s: DDSuggestion) => {
     setForm(prev => ({ ...prev, individual_registration_address: s.value }));
     setRegAddrOpen(false); setRegAddrSugg([]);
+  };
+
+  useEffect(() => {
+    if (!isIndividual) return;
+    if (fmsTimer.current) clearTimeout(fmsTimer.current);
+    const v = (form.individual_passport_issued_by || "").trim();
+    if (!v || v.length < 3) { setFmsSugg([]); return; }
+    setFmsLoading(true);
+    fmsTimer.current = setTimeout(async () => {
+      const s = await ddFetch(SUGGEST_FMS, { query: v, count: 5 });
+      setFmsSugg(s); setFmsOpen(true); setFmsLoading(false);
+    }, 350);
+  }, [form.individual_passport_issued_by, isIndividual]);
+
+  const applyFms = (s: DDSuggestion) => {
+    setForm(prev => ({
+      ...prev,
+      individual_passport_issued_by: s.value,
+      individual_passport_series: prev.individual_passport_series || String(s.data.code || "").replace("-", "").slice(0, 4),
+    }));
+    setFmsOpen(false); setFmsSugg([]);
   };
 
   const handleTypeChange = (val: PartnerType) => {
@@ -233,8 +260,13 @@ export default function ProfileSectionRequisites({
 
           <div className="mt-4">
             <Field label="Кем выдан">
-              <input className={INPUT} style={inputStyle} placeholder="УМВД России по г. Москве"
-                value={form.individual_passport_issued_by || ""} onChange={set("individual_passport_issued_by")} />
+              <div className="relative">
+                <input className={INPUT} style={inputStyle} placeholder="УМВД России по г. Москве"
+                  value={form.individual_passport_issued_by || ""} onChange={set("individual_passport_issued_by")}
+                  onFocus={() => fmsSugg.length > 0 && setFmsOpen(true)}
+                  onBlur={() => setTimeout(() => setFmsOpen(false), 150)} />
+                <DaDropdown suggestions={fmsOpen ? fmsSugg : []} onSelect={applyFms} loading={fmsLoading} />
+              </div>
             </Field>
           </div>
 
