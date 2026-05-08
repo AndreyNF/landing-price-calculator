@@ -84,10 +84,10 @@ def handler(event: dict, context) -> dict:
         submissions_7d = cur.fetchone()[0]
 
         # Партнёры (исключаем admin-пользователей)
-        cur.execute(f"SELECT COUNT(*) FROM {SCHEMA}.partners p JOIN {SCHEMA}.users u ON u.id = p.user_id WHERE u.role != 'admin'")
+        cur.execute(f"SELECT COUNT(*) FROM {SCHEMA}.partners p JOIN {SCHEMA}.users u ON u.id = p.user_id WHERE u.role != 'admin' AND p.ref_code != 'SYSTEM' AND p.deactivated = FALSE AND u.deactivated = FALSE")
         partners_total = cur.fetchone()[0]
 
-        cur.execute(f"SELECT COUNT(*) FROM {SCHEMA}.partners p JOIN {SCHEMA}.users u ON u.id = p.user_id WHERE p.status = 'active' AND u.role != 'admin'")
+        cur.execute(f"SELECT COUNT(*) FROM {SCHEMA}.partners p JOIN {SCHEMA}.users u ON u.id = p.user_id WHERE p.status = 'active' AND u.role != 'admin' AND p.ref_code != 'SYSTEM' AND p.deactivated = FALSE AND u.deactivated = FALSE")
         partners_active = cur.fetchone()[0]
 
         # Клиенты партнёров

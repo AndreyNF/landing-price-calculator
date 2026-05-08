@@ -732,7 +732,7 @@ def handler(event: dict, context) -> dict:
         cur.execute(
             f"""SELECT COUNT(*) FROM {SCHEMA}.users u
                 LEFT JOIN {SCHEMA}.partners p ON p.user_id = u.id
-                {where} AND u.role = 'partner'""",
+                {where} AND u.role = 'partner' AND u.deactivated = FALSE AND COALESCE(p.ref_code, '') != 'SYSTEM' AND COALESCE(p.deactivated, FALSE) = FALSE""",
             params,
         )
         total = cur.fetchone()[0]
@@ -753,7 +753,7 @@ def handler(event: dict, context) -> dict:
                 LEFT JOIN {SCHEMA}.partners p ON p.user_id = u.id
                 LEFT JOIN {SCHEMA}.partners rp ON rp.id = p.ref_partner_id
                 LEFT JOIN {SCHEMA}.users ru ON ru.id = rp.user_id
-                {where} AND u.role = 'partner'
+                {where} AND u.role = 'partner' AND u.deactivated = FALSE AND COALESCE(p.ref_code, '') != 'SYSTEM' AND COALESCE(p.deactivated, FALSE) = FALSE
                 ORDER BY u.id DESC
                 LIMIT %s OFFSET %s""",
             params + [limit, offset],

@@ -79,11 +79,19 @@ def handler(event: dict, context) -> dict:
 
         conn = get_conn()
         cur = conn.cursor()
+        ph = hash_password(password)
+        # Пробуем сначала по логину, затем по email
         cur.execute(
-            f"SELECT id, login, role FROM {SCHEMA}.users WHERE login = %s AND password_hash = %s",
-            (login, hash_password(password)),
+            f"SELECT id, login, role FROM {SCHEMA}.users WHERE login = %s AND password_hash = %s AND deactivated = FALSE",
+            (login, ph),
         )
         user = cur.fetchone()
+        if not user:
+            cur.execute(
+                f"SELECT id, login, role FROM {SCHEMA}.users WHERE email = %s AND password_hash = %s AND deactivated = FALSE",
+                (login, ph),
+            )
+            user = cur.fetchone()
         if not user:
             conn.close()
             return err("Неверный логин или пароль", 401)
@@ -112,14 +120,22 @@ def handler(event: dict, context) -> dict:
 
         conn = get_conn()
         cur = conn.cursor()
-        cur.execute(f"SELECT id FROM {SCHEMA}.users WHERE login = %s", (login,))
+        # Проверяем дубль по логину
+        cur.execute(f"SELECT id FROM {SCHEMA}.users WHERE login = %s AND deactivated = FALSE", (login,))
         if cur.fetchone():
             conn.close()
             return err("Пользователь с таким логином уже существует", 409)
+        # Проверяем дубль по email (если логин похож на email)
+        import re
+        if re.match(r"^[^@]+@[^@]+\.[^@]+$", login):
+            cur.execute(f"SELECT id FROM {SCHEMA}.users WHERE email = %s AND deactivated = FALSE", (login,))
+            if cur.fetchone():
+                conn.close()
+                return err("Пользователь с таким email уже зарегистрирован. Войдите через форму входа.", 409)
 
         cur.execute(
-            f"INSERT INTO {SCHEMA}.users (login, password_hash, role) VALUES (%s, %s, %s) RETURNING id",
-            (login, hash_password(password), role),
+            f"INSERT INTO {SCHEMA}.users (login, password_hash, role, email) VALUES (%s, %s, %s, %s) RETURNING id",
+            (login, hash_password(password), role, login if re.match(r"^[^@]+@[^@]+\.[^@]+$", login) else None),
         )
         user_id = cur.fetchone()[0]
 
@@ -198,7 +214,7 @@ def handler(event: dict, context) -> dict:
             f"""SELECT u.id, u.login, u.role
                 FROM {SCHEMA}.sessions s
                 JOIN {SCHEMA}.users u ON u.id = s.user_id
-                WHERE s.id = %s AND s.expires_at > NOW()""",
+                WHERE s.id = %s AND s.expires_at > NOW() AND u.deactivated = FALSE""",
             (sid,),
         )
         user = cur.fetchone()
