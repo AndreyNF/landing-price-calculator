@@ -80,7 +80,7 @@ def get_or_create_partner(conn, user_id: int) -> dict | None:
         f"contact_name, contact_phone, contact_email, ref_code, dadata_raw, "
         f"lawyer_type, lawyer_type_requested, referral_fee_percent, ref_partner_id, "
         f"individual_full_name, individual_birth_date, individual_passport_series, "
-        f"individual_passport_number, individual_passport_issued_by, individual_passport_issued_date, "
+        f"individual_passport_number, individual_passport_code, individual_passport_issued_by, individual_passport_issued_date, "
         f"individual_registration_address, individual_snils "
         f"FROM {SCHEMA}.partners WHERE user_id = %s AND deactivated = FALSE AND ref_code != 'SYSTEM' ORDER BY id ASC LIMIT 1",
         (user_id,),
@@ -93,7 +93,7 @@ def get_or_create_partner(conn, user_id: int) -> dict | None:
             "contact_name", "contact_phone", "contact_email", "ref_code", "dadata_raw",
             "lawyer_type", "lawyer_type_requested", "referral_fee_percent", "ref_partner_id",
             "individual_full_name", "individual_birth_date", "individual_passport_series",
-            "individual_passport_number", "individual_passport_issued_by", "individual_passport_issued_date",
+            "individual_passport_number", "individual_passport_code", "individual_passport_issued_by", "individual_passport_issued_date",
             "individual_registration_address", "individual_snils"]
     p = dict(zip(cols, row))
     if p["referral_fee_percent"] is not None:
@@ -184,7 +184,7 @@ def handler(event: dict, context) -> dict:
                   "bank_account", "bank_corr", "contact_name", "contact_phone",
                   "contact_email", "lawyer_type_requested", "referral_fee_percent",
                   "individual_full_name", "individual_birth_date", "individual_passport_series",
-                  "individual_passport_number", "individual_passport_issued_by",
+                  "individual_passport_number", "individual_passport_code", "individual_passport_issued_by",
                   "individual_passport_issued_date", "individual_registration_address",
                   "individual_snils"]
         values = [body.get(f) for f in fields]

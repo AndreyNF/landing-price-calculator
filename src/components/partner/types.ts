@@ -53,6 +53,7 @@ export interface Partner {
   individual_birth_date?: string;
   individual_passport_series?: string;
   individual_passport_number?: string;
+  individual_passport_code?: string;
   individual_passport_issued_by?: string;
   individual_passport_issued_date?: string;
   individual_registration_address?: string;

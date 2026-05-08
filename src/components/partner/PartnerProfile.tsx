@@ -21,7 +21,7 @@ export default function PartnerProfile({ sessionId, onSaved, isAdmin = false, pa
     bank_corr: "", contact_name: "", contact_phone: "", contact_email: "",
     referral_fee_percent: "0",
     individual_full_name: "", individual_birth_date: "", individual_passport_series: "",
-    individual_passport_number: "", individual_passport_issued_by: "",
+    individual_passport_number: "", individual_passport_code: "", individual_passport_issued_by: "",
     individual_passport_issued_date: "", individual_registration_address: "", individual_snils: "",
   });
   const [isLawyer, setIsLawyer] = useState(false);
@@ -79,6 +79,7 @@ export default function PartnerProfile({ sessionId, onSaved, isAdmin = false, pa
           individual_birth_date: p.individual_birth_date || "",
           individual_passport_series: p.individual_passport_series || "",
           individual_passport_number: p.individual_passport_number || "",
+          individual_passport_code: p.individual_passport_code || "",
           individual_passport_issued_by: p.individual_passport_issued_by || "",
           individual_passport_issued_date: p.individual_passport_issued_date || "",
           individual_registration_address: p.individual_registration_address || "",

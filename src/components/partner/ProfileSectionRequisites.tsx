@@ -47,11 +47,17 @@ export default function ProfileSectionRequisites({
   const [regAddrLoading, setRegAddrLoading] = useState(false);
   const regAddrTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // DaData: подразделение МВД (кем выдан паспорт)
+  // DaData: подразделение МВД (кем выдан паспорт — по названию)
   const [fmsSugg, setFmsSugg] = useState<DDSuggestion[]>([]);
   const [fmsOpen, setFmsOpen] = useState(false);
   const [fmsLoading, setFmsLoading] = useState(false);
   const fmsTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // DaData: подразделение МВД (по коду подразделения)
+  const [fmsCodeSugg, setFmsCodeSugg] = useState<DDSuggestion[]>([]);
+  const [fmsCodeOpen, setFmsCodeOpen] = useState(false);
+  const [fmsCodeLoading, setFmsCodeLoading] = useState(false);
+  const fmsCodeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const isIndividual = form.partner_type === "individual";
 
@@ -102,12 +108,39 @@ export default function ProfileSectionRequisites({
   }, [form.individual_passport_issued_by, isIndividual]);
 
   const applyFms = (s: DDSuggestion) => {
+    const code = String(s.data.code || "");
+    const series = code.replace("-", "").slice(0, 4);
     setForm(prev => ({
       ...prev,
       individual_passport_issued_by: s.value,
-      individual_passport_series: prev.individual_passport_series || String(s.data.code || "").replace("-", "").slice(0, 4),
+      individual_passport_code: code,
+      individual_passport_series: prev.individual_passport_series || series,
     }));
     setFmsOpen(false); setFmsSugg([]);
+  };
+
+  useEffect(() => {
+    if (!isIndividual) return;
+    if (fmsCodeTimer.current) clearTimeout(fmsCodeTimer.current);
+    const v = (form.individual_passport_code || "").trim();
+    if (!v || v.length < 3) { setFmsCodeSugg([]); return; }
+    setFmsCodeLoading(true);
+    fmsCodeTimer.current = setTimeout(async () => {
+      const s = await ddFetch(SUGGEST_FMS, { query: v, count: 5 });
+      setFmsCodeSugg(s); setFmsCodeOpen(true); setFmsCodeLoading(false);
+    }, 300);
+  }, [form.individual_passport_code, isIndividual]);
+
+  const applyFmsCode = (s: DDSuggestion) => {
+    const code = String(s.data.code || "");
+    const series = code.replace("-", "").slice(0, 4);
+    setForm(prev => ({
+      ...prev,
+      individual_passport_code: code,
+      individual_passport_issued_by: s.value,
+      individual_passport_series: prev.individual_passport_series || series,
+    }));
+    setFmsCodeOpen(false); setFmsCodeSugg([]);
   };
 
   const handleTypeChange = (val: PartnerType) => {
@@ -247,7 +280,7 @@ export default function ProfileSectionRequisites({
             </Field>
           </div>
 
-          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+          <div className="grid sm:grid-cols-3 gap-4 mt-4">
             <Field label="Серия паспорта">
               <input className={INPUT} style={inputStyle} placeholder="1234"
                 value={form.individual_passport_series || ""} onChange={set("individual_passport_series")} />
@@ -255,6 +288,15 @@ export default function ProfileSectionRequisites({
             <Field label="Номер паспорта">
               <input className={INPUT} style={inputStyle} placeholder="567890"
                 value={form.individual_passport_number || ""} onChange={set("individual_passport_number")} />
+            </Field>
+            <Field label="Код подразделения">
+              <div className="relative">
+                <input className={INPUT} style={inputStyle} placeholder="770-001"
+                  value={form.individual_passport_code || ""} onChange={set("individual_passport_code")}
+                  onFocus={() => fmsCodeSugg.length > 0 && setFmsCodeOpen(true)}
+                  onBlur={() => setTimeout(() => setFmsCodeOpen(false), 150)} />
+                <DaDropdown suggestions={fmsCodeOpen ? fmsCodeSugg : []} onSelect={applyFmsCode} loading={fmsCodeLoading} />
+              </div>
             </Field>
           </div>
 
