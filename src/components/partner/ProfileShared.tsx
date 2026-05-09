@@ -12,7 +12,7 @@ export const INPUT = "w-full px-4 py-3 rounded-lg text-sm outline-none transitio
 export const inputStyle = { background: "var(--bg)", border: "1px solid var(--border-c)", color: "var(--text)" };
 export const inputStyleMissing = { background: "rgba(239,68,68,0.04)", border: "1px solid rgba(239,68,68,0.35)", color: "var(--text)" };
 
-export const REQUIRED_FIELDS: { key: string; label: string }[] = [
+export const REQUIRED_FIELDS_LEGAL: { key: string; label: string }[] = [
   { key: "inn",          label: "ИНН" },
   { key: "full_name",    label: "Полное наименование" },
   { key: "legal_address",label: "Юридический адрес" },
@@ -23,6 +23,25 @@ export const REQUIRED_FIELDS: { key: string; label: string }[] = [
   { key: "contact_phone",label: "Телефон" },
   { key: "contact_email",label: "Email" },
 ];
+
+export const REQUIRED_FIELDS_INDIVIDUAL: { key: string; label: string }[] = [
+  { key: "inn",                           label: "ИНН" },
+  { key: "individual_full_name",          label: "ФИО" },
+  { key: "individual_birth_date",         label: "Дата рождения" },
+  { key: "individual_passport_series",    label: "Серия паспорта" },
+  { key: "individual_passport_number",    label: "Номер паспорта" },
+  { key: "individual_passport_code",      label: "Код подразделения" },
+  { key: "individual_passport_issued_by", label: "Кем выдан" },
+  { key: "individual_passport_issued_date", label: "Дата выдачи паспорта" },
+  { key: "individual_registration_address", label: "Адрес регистрации" },
+  { key: "bank_bik",                      label: "БИК банка" },
+  { key: "bank_account",                  label: "Расчётный счёт" },
+  { key: "contact_name",                  label: "Контактное лицо" },
+  { key: "contact_phone",                 label: "Телефон" },
+  { key: "contact_email",                 label: "Email" },
+];
+
+export const REQUIRED_FIELDS = REQUIRED_FIELDS_LEGAL;
 
 export interface DDSuggestion { value: string; data: Record<string, unknown> }
 

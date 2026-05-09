@@ -3,7 +3,7 @@ import Icon from "@/components/ui/icon";
 import { apiPartner, type Partner } from "./types";
 import {
   SUGGEST_PARTY, FIND_PARTY, SUGGEST_BANK, SUGGEST_ADDR, SUGGEST_FIO,
-  REQUIRED_FIELDS, ddFetch, type DDSuggestion,
+  REQUIRED_FIELDS_LEGAL, REQUIRED_FIELDS_INDIVIDUAL, ddFetch, type DDSuggestion,
 } from "./ProfileShared";
 import ProfileSectionRequisites from "./ProfileSectionRequisites";
 import ProfileSectionBank from "./ProfileSectionBank";
@@ -88,7 +88,8 @@ export default function PartnerProfile({ sessionId, onSaved, isAdmin = false, pa
         setForm(f);
         const lType = (data.partner as Record<string, unknown>).lawyer_type as string | null;
         setIsLawyer(!!lType && lType !== "none");
-        const missing = REQUIRED_FIELDS.filter(rf => !f[rf.key]);
+        const reqFields = (f.partner_type === "individual") ? REQUIRED_FIELDS_INDIVIDUAL : REQUIRED_FIELDS_LEGAL;
+        const missing = reqFields.filter(rf => !f[rf.key]);
         setShowMissing(missing.length > 0);
       }
       setLoading(false);
@@ -210,15 +211,17 @@ export default function PartnerProfile({ sessionId, onSaved, isAdmin = false, pa
     setSaving(false);
     if (data.error) { setError(data.error); return; }
     setPartner(data.partner);
-    const missing = REQUIRED_FIELDS.filter(rf => !form[rf.key]);
+    const reqFields = (form.partner_type === "individual") ? REQUIRED_FIELDS_INDIVIDUAL : REQUIRED_FIELDS_LEGAL;
+    const missing = reqFields.filter(rf => !form[rf.key]);
     setShowMissing(missing.length > 0);
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
     if (onSaved) onSaved(data.partner);
   };
 
-  const missingFields = REQUIRED_FIELDS.filter(rf => !form[rf.key]);
-  const isMissing = (key: string) => !isAdmin && showMissing && !form[key];
+  const activeRequiredFields = (form.partner_type === "individual") ? REQUIRED_FIELDS_INDIVIDUAL : REQUIRED_FIELDS_LEGAL;
+  const missingFields = activeRequiredFields.filter(rf => !form[rf.key]);
+  const isMissing = (key: string) => !isAdmin && showMissing && !form[key] && activeRequiredFields.some(rf => rf.key === key);
 
   if (loading) return (
     <div className="flex items-center justify-center py-16">
