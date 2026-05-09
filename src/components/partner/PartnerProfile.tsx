@@ -233,12 +233,20 @@ export default function PartnerProfile({ sessionId, onSaved, isAdmin = false, pa
     <form onSubmit={handleSave} className="space-y-8">
 
       {/* Реферальный код */}
-      {partner?.ref_code && (
+      {partner?.ref_code ? (
         <div className="rounded-xl px-5 py-4 flex items-center gap-4" style={{ background: "var(--blue-dim)", border: "1px solid rgba(37,99,235,0.2)" }}>
           <Icon name="Link" size={18} style={{ color: "var(--blue)" }} />
           <div className="flex-1 min-w-0">
             <p className="text-xs font-semibold" style={{ color: "var(--blue)" }}>Реферальный код</p>
             <p className="text-sm font-mono font-bold" style={{ color: "var(--navy)" }}>{partner.ref_code}</p>
+          </div>
+        </div>
+      ) : !isAdmin && (
+        <div className="rounded-xl px-5 py-4 flex items-start gap-3" style={{ background: "rgba(234,179,8,0.06)", border: "1px solid rgba(234,179,8,0.25)" }}>
+          <Icon name="Lock" size={16} className="flex-shrink-0 mt-0.5" style={{ color: "#ca8a04" }} />
+          <div>
+            <p className="text-sm font-semibold" style={{ color: "#92400e" }}>Реферальная ссылка появится после заполнения профиля</p>
+            <p className="text-xs mt-0.5" style={{ color: "#a16207" }}>Заполните все обязательные поля и сохраните профиль — ссылка сгенерируется автоматически.</p>
           </div>
         </div>
       )}
