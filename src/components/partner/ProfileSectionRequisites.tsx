@@ -247,10 +247,14 @@ export default function ProfileSectionRequisites({
 
       {/* Реквизиты физлица */}
       {isIndividual ? (
-        <div>
-          <h3 className="text-sm font-bold mb-4 uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>Сведения физического лица</h3>
+        <div className="space-y-6">
+          {/* Личные данные */}
+          <div className="rounded-xl p-5 space-y-4" style={{ border: "1px solid var(--border-c)", background: "var(--bg)" }}>
+            <h3 className="text-sm font-bold uppercase tracking-wide flex items-center gap-2" style={{ color: "var(--text-muted)" }}>
+              <Icon name="User" size={14} />
+              Личные данные
+            </h3>
 
-          <div className="mb-4">
             <Field label="ФИО полностью" required missing={isMissing("individual_full_name")}>
               <div className="relative">
                 <input className={INPUT} style={isMissing("individual_full_name") ? inputStyleMissing : inputStyle}
@@ -261,69 +265,24 @@ export default function ProfileSectionRequisites({
                 <DaDropdown suggestions={fioOpen ? fioSugg : []} onSelect={applyFio} loading={fioLoading} />
               </div>
             </Field>
-          </div>
 
-          <div className="grid sm:grid-cols-2 gap-4">
-            <Field label="Дата рождения">
-              <input className={INPUT} style={inputStyle} type="date"
-                value={form.individual_birth_date || ""} onChange={set("individual_birth_date")} />
-            </Field>
-            <Field label="ИНН физлица" required missing={isMissing("inn")}>
-              <div className="relative">
-                <input className={INPUT} style={isMissing("inn") ? inputStyleMissing : inputStyle}
-                  placeholder="12 цифр"
-                  value={form.inn} onChange={set("inn")}
-                  onFocus={() => partySugg.length > 0 && setPartyOpen(true)}
-                  onBlur={() => setTimeout(() => setPartyOpen(false), 150)} />
-                <DaDropdown suggestions={partyOpen ? partySugg : []} onSelect={applyParty} loading={partyLoading} />
-              </div>
-            </Field>
-          </div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <Field label="Дата рождения" required missing={isMissing("individual_birth_date")}>
+                <input className={INPUT} style={isMissing("individual_birth_date") ? inputStyleMissing : inputStyle} type="date"
+                  value={form.individual_birth_date || ""} onChange={set("individual_birth_date")} />
+              </Field>
+              <Field label="ИНН физлица" required missing={isMissing("inn")}>
+                <div className="relative">
+                  <input className={INPUT} style={isMissing("inn") ? inputStyleMissing : inputStyle}
+                    placeholder="12 цифр"
+                    value={form.inn} onChange={set("inn")}
+                    onFocus={() => partySugg.length > 0 && setPartyOpen(true)}
+                    onBlur={() => setTimeout(() => setPartyOpen(false), 150)} />
+                  <DaDropdown suggestions={partyOpen ? partySugg : []} onSelect={applyParty} loading={partyLoading} />
+                </div>
+              </Field>
+            </div>
 
-          <div className="grid sm:grid-cols-3 gap-4 mt-4">
-            <Field label="Серия паспорта">
-              <input className={INPUT} style={inputStyle} placeholder="1234"
-                value={form.individual_passport_series || ""} onChange={set("individual_passport_series")} />
-            </Field>
-            <Field label="Номер паспорта">
-              <input className={INPUT} style={inputStyle} placeholder="567890"
-                value={form.individual_passport_number || ""} onChange={set("individual_passport_number")} />
-            </Field>
-            <Field label="Код подразделения">
-              <div className="relative">
-                <input className={INPUT} style={inputStyle} placeholder="770-001"
-                  value={form.individual_passport_code || ""} onChange={set("individual_passport_code")}
-                  onFocus={() => fmsCodeSugg.length > 0 && setFmsCodeOpen(true)}
-                  onBlur={() => setTimeout(() => setFmsCodeOpen(false), 150)} />
-                <DaDropdown suggestions={fmsCodeOpen ? fmsCodeSugg : []} onSelect={applyFmsCode} loading={fmsCodeLoading} />
-              </div>
-            </Field>
-          </div>
-
-          <div className="mt-4">
-            <Field label="Кем выдан">
-              <div className="relative">
-                <input className={INPUT} style={inputStyle} placeholder="УМВД России по г. Москве"
-                  value={form.individual_passport_issued_by || ""} onChange={set("individual_passport_issued_by")}
-                  onFocus={() => fmsSugg.length > 0 && setFmsOpen(true)}
-                  onBlur={() => setTimeout(() => setFmsOpen(false), 150)} />
-                <DaDropdown suggestions={fmsOpen ? fmsSugg : []} onSelect={applyFms} loading={fmsLoading} />
-              </div>
-            </Field>
-          </div>
-
-          <div className="grid sm:grid-cols-2 gap-4 mt-4">
-            <Field label="Дата выдачи">
-              <input className={INPUT} style={inputStyle} type="date"
-                value={form.individual_passport_issued_date || ""} onChange={set("individual_passport_issued_date")} />
-            </Field>
-            <Field label="СНИЛС">
-              <input className={INPUT} style={inputStyle} placeholder="000-000-000 00"
-                value={form.individual_snils || ""} onChange={set("individual_snils")} />
-            </Field>
-          </div>
-
-          <div className="mt-4">
             <Field label="Адрес регистрации" required missing={isMissing("individual_registration_address")}>
               <div className="relative">
                 <input className={INPUT} style={isMissing("individual_registration_address") ? inputStyleMissing : inputStyle}
@@ -334,6 +293,55 @@ export default function ProfileSectionRequisites({
                 <DaDropdown suggestions={regAddrOpen ? regAddrSugg : []} onSelect={applyRegAddr} loading={regAddrLoading} />
               </div>
             </Field>
+          </div>
+
+          {/* Паспортные данные */}
+          <div className="rounded-xl p-5 space-y-4" style={{ border: "1px solid var(--border-c)", background: "var(--bg)" }}>
+            <h3 className="text-sm font-bold uppercase tracking-wide flex items-center gap-2" style={{ color: "var(--text-muted)" }}>
+              <Icon name="BookOpen" size={14} />
+              Паспортные данные
+            </h3>
+
+            <div className="grid sm:grid-cols-3 gap-4">
+              <Field label="Серия паспорта" required missing={isMissing("individual_passport_series")}>
+                <input className={INPUT} style={isMissing("individual_passport_series") ? inputStyleMissing : inputStyle} placeholder="1234"
+                  value={form.individual_passport_series || ""} onChange={set("individual_passport_series")} />
+              </Field>
+              <Field label="Номер паспорта" required missing={isMissing("individual_passport_number")}>
+                <input className={INPUT} style={isMissing("individual_passport_number") ? inputStyleMissing : inputStyle} placeholder="567890"
+                  value={form.individual_passport_number || ""} onChange={set("individual_passport_number")} />
+              </Field>
+              <Field label="Код подразделения" required missing={isMissing("individual_passport_code")}>
+                <div className="relative">
+                  <input className={INPUT} style={isMissing("individual_passport_code") ? inputStyleMissing : inputStyle} placeholder="770-001"
+                    value={form.individual_passport_code || ""} onChange={set("individual_passport_code")}
+                    onFocus={() => fmsCodeSugg.length > 0 && setFmsCodeOpen(true)}
+                    onBlur={() => setTimeout(() => setFmsCodeOpen(false), 150)} />
+                  <DaDropdown suggestions={fmsCodeOpen ? fmsCodeSugg : []} onSelect={applyFmsCode} loading={fmsCodeLoading} />
+                </div>
+              </Field>
+            </div>
+
+            <Field label="Кем выдан" required missing={isMissing("individual_passport_issued_by")}>
+              <div className="relative">
+                <input className={INPUT} style={isMissing("individual_passport_issued_by") ? inputStyleMissing : inputStyle} placeholder="УМВД России по г. Москве"
+                  value={form.individual_passport_issued_by || ""} onChange={set("individual_passport_issued_by")}
+                  onFocus={() => fmsSugg.length > 0 && setFmsOpen(true)}
+                  onBlur={() => setTimeout(() => setFmsOpen(false), 150)} />
+                <DaDropdown suggestions={fmsOpen ? fmsSugg : []} onSelect={applyFms} loading={fmsLoading} />
+              </div>
+            </Field>
+
+            <div className="grid sm:grid-cols-2 gap-4">
+              <Field label="Дата выдачи" required missing={isMissing("individual_passport_issued_date")}>
+                <input className={INPUT} style={isMissing("individual_passport_issued_date") ? inputStyleMissing : inputStyle} type="date"
+                  value={form.individual_passport_issued_date || ""} onChange={set("individual_passport_issued_date")} />
+              </Field>
+              <Field label="СНИЛС">
+                <input className={INPUT} style={inputStyle} placeholder="000-000-000 00"
+                  value={form.individual_snils || ""} onChange={set("individual_snils")} />
+              </Field>
+            </div>
           </div>
         </div>
       ) : (
