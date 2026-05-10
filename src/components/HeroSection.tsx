@@ -189,7 +189,7 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
           {/* CTA buttons */}
           <div className="animate-fade-up-delay-3 flex flex-col sm:flex-row gap-4 mb-16">
             <button className="btn-gold px-10 py-4 text-sm" onClick={onOpenModal}>
-              Отправить документы
+              Прогноз судебного исхода
             </button>
             <button className="btn-outline px-10 py-4 text-sm" onClick={() => scrollTo("calculator")}>
               Рассчитать стоимость
