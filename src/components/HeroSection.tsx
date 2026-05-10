@@ -179,11 +179,7 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
           {/* Sub */}
           <p className="animate-fade-up-delay-2 font-body text-base md:text-lg mb-2 max-w-xl"
             style={{ color: "rgba(232,228,220,0.65)", letterSpacing: "0.01em", fontWeight: 300 }}>
-            Претензии · ФНС · Суд · Интеллектуальная собственность
-          </p>
-          <p className="animate-fade-up-delay-2 font-body text-sm mb-10 max-w-lg"
-            style={{ color: "rgba(232,228,220,0.4)" }}>
-            Работаем с бизнесом. Без ошибок. С учётом актуальной судебной практики.
+            Мы формируем стратегию защиты бизнеса там, где стандартная юридическая практика требует недели работы
           </p>
 
           {/* CTA buttons */}
