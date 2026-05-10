@@ -161,7 +161,7 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
                 color: "#ffffff",
                 letterSpacing: "-0.01em",
               }}>
-              Подготовка документов
+              Глубокий юридический анализ сложных налоговых, арбитражных и уголовных кейсов
             </span>
             <span className="font-display block"
               style={{
