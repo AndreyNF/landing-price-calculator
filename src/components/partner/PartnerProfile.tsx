@@ -3,7 +3,7 @@ import Icon from "@/components/ui/icon";
 import { apiPartner, type Partner } from "./types";
 import {
   SUGGEST_PARTY, FIND_PARTY, SUGGEST_BANK, SUGGEST_ADDR, SUGGEST_FIO,
-  REQUIRED_FIELDS_LEGAL, REQUIRED_FIELDS_INDIVIDUAL, ddFetch, type DDSuggestion,
+  REQUIRED_FIELDS_LEGAL, REQUIRED_FIELDS_INDIVIDUAL, REQUIRED_FIELDS_SELF_EMPLOYED, ddFetch, type DDSuggestion,
 } from "./ProfileShared";
 import ProfileSectionRequisites from "./ProfileSectionRequisites";
 import ProfileSectionBank from "./ProfileSectionBank";
@@ -88,7 +88,7 @@ export default function PartnerProfile({ sessionId, onSaved, isAdmin = false, pa
         setForm(f);
         const lType = (data.partner as Record<string, unknown>).lawyer_type as string | null;
         setIsLawyer(!!lType && lType !== "none");
-        const reqFields = (f.partner_type === "individual") ? REQUIRED_FIELDS_INDIVIDUAL : REQUIRED_FIELDS_LEGAL;
+        const reqFields = f.partner_type === "individual" ? REQUIRED_FIELDS_INDIVIDUAL : f.partner_type === "self_employed" ? REQUIRED_FIELDS_SELF_EMPLOYED : REQUIRED_FIELDS_LEGAL;
         const missing = reqFields.filter(rf => !f[rf.key]);
         setShowMissing(missing.length > 0);
       }
@@ -211,7 +211,7 @@ export default function PartnerProfile({ sessionId, onSaved, isAdmin = false, pa
     setSaving(false);
     if (data.error) { setError(data.error); return; }
     setPartner(data.partner);
-    const reqFields = (form.partner_type === "individual") ? REQUIRED_FIELDS_INDIVIDUAL : REQUIRED_FIELDS_LEGAL;
+    const reqFields = getRequiredFields(form.partner_type);
     const missing = reqFields.filter(rf => !form[rf.key]);
     setShowMissing(missing.length > 0);
     setSaved(true);
@@ -219,7 +219,11 @@ export default function PartnerProfile({ sessionId, onSaved, isAdmin = false, pa
     if (onSaved) onSaved(data.partner);
   };
 
-  const activeRequiredFields = (form.partner_type === "individual") ? REQUIRED_FIELDS_INDIVIDUAL : REQUIRED_FIELDS_LEGAL;
+  const getRequiredFields = (type: string) =>
+    type === "individual" ? REQUIRED_FIELDS_INDIVIDUAL
+    : type === "self_employed" ? REQUIRED_FIELDS_SELF_EMPLOYED
+    : REQUIRED_FIELDS_LEGAL;
+  const activeRequiredFields = getRequiredFields(form.partner_type);
   const missingFields = activeRequiredFields.filter(rf => !form[rf.key]);
   const isMissing = (key: string) => !isAdmin && showMissing && !form[key] && activeRequiredFields.some(rf => rf.key === key);
 

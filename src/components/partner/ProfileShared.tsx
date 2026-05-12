@@ -41,6 +41,23 @@ export const REQUIRED_FIELDS_INDIVIDUAL: { key: string; label: string }[] = [
   { key: "contact_email",                 label: "Email" },
 ];
 
+export const REQUIRED_FIELDS_SELF_EMPLOYED: { key: string; label: string }[] = [
+  { key: "inn",                           label: "ИНН" },
+  { key: "individual_full_name",          label: "ФИО" },
+  { key: "individual_birth_date",         label: "Дата рождения" },
+  { key: "individual_passport_series",    label: "Серия паспорта" },
+  { key: "individual_passport_number",    label: "Номер паспорта" },
+  { key: "individual_passport_code",      label: "Код подразделения" },
+  { key: "individual_passport_issued_by", label: "Кем выдан" },
+  { key: "individual_passport_issued_date", label: "Дата выдачи паспорта" },
+  { key: "individual_registration_address", label: "Адрес регистрации" },
+  { key: "bank_bik",                      label: "БИК банка" },
+  { key: "bank_account",                  label: "Расчётный счёт" },
+  { key: "contact_name",                  label: "Контактное лицо" },
+  { key: "contact_phone",                 label: "Телефон" },
+  { key: "contact_email",                 label: "Email" },
+];
+
 export const REQUIRED_FIELDS = REQUIRED_FIELDS_LEGAL;
 
 export interface DDSuggestion { value: string; data: Record<string, unknown> }

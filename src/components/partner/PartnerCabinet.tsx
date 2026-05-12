@@ -8,6 +8,7 @@ import ClientList from "./ClientList";
 import ClientCard from "./ClientCard";
 import { apiPartner } from "./types";
 import PartnerReferral from "./PartnerReferral";
+import { REQUIRED_FIELDS_LEGAL, REQUIRED_FIELDS_INDIVIDUAL, REQUIRED_FIELDS_SELF_EMPLOYED } from "./ProfileShared";
 
 type Tab = "stats" | "clients" | "finances" | "rates" | "referral" | "profile";
 
@@ -27,10 +28,11 @@ const TABS: { key: Tab; label: string; icon: string }[] = [
   { key: "profile",  label: "Профиль",           icon: "Settings" },
 ];
 
-const REQUIRED_FIELDS = [
-  "inn", "full_name", "legal_address", "director_name",
-  "bank_bik", "bank_account", "contact_name", "contact_phone", "contact_email",
-];
+const getRequiredKeys = (partnerType: string) => {
+  if (partnerType === "individual") return REQUIRED_FIELDS_INDIVIDUAL.map(f => f.key);
+  if (partnerType === "self_employed") return REQUIRED_FIELDS_SELF_EMPLOYED.map(f => f.key);
+  return REQUIRED_FIELDS_LEGAL.map(f => f.key);
+};
 
 export default function PartnerCabinet({ sessionId, userLogin, isAdmin = false, partnerId }: Props) {
   const [tab, setTab] = useState<Tab>("stats");
@@ -44,11 +46,12 @@ export default function PartnerCabinet({ sessionId, userLogin, isAdmin = false, 
     apiPartner(sessionId, { action: "get_profile" }).then(data => {
       if (data.partner) {
         const p = data.partner as Record<string, unknown>;
-        setMissingCount(REQUIRED_FIELDS.filter(k => !p[k]).length);
+        const reqKeys = getRequiredKeys(String(p.partner_type || "legal"));
+        setMissingCount(reqKeys.filter(k => !p[k]).length);
         if (p.id) setResolvedPartnerId(p.id as number);
         setLawyerType((p.lawyer_type as string) || null);
       } else {
-        setMissingCount(REQUIRED_FIELDS.length);
+        setMissingCount(getRequiredKeys("legal").length);
       }
     });
   }, [sessionId, isAdmin]);

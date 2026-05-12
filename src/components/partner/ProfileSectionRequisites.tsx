@@ -60,9 +60,10 @@ export default function ProfileSectionRequisites({
   const fmsCodeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const isIndividual = form.partner_type === "individual";
+  const isSelfEmployed = form.partner_type === "self_employed";
 
   useEffect(() => {
-    if (!isIndividual) return;
+    if (!isIndividual && !isSelfEmployed) return;
     if (fioTimer.current) clearTimeout(fioTimer.current);
     const v = (form.individual_full_name || "").trim();
     if (!v || v.length < 2) { setFioSugg([]); return; }
@@ -71,10 +72,10 @@ export default function ProfileSectionRequisites({
       const s = await ddFetch(SUGGEST_FIO, { query: v, count: 5 });
       setFioSugg(s); setFioOpen(true); setFioLoading(false);
     }, 300);
-  }, [form.individual_full_name, isIndividual]);
+  }, [form.individual_full_name, isIndividual, isSelfEmployed]);
 
   useEffect(() => {
-    if (!isIndividual) return;
+    if (!isIndividual && !isSelfEmployed) return;
     if (regAddrTimer.current) clearTimeout(regAddrTimer.current);
     const v = (form.individual_registration_address || "").trim();
     if (!v || v.length < 3) { setRegAddrSugg([]); return; }
@@ -83,7 +84,7 @@ export default function ProfileSectionRequisites({
       const s = await ddFetch(SUGGEST_ADDR, { query: v, count: 5 });
       setRegAddrSugg(s); setRegAddrOpen(true); setRegAddrLoading(false);
     }, 350);
-  }, [form.individual_registration_address, isIndividual]);
+  }, [form.individual_registration_address, isIndividual, isSelfEmployed]);
 
   const applyFio = (s: DDSuggestion) => {
     setForm(prev => ({ ...prev, individual_full_name: s.value }));
@@ -96,7 +97,7 @@ export default function ProfileSectionRequisites({
   };
 
   useEffect(() => {
-    if (!isIndividual) return;
+    if (!isIndividual && !isSelfEmployed) return;
     if (fmsTimer.current) clearTimeout(fmsTimer.current);
     const v = (form.individual_passport_issued_by || "").trim();
     if (!v || v.length < 3) { setFmsSugg([]); return; }
@@ -105,7 +106,7 @@ export default function ProfileSectionRequisites({
       const s = await ddFetch(SUGGEST_FMS, { query: v, count: 5 });
       setFmsSugg(s); setFmsOpen(true); setFmsLoading(false);
     }, 350);
-  }, [form.individual_passport_issued_by, isIndividual]);
+  }, [form.individual_passport_issued_by, isIndividual, isSelfEmployed]);
 
   const applyFms = (s: DDSuggestion) => {
     const code = String(s.data.code || "");
@@ -120,7 +121,7 @@ export default function ProfileSectionRequisites({
   };
 
   useEffect(() => {
-    if (!isIndividual) return;
+    if (!isIndividual && !isSelfEmployed) return;
     if (fmsCodeTimer.current) clearTimeout(fmsCodeTimer.current);
     const v = (form.individual_passport_code || "").trim();
     if (!v || v.length < 3) { setFmsCodeSugg([]); return; }
@@ -129,7 +130,7 @@ export default function ProfileSectionRequisites({
       const s = await ddFetch(SUGGEST_FMS, { query: v, count: 5 });
       setFmsCodeSugg(s); setFmsCodeOpen(true); setFmsCodeLoading(false);
     }, 300);
-  }, [form.individual_passport_code, isIndividual]);
+  }, [form.individual_passport_code, isIndividual, isSelfEmployed]);
 
   const applyFmsCode = (s: DDSuggestion) => {
     const code = String(s.data.code || "");
@@ -243,10 +244,18 @@ export default function ProfileSectionRequisites({
             </span>
           </div>
         )}
+        {isSelfEmployed && (
+          <div className="mt-3 flex items-start gap-2 rounded-xl px-4 py-3 text-xs" style={{ background: "rgba(34,197,94,0.08)", border: "1px solid rgba(34,197,94,0.2)" }}>
+            <Icon name="Info" size={14} className="flex-shrink-0 mt-0.5" style={{ color: "#16a34a" }} />
+            <span style={{ color: "#15803d" }}>
+              Самозанятый платит налог самостоятельно. НДФЛ с вознаграждения не удерживается.
+            </span>
+          </div>
+        )}
       </div>
 
-      {/* Реквизиты физлица */}
-      {isIndividual ? (
+      {/* Реквизиты физлица / самозанятого */}
+      {(isIndividual || isSelfEmployed) ? (
         <div className="space-y-6">
           {/* Личные данные */}
           <div className="rounded-xl p-5 space-y-4" style={{ border: "1px solid var(--border-c)", background: "var(--bg)" }}>
