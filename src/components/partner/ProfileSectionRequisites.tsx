@@ -145,7 +145,7 @@ export default function ProfileSectionRequisites({
   };
 
   const handleTypeChange = (val: PartnerType) => {
-    if (val === "individual" && !ndflWarningShown) {
+    if (val === "self_employed" && !ndflWarningShown) {
       setPendingIndividual(true);
       return;
     }
@@ -155,7 +155,7 @@ export default function ProfileSectionRequisites({
   const confirmIndividual = () => {
     setNdflWarningShown(true);
     setPendingIndividual(false);
-    setForm(prev => ({ ...prev, partner_type: "individual" }));
+    setForm(prev => ({ ...prev, partner_type: "self_employed" }));
   };
 
   const types = Object.entries(PARTNER_TYPE_LABELS).filter(
@@ -227,7 +227,7 @@ export default function ProfileSectionRequisites({
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium" style={{ color: form.partner_type === val ? "var(--navy)" : "var(--text-muted)" }}>{label}</span>
-                {val === "individual" && (
+                {val === "self_employed" && (
                   <span className="text-xs px-1.5 py-0.5 rounded font-semibold" style={{ background: "rgba(234,179,8,0.15)", color: "#ca8a04" }}>НДФЛ</span>
                 )}
               </div>
@@ -236,7 +236,7 @@ export default function ProfileSectionRequisites({
         </div>
 
         {/* Напоминание об НДФЛ если уже выбрано */}
-        {isIndividual && (
+        {isSelfEmployed && (
           <div className="mt-3 flex items-start gap-2 rounded-xl px-4 py-3 text-xs" style={{ background: "rgba(234,179,8,0.08)", border: "1px solid rgba(234,179,8,0.2)" }}>
             <Icon name="Info" size={14} className="flex-shrink-0 mt-0.5" style={{ color: "#ca8a04" }} />
             <span style={{ color: "#92400e" }}>
@@ -244,11 +244,11 @@ export default function ProfileSectionRequisites({
             </span>
           </div>
         )}
-        {isSelfEmployed && (
+        {isIndividual && (
           <div className="mt-3 flex items-start gap-2 rounded-xl px-4 py-3 text-xs" style={{ background: "rgba(34,197,94,0.08)", border: "1px solid rgba(34,197,94,0.2)" }}>
             <Icon name="Info" size={14} className="flex-shrink-0 mt-0.5" style={{ color: "#16a34a" }} />
             <span style={{ color: "#15803d" }}>
-              Самозанятый платит налог самостоятельно. НДФЛ с вознаграждения не удерживается.
+              Физическое лицо платит налог самостоятельно. НДФЛ с вознаграждения не удерживается.
             </span>
           </div>
         )}
