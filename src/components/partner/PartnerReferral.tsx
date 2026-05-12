@@ -12,9 +12,10 @@ interface RefStats {
 
 interface Props {
   sessionId: string;
+  partnerId?: number;
 }
 
-export default function PartnerReferral({ sessionId }: Props) {
+export default function PartnerReferral({ sessionId, partnerId }: Props) {
   const [refCode, setRefCode] = useState<string | null>(null);
   const [stats, setStats] = useState<RefStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -24,10 +25,13 @@ export default function PartnerReferral({ sessionId }: Props) {
   const refUrl = refCode ? `${window.location.origin}/?ref=${refCode}` : null;
 
   useEffect(() => {
-    apiPartner(sessionId, { action: "get_profile" }).then(async data => {
+    const profileReq = partnerId
+      ? apiPartner(sessionId, { action: "get_profile", partner_id: partnerId })
+      : apiPartner(sessionId, { action: "get_profile" });
+    profileReq.then(async data => {
       let code = data.partner?.ref_code;
       if (!code && data.partner?.id) {
-        const d = await apiPartner(sessionId, { action: "get_ref_link" });
+        const d = await apiPartner(sessionId, { action: "get_ref_link", ...(partnerId ? { partner_id: partnerId } : {}) });
         if (d.ref_code) code = d.ref_code;
       }
       if (code) {
@@ -37,7 +41,7 @@ export default function PartnerReferral({ sessionId }: Props) {
       }
       setLoading(false);
     });
-  }, [sessionId]);
+  }, [sessionId, partnerId]);
 
   const copyLink = () => {
     if (!refUrl) return;
