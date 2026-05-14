@@ -88,14 +88,24 @@ export default function FaqSection({ onOpenModal }: { onOpenModal: () => void })
               <p className="font-body text-sm leading-7 mb-8" style={{ color: "var(--text-muted)" }}>
                 Ваш клиент получил акт ФНС или попал в арбитражный спор? Передайте кейс нам — мы подготовим стратегию защиты за 24 часа, а вы получите вознаграждение до 30% от тарифа.
               </p>
-              <a href="https://t.me/intelectpro_bot" target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-8 py-3.5 font-body font-bold text-xs tracking-widest uppercase rounded transition-all"
-                style={{ background: "var(--gold)", color: "#050d1a", letterSpacing: "0.08em" }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.88"; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}>
-                <Icon name="Users" size={15} />
-                Стать партнёром
-              </a>
+              <div className="flex flex-wrap items-center gap-4">
+                <a href="https://t.me/intelectpro_bot" target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 px-8 py-3.5 font-body font-bold text-xs tracking-widest uppercase rounded transition-all"
+                  style={{ background: "var(--gold)", color: "#050d1a", letterSpacing: "0.08em" }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.88"; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}>
+                  <Icon name="Users" size={15} />
+                  Стать партнёром
+                </a>
+                <Link to="/partner-help"
+                  className="inline-flex items-center gap-2 font-body text-xs font-semibold tracking-widest uppercase transition-colors"
+                  style={{ color: "rgba(212,175,55,0.6)" }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "var(--gold)"; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "rgba(212,175,55,0.6)"; }}>
+                  <Icon name="BookOpen" size={14} />
+                  Как это работает
+                </Link>
+              </div>
             </div>
             <div className="space-y-4">
               {[
