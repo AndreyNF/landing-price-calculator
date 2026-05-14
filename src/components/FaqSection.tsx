@@ -73,6 +73,50 @@ export default function FaqSection({ onOpenModal }: { onOpenModal: () => void })
         </div>
       </section>
 
+      {/* ── PARTNER PROGRAM ─────────────────────────────────────────────── */}
+      <section className="py-20 px-6 md:px-12" style={{ background: "#080f1e" }}>
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-5 h-px" style={{ background: "var(--gold)" }} />
+                <span className="font-body text-xs tracking-widest uppercase" style={{ color: "var(--gold)" }}>Партнёрская программа</span>
+              </div>
+              <h2 className="font-display mb-5" style={{ fontSize: "clamp(1.6rem, 3vw, 2.5rem)", color: "#fff", fontWeight: 700, lineHeight: 1.15 }}>
+                Для бухгалтеров<br />и консалтинга
+              </h2>
+              <p className="font-body text-sm leading-7 mb-8" style={{ color: "var(--text-muted)" }}>
+                Ваш клиент получил акт ФНС или попал в арбитражный спор? Передайте кейс нам — мы подготовим стратегию защиты за 24 часа, а вы получите вознаграждение до 30% от тарифа.
+              </p>
+              <a href="https://t.me/intelectpro_bot" target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 px-8 py-3.5 font-body font-bold text-xs tracking-widest uppercase rounded transition-all"
+                style={{ background: "var(--gold)", color: "#050d1a", letterSpacing: "0.08em" }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.88"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}>
+                <Icon name="Users" size={15} />
+                Стать партнёром
+              </a>
+            </div>
+            <div className="space-y-4">
+              {[
+                { icon: "UserCheck", text: "Вы сохраняете клиента и репутацию" },
+                { icon: "Briefcase", text: "Мы берём юридическую часть на себя" },
+                { icon: "Banknote",  text: "Вы получаете комиссию за каждый кейс" },
+              ].map(item => (
+                <div key={item.text} className="flex items-start gap-4 p-5 rounded"
+                  style={{ background: "rgba(212,175,55,0.04)", border: "1px solid rgba(212,175,55,0.12)" }}>
+                  <div className="w-9 h-9 flex-shrink-0 flex items-center justify-center rounded"
+                    style={{ background: "rgba(212,175,55,0.1)", border: "1px solid rgba(212,175,55,0.2)" }}>
+                    <Icon name={item.icon as "UserCheck"} size={16} style={{ color: "var(--gold)" }} />
+                  </div>
+                  <p className="font-body text-sm leading-6 pt-1.5" style={{ color: "var(--text-muted)" }}>{item.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── FINAL CTA ───────────────────────────────────────────────────── */}
       <section ref={ref2 as React.Ref<HTMLElement>}
         className="reveal py-20 px-6 md:px-12 pb-28 md:pb-20 relative overflow-hidden"
@@ -92,12 +136,12 @@ export default function FaqSection({ onOpenModal }: { onOpenModal: () => void })
               <div className="w-8 h-px" style={{ background: "var(--gold)" }} />
             </div>
             <h2 className="font-display mb-4"
-              style={{ fontSize: "clamp(2rem, 5vw, 4rem)", color: "#fff", fontWeight: 700, lineHeight: 1.1 }}>
-              Разберём вашу ситуацию{" "}
-              <span style={{ color: "var(--gold)", fontStyle: "italic" }}>сегодня</span>
+              style={{ fontSize: "clamp(1.8rem, 4.5vw, 3.5rem)", color: "#fff", fontWeight: 700, lineHeight: 1.15 }}>
+              Опишите ситуацию — через 24 часа у вас будет{" "}
+              <span style={{ color: "var(--gold)", fontStyle: "italic" }}>стратегия защиты</span>
             </h2>
             <p className="font-body text-sm mb-10" style={{ color: "var(--text-muted)" }}>
-              Отправьте документ — скажем, как действовать
+              Чем раньше начат анализ — тем больше возможностей для защиты
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a href="https://t.me/intelectpro_bot" target="_blank" rel="noopener noreferrer"
@@ -106,7 +150,7 @@ export default function FaqSection({ onOpenModal }: { onOpenModal: () => void })
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.9"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = "1"; (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}>
                 <Icon name="Send" size={15} />
-                Telegram
+                Отправить документы
               </a>
               <a href="mailto:order@advokat-vsem.ru"
                 className="flex items-center justify-center gap-3 px-10 py-4 font-body font-bold text-xs tracking-widest uppercase rounded transition-all"
@@ -136,7 +180,7 @@ export default function FaqSection({ onOpenModal }: { onOpenModal: () => void })
               order@advokat-vsem.ru
             </a>
             <p className="font-body text-xs" style={{ color: "rgba(232,228,220,0.25)" }}>
-              © 2024 Legis24. Адвокатское бюро. Все права защищены.
+              © 2024 Legis24 — юридический аналитический центр. Все права защищены.
             </p>
           </div>
           <div className="flex flex-wrap gap-5 font-body text-xs justify-center" style={{ color: "rgba(232,228,220,0.35)" }}>

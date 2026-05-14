@@ -197,9 +197,8 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
             style={{ borderTop: "1px solid rgba(212,175,55,0.15)" }}>
             {[
               ["24 ч", "срок подготовки"],
-              ["20+", "лет практики"],
-              ["98%", "успешных дел"],
-              ["по РФ", "работаем удалённо"],
+              ["107 млн ₽", "снижены доначисления в одном деле"],
+              ["по всей РФ", "работаем удалённо"],
             ].map(([val, label]) => (
               <div key={label}>
                 <p className="font-display text-2xl md:text-3xl mb-1 font-bold" style={{ color: "var(--gold)" }}>
