@@ -6,7 +6,7 @@ import {
   type ClientDetail, type StatusEntry, type Doc, type Comment, type DealStatus,
 } from "./types";
 import { type ClientService, type AvailableService } from "./clientCard/clientCardShared";
-import ClientCardInfo from "./clientCard/ClientCardInfo";
+import ClientCardInfo, { type ClientPayment } from "./clientCard/ClientCardInfo";
 import ClientCardSidebar from "./clientCard/ClientCardSidebar";
 import { StatusModal, DeleteModal } from "./clientCard/ClientCardModals";
 
@@ -51,6 +51,9 @@ export default function ClientCard({ sessionId, clientId, isAdmin, onBack }: Pro
   const [savingService, setSavingService] = useState(false);
   const [removingServiceId, setRemovingServiceId] = useState<number | null>(null);
 
+  // Оплаты клиента
+  const [clientPayments, setClientPayments] = useState<ClientPayment[]>([]);
+
   const load = async () => {
     const data = await apiPartner(sessionId, { action: "get_client", client_id: clientId });
     if (data.client) {
@@ -69,6 +72,10 @@ export default function ClientCard({ sessionId, clientId, isAdmin, onBack }: Pro
       .then(d => { if (d.client_services) setClientServices(d.client_services); });
     apiPartner(sessionId, { action: "get_services" })
       .then(d => { if (d.services) setAllServices(d.services); });
+    if (isAdmin) {
+      apiPartner(sessionId, { action: "get_client_payments", client_id: clientId })
+        .then(d => { if (d.payments) setClientPayments(d.payments); });
+    }
   }, [clientId, sessionId]);
 
   useEffect(() => {
@@ -143,6 +150,29 @@ export default function ClientCard({ sessionId, clientId, isAdmin, onBack }: Pro
     setClientServices(prev => prev.filter(s => s.id !== itemId));
     await load();
     setRemovingServiceId(null);
+  };
+
+  const handleAddClientPayment = async (amount: number, description: string, status: string) => {
+    const d = await apiPartner(sessionId, { action: "add_client_payment", client_id: clientId, amount, description, status });
+    if (d.ok && d.payment) {
+      setClientPayments(prev => [d.payment, ...prev]);
+      toast.success("Оплата добавлена");
+    } else toast.error(d.error || "Ошибка");
+  };
+
+  const handleUpdateClientPayment = async (id: number, status: string, paid_at?: string) => {
+    const d = await apiPartner(sessionId, { action: "update_client_payment", payment_id: id, status, paid_at: paid_at || null });
+    if (d.ok) {
+      setClientPayments(prev => prev.map(p => p.id === id ? { ...p, status, paid_at: paid_at || null } : p));
+    } else toast.error(d.error || "Ошибка");
+  };
+
+  const handleDeleteClientPayment = async (id: number) => {
+    const d = await apiPartner(sessionId, { action: "delete_client_payment", payment_id: id });
+    if (d.ok) {
+      setClientPayments(prev => prev.filter(p => p.id !== id));
+      toast.success("Оплата удалена");
+    } else toast.error(d.error || "Ошибка");
   };
 
   const changeStatus = async () => {
@@ -238,6 +268,10 @@ export default function ClientCard({ sessionId, clientId, isAdmin, onBack }: Pro
           onServiceDealAmountChange={setServiceDealAmount}
           onAddService={handleAddService}
           onRemoveService={handleRemoveService}
+          clientPayments={clientPayments}
+          onAddClientPayment={handleAddClientPayment}
+          onUpdateClientPayment={handleUpdateClientPayment}
+          onDeleteClientPayment={handleDeleteClientPayment}
         />
 
         <ClientCardSidebar statuses={statuses} />

@@ -1206,4 +1206,93 @@ def handler(event: dict, context) -> dict:
         conn.close()
         return ok({"ok": True})
 
+    # ── GET CLIENT PAYMENTS (admin only) ─────────────────────────────────────
+    if action == "get_client_payments":
+        if not is_admin:
+            return err("Только администратор", 403)
+        client_id = body.get("client_id")
+        if not client_id:
+            return err("Не указан client_id")
+        conn = get_conn()
+        cur = conn.cursor()
+        cur.execute(
+            f"""SELECT id, amount, description, status, paid_at, created_at
+                FROM {SCHEMA}.client_payments
+                WHERE client_id = %s ORDER BY created_at DESC""",
+            (client_id,),
+        )
+        payments = [
+            {"id": r[0], "amount": float(r[1]), "description": r[2],
+             "status": r[3], "paid_at": str(r[4]) if r[4] else None, "created_at": str(r[5])}
+            for r in cur.fetchall()
+        ]
+        conn.close()
+        return ok({"payments": payments})
+
+    # ── ADD CLIENT PAYMENT (admin only) ──────────────────────────────────────
+    if action == "add_client_payment":
+        if not is_admin:
+            return err("Только администратор", 403)
+        client_id   = body.get("client_id")
+        amount      = body.get("amount")
+        description = body.get("description", "")
+        status      = body.get("status", "pending")
+        paid_at     = body.get("paid_at") or None
+        if not client_id or amount is None:
+            return err("Укажите client_id и amount")
+        conn = get_conn()
+        cur = conn.cursor()
+        cur.execute(
+            f"""INSERT INTO {SCHEMA}.client_payments (client_id, amount, description, status, paid_at)
+                VALUES (%s, %s, %s, %s, %s) RETURNING id, created_at""",
+            (client_id, float(amount), description, status, paid_at),
+        )
+        row = cur.fetchone()
+        conn.commit()
+        conn.close()
+        return ok({"ok": True, "payment": {
+            "id": row[0], "amount": float(amount), "description": description,
+            "status": status, "paid_at": paid_at, "created_at": str(row[1]),
+        }})
+
+    # ── UPDATE CLIENT PAYMENT (admin only) ───────────────────────────────────
+    if action == "update_client_payment":
+        if not is_admin:
+            return err("Только администратор", 403)
+        payment_id  = body.get("payment_id")
+        status      = body.get("status")
+        paid_at     = body.get("paid_at") or None
+        description = body.get("description")
+        if not payment_id or not status:
+            return err("Укажите payment_id и status")
+        conn = get_conn()
+        cur = conn.cursor()
+        if description is not None:
+            cur.execute(
+                f"UPDATE {SCHEMA}.client_payments SET status=%s, paid_at=%s, description=%s WHERE id=%s",
+                (status, paid_at, description, payment_id),
+            )
+        else:
+            cur.execute(
+                f"UPDATE {SCHEMA}.client_payments SET status=%s, paid_at=%s WHERE id=%s",
+                (status, paid_at, payment_id),
+            )
+        conn.commit()
+        conn.close()
+        return ok({"ok": True})
+
+    # ── DELETE CLIENT PAYMENT (admin only) ───────────────────────────────────
+    if action == "delete_client_payment":
+        if not is_admin:
+            return err("Только администратор", 403)
+        payment_id = body.get("payment_id")
+        if not payment_id:
+            return err("Не указан payment_id")
+        conn = get_conn()
+        cur = conn.cursor()
+        cur.execute(f"DELETE FROM {SCHEMA}.client_payments WHERE id = %s", (payment_id,))
+        conn.commit()
+        conn.close()
+        return ok({"ok": True})
+
     return err("Неизвестное действие", 400)
