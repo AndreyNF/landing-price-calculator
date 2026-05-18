@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
+import { useSeoMeta } from "@/hooks/useSeoMeta";
 
 export default function Terms() {
   const navigate = useNavigate();
+  useSeoMeta("/terms");
 
   return (
     <div className="min-h-screen" style={{ background: "var(--bg-white)" }}>

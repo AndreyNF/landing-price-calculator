@@ -15,6 +15,7 @@ import Cabinet from "./pages/Cabinet";
 import Login from "./pages/Login";
 import VkCallback from "./pages/VkCallback";
 import PartnerHelp from "./pages/PartnerHelp";
+import IntellektualnaySobstvennost from "./pages/IntellektualnaySobstvennost";
 import CookieBanner from "./components/CookieBanner";
 
 const queryClient = new QueryClient();
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/auth/vk/callback" element={<VkCallback />} />
           <Route path="/partner-help" element={<PartnerHelp />} />
+          <Route path="/intellektualnaya-sobstvennost" element={<IntellektualnaySobstvennost />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

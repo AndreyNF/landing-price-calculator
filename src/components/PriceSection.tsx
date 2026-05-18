@@ -1,6 +1,5 @@
 import ServicesGrid from "@/components/ServicesGrid";
 import PriceCards from "@/components/PriceCards";
-import CalculatorSection from "@/components/CalculatorSection";
 import ProcessSection from "@/components/ProcessSection";
 
 interface PriceSectionProps {
@@ -24,8 +23,6 @@ export default function PriceSection({ onScrollTo, onOpenModal }: PriceSectionPr
     <>
       <ServicesGrid onOpenModal={onOpenModal} />
       <PriceCards onScrollTo={onScrollTo} onOpenModal={onOpenModal} />
-      {DIVIDER}
-      <CalculatorSection onOpenModal={onOpenModal} />
       {DIVIDER}
       <ProcessSection onOpenModal={onOpenModal} />
     </>

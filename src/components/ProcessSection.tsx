@@ -4,7 +4,6 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 export default function ProcessSection({ onOpenModal }: { onOpenModal: () => void }) {
   const ref1 = useScrollReveal();
   const ref2 = useScrollReveal();
-  const ref3 = useScrollReveal();
 
   return (
     <>
@@ -92,50 +91,6 @@ export default function ProcessSection({ onOpenModal }: { onOpenModal: () => voi
         </div>
       </section>
 
-      {/* ── IP BLOCK ────────────────────────────────────────────────────── */}
-      <section ref={ref3 as React.Ref<HTMLElement>} className="reveal py-20 px-6 md:px-12" style={{ background: "var(--dark)" }}>
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="flex items-center gap-3 mb-5">
-                <div className="w-5 h-px" style={{ background: "var(--gold)" }} />
-                <span className="font-body text-xs tracking-widest uppercase" style={{ color: "var(--gold)" }}>Доп. услуга</span>
-              </div>
-              <h2 className="font-display mb-5" style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.5rem)", color: "#fff", fontWeight: 700 }}>
-                Защита интеллектуальной собственности
-              </h2>
-              <div className="gold-line mb-6" />
-              <p className="font-body text-sm leading-7 mb-8" style={{ color: "var(--text-muted)" }}>
-                Споры о нарушении авторских прав, защита товарных знаков, борьба с незаконным копированием.
-                Полное юридическое сопровождение под ключ.
-              </p>
-              <button className="btn-outline px-8 py-3.5" onClick={onOpenModal}>
-                Узнать подробнее
-              </button>
-            </div>
-
-            <div className="space-y-3">
-              {[
-                { icon: "Copyright", title: "Судебные споры по авторским правам",   desc: "Отзывы, возражения, иски" },
-                { icon: "Tag",       title: "Товарные знаки",                       desc: "Регистрация и защита" },
-                { icon: "Shield",    title: "Незаконное копирование",               desc: "Пресечение нарушений" },
-              ].map(item => (
-                <div key={item.title} className="flex items-start gap-4 p-5 rounded"
-                  style={{ background: "var(--dark-card)", border: "1px solid rgba(212,175,55,0.1)" }}>
-                  <div className="flex-shrink-0 w-9 h-9 flex items-center justify-center rounded"
-                    style={{ background: "rgba(212,175,55,0.08)", border: "1px solid rgba(212,175,55,0.15)" }}>
-                    <Icon name={item.icon as "Copyright"} size={15} style={{ color: "var(--gold)" }} />
-                  </div>
-                  <div>
-                    <p className="font-body text-sm font-semibold mb-0.5" style={{ color: "#fff" }}>{item.title}</p>
-                    <p className="font-body text-xs" style={{ color: "var(--text-muted)" }}>{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
     </>
   );
 }

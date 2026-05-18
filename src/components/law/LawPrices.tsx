@@ -7,9 +7,9 @@ interface LawPricesProps {
 
 export default function LawPrices({ onOpenModal }: LawPricesProps) {
   const services = [
-    { title: "Анализ дела", price: "10 000 ₽", desc: "Профессиональная оценка позиции и перспектив" },
-    { title: "Отзыв / процессуальный документ", price: "10 000 ₽", desc: "Подготовка правовой позиции по делу" },
-    { title: "Иск по налоговому спору", price: "19 900 ₽", desc: "Полноценный иск с правовым обоснованием" },
+    { title: "Анализ дела", price: "25 000 ₽", desc: "Профессиональная оценка позиции и перспектив" },
+    { title: "Отзыв / процессуальный документ", price: "30 000 ₽", desc: "Подготовка правовой позиции по делу" },
+    { title: "Иск по налоговому спору", price: "45 000 ₽", desc: "Полноценный иск с правовым обоснованием" },
   ];
 
   return (
@@ -100,13 +100,13 @@ export default function LawPrices({ onOpenModal }: LawPricesProps) {
 
             <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
               <div style={{ color: "var(--text-muted)", fontSize: "0.9rem", textDecoration: "line-through" }}>
-                30 000 ₽
+                70 000 ₽
               </div>
               <div style={{ color: "var(--gold)", fontWeight: 700, fontSize: "2rem" }}>
-                25 000 ₽
+                60 000 ₽
               </div>
               <div style={{ color: "var(--text-muted)", fontSize: "0.75rem", marginBottom: 16 }}>
-                экономия 5 000 ₽
+                экономия 10 000 ₽
               </div>
               <button className="btn-gold px-8 py-3 text-xs" onClick={onOpenModal}>
                 Оформить пакет

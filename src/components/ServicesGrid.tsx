@@ -6,7 +6,6 @@ const SERVICES = [
   { icon: "Scale",      title: "Судебные документы",          desc: "Исковые заявления, отзывы, жалобы." },
   { icon: "Landmark",   title: "Арбитражные споры",           desc: "Правовая позиция и документы для арбитража." },
   { icon: "Mail",       title: "Ответы на письма и запросы",  desc: "Любые запросы от контрагентов и ведомств." },
-  { icon: "Gavel",      title: "Интеллектуальная собственность", desc: "Правовая позиция + подача в суд. Под ключ." },
 ];
 
 export default function ServicesGrid({ onOpenModal }: { onOpenModal: () => void }) {
@@ -35,7 +34,7 @@ export default function ServicesGrid({ onOpenModal }: { onOpenModal: () => void 
         </div>
 
         {/* Cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-px" style={{ background: "rgba(212,175,55,0.08)" }}>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px" style={{ background: "rgba(212,175,55,0.08)" }}>
           {SERVICES.map((s, i) => (
             <div key={s.title}
               className="service-card p-8 group cursor-default"

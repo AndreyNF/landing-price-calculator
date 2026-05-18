@@ -153,23 +153,24 @@ export default function FaqSection({ onOpenModal }: { onOpenModal: () => void })
             <p className="font-body text-sm mb-10" style={{ color: "var(--text-muted)" }}>
               Чем раньше начат анализ — тем больше возможностей для защиты
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col items-center gap-4">
               <a href="https://t.me/intelectpro_bot" target="_blank" rel="noopener noreferrer"
                 className="flex items-center justify-center gap-3 px-10 py-4 font-body font-bold text-xs tracking-widest uppercase rounded transition-all"
                 style={{ background: "#229ED9", color: "#fff", letterSpacing: "0.08em" }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.9"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = "1"; (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}>
                 <Icon name="Send" size={15} />
-                Отправить документы
+                Написать в Telegram
               </a>
-              <a href="mailto:order@advokat-vsem.ru"
-                className="flex items-center justify-center gap-3 px-10 py-4 font-body font-bold text-xs tracking-widest uppercase rounded transition-all"
-                style={{ background: "transparent", color: "var(--gold)", border: "1px solid rgba(212,175,55,0.4)", letterSpacing: "0.08em" }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--gold)"; (e.currentTarget as HTMLElement).style.background = "rgba(212,175,55,0.06)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(212,175,55,0.4)"; (e.currentTarget as HTMLElement).style.background = "transparent"; (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}>
-                <Icon name="Mail" size={15} />
-                order@advokat-vsem.ru
-              </a>
+              <p className="font-body text-xs" style={{ color: "var(--text-muted)" }}>
+                или отправьте на{" "}
+                <a href="mailto:order@advokat-vsem.ru"
+                  style={{ color: "var(--gold)" }}
+                  onMouseEnter={e => (e.currentTarget.style.opacity = "0.8")}
+                  onMouseLeave={e => (e.currentTarget.style.opacity = "1")}>
+                  order@advokat-vsem.ru
+                </a>
+              </p>
             </div>
           </div>
         </div>
@@ -190,10 +191,11 @@ export default function FaqSection({ onOpenModal }: { onOpenModal: () => void })
               order@advokat-vsem.ru
             </a>
             <p className="font-body text-xs" style={{ color: "rgba(232,228,220,0.25)" }}>
-              © 2024 Legis24 — юридический аналитический центр. Все права защищены.
+              © 2026 Legis24 — юридический аналитический центр. Все права защищены.
             </p>
           </div>
           <div className="flex flex-wrap gap-5 font-body text-xs justify-center" style={{ color: "rgba(232,228,220,0.35)" }}>
+            <a href="/intellektualnaya-sobstvennost" className="hover:opacity-70 transition-opacity underline" style={{ color: "rgba(232,228,220,0.35)" }}>Интеллектуальная собственность</a>
             <a href="/privacy" className="hover:opacity-70 transition-opacity underline" style={{ color: "rgba(232,228,220,0.35)" }}>Политика конфиденциальности</a>
             <a href="/terms"   className="hover:opacity-70 transition-opacity underline" style={{ color: "rgba(232,228,220,0.35)" }}>Пользовательское соглашение</a>
             <a href="/offer"   className="hover:opacity-70 transition-opacity underline" style={{ color: "rgba(232,228,220,0.35)" }}>Публичная оферта</a>

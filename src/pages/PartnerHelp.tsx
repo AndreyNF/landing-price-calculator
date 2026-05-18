@@ -4,8 +4,10 @@ import Icon from "@/components/ui/icon";
 import { NAV_ITEMS, scrollToSection } from "@/components/partner-help/PartnerHelpShared";
 import { SectionRegister, SectionCabinet, SectionClients } from "@/components/partner-help/PartnerHelpSections1";
 import { SectionReflink, SectionPromo, SectionFinances, SectionProfile } from "@/components/partner-help/PartnerHelpSections2";
+import { useSeoMeta } from "@/hooks/useSeoMeta";
 
 export default function PartnerHelp() {
+  useSeoMeta("/partner-help");
   const [activeSection, setActiveSection] = useState("register");
 
   const handleNavClick = (id: string) => {
