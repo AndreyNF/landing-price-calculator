@@ -1,0 +1,7 @@
+---
+description: Use Kovcheg blob upload for large WordPress page HTML on Nero Network office page work
+alwaysApply: false
+globs: "**/*.{html,htm,md}"
+---
+
+For Nero Network office page updates, use `wordpress_content_blob_append` then `wordpress_update_page_from_blob`. Chunk size ≤ 20 000 characters. Finalize the blob before applying it to the page.
