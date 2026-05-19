@@ -16,6 +16,11 @@ import Login from "./pages/Login";
 import VkCallback from "./pages/VkCallback";
 import PartnerHelp from "./pages/PartnerHelp";
 import IntellektualnaySobstvennost from "./pages/IntellektualnaySobstvennost";
+import VozrazhenieFns from "./pages/VozrazhenieFns";
+import OtvetTrebovanieFns from "./pages/OtvetTrebovanieFns";
+import SudebnyeDokumenty from "./pages/SudebnyeDokumenty";
+import NalogovyeSpory from "./pages/NalogovyeSpory";
+import DlyaYuristov from "./pages/DlyaYuristov";
 import CookieBanner from "./components/CookieBanner";
 
 const queryClient = new QueryClient();
@@ -39,6 +44,16 @@ const App = () => (
           <Route path="/auth/vk/callback" element={<VkCallback />} />
           <Route path="/partner-help" element={<PartnerHelp />} />
           <Route path="/intellektualnaya-sobstvennost" element={<IntellektualnaySobstvennost />} />
+          <Route path="/vozrazhenie-na-akt-fns/" element={<VozrazhenieFns />} />
+          <Route path="/vozrazhenie-na-akt-fns" element={<VozrazhenieFns />} />
+          <Route path="/otvet-na-trebovanie-fns/" element={<OtvetTrebovanieFns />} />
+          <Route path="/otvet-na-trebovanie-fns" element={<OtvetTrebovanieFns />} />
+          <Route path="/sudebnye-dokumenty/" element={<SudebnyeDokumenty />} />
+          <Route path="/sudebnye-dokumenty" element={<SudebnyeDokumenty />} />
+          <Route path="/nalogovye-spory/" element={<NalogovyeSpory />} />
+          <Route path="/nalogovye-spory" element={<NalogovyeSpory />} />
+          <Route path="/dlya-yuristov/" element={<DlyaYuristov />} />
+          <Route path="/dlya-yuristov" element={<DlyaYuristov />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

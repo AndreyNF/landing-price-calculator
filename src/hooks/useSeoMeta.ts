@@ -37,6 +37,31 @@ const PAGE_META: Record<string, SeoMeta> = {
     description: "Юридическая защита авторских прав и товарных знаков. Подготовка исков и отзывов за 24 часа.",
     canonical: "https://advokat-vsem.ru/intellektualnaya-sobstvennost",
   },
+  "/vozrazhenie-na-akt-fns/": {
+    title: "Возражение на акт ФНС под ключ — срок 24 ч | Legis24",
+    description: "Подготовим возражение на акт камеральной или выездной проверки: анализ, позиция, документ. По РФ, фиксированная цена, срок от 24 часов.",
+    canonical: "https://advokat-vsem.ru/vozrazhenie-na-akt-fns/",
+  },
+  "/otvet-na-trebovanie-fns/": {
+    title: "Ответ на требование ФНС — подготовка за 24 ч | Legis24",
+    description: "Ответы на требования о документах, пояснениях, НДС, прибыли, УСН. Поможем с форматом и сроками. Работаем по всей России онлайн.",
+    canonical: "https://advokat-vsem.ru/otvet-na-trebovanie-fns/",
+  },
+  "/sudebnye-dokumenty/": {
+    title: "Иск и отзыв в арбитражный суд за 24 часа | Legis24",
+    description: "Исковые заявления, отзывы, уточнения требований. Налоговые и корпоративные споры. Для бизнеса и практикующих юристов по всей РФ.",
+    canonical: "https://advokat-vsem.ru/sudebnye-dokumenty/",
+  },
+  "/nalogovye-spory/": {
+    title: "Налоговые споры — защита бизнеса и документы за 24 ч | Legis24",
+    description: "Сопровождение налоговых споров: возражения, ответы ФНС, иски в арбитраж. Аналитический центр Legis24, вся Россия.",
+    canonical: "https://advokat-vsem.ru/nalogovye-spory/",
+  },
+  "/dlya-yuristov/": {
+    title: "Подготовка документов для юристов — 24 ч | Legis24",
+    description: "Иски, отзывы, возражения ФНС под дедлайн. Приоритетная очередь для коллег. White-label по запросу. По всей РФ.",
+    canonical: "https://advokat-vsem.ru/dlya-yuristov/",
+  },
 };
 
 export function useSeoMeta(path: string) {
