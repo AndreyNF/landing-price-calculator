@@ -20,7 +20,6 @@ export default function HeroSection({ onScrollTo, onOpenModal }: HeroSectionProp
   const NAV_LINKS = [
     ["services", "Услуги"],
     ["price", "Прайс"],
-    ["calculator", "Калькулятор"],
     ["faq", "FAQ"],
   ];
 
