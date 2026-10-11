@@ -1,6 +1,8 @@
 export interface Article {
   id: string;
   slug: string;
+  image?: string;
+  imageAlt?: string;
   category: string;
   title: string;
   excerpt: string;
@@ -22,6 +24,8 @@ export const articles: Article[] = [
   {
     id: "1",
     slug: "yuridicheskie-sovety-dlya-biznesa",
+    image: "https://cdn.poehali.dev/projects/ec09f91e-5c19-456f-a8f1-620fce7cd143/bucket/d9ae1fad-e1d1-4bf4-9a05-67080e4e403b.jpg",
+    imageAlt: "Белая папка с золотым обрезом, золотая перьевая ручка и щит-пресс-папье на белом подиуме с логотипом Legis24",
     category: "Советы",
     title: "Юридические советы для бизнеса",
     excerpt:
@@ -72,6 +76,8 @@ export const articles: Article[] = [
   {
     id: "2",
     slug: "kak-zashchitit-biznes-sudy-fns-dokumenty",
+    image: "https://cdn.poehali.dev/projects/ec09f91e-5c19-456f-a8f1-620fce7cd143/bucket/aa24d25e-eda8-4bf0-a835-777177ad5990.jpg",
+    imageAlt: "Белая модель офисного здания на круглой платформе, окружённая белыми панелями-щитами с золотой окантовкой; на платформе логотип Legis24",
     category: "Защита бизнеса",
     title: "Как защитить бизнес: суды, ФНС и документы",
     excerpt:
@@ -131,6 +137,8 @@ export const articles: Article[] = [
   {
     id: "3",
     slug: "praktika-yurista-razbor-del",
+    image: "https://cdn.poehali.dev/projects/ec09f91e-5c19-456f-a8f1-620fce7cd143/bucket/55a8d1f9-1141-4a65-bd86-c57dc0a9876a.jpg",
+    imageAlt: "Три белых архивных короба, в открытом — папки дел, на соседнем золотая лупа; на коробе логотип Legis24",
     category: "Практика",
     title: "Практика юриста: разбор дел и ошибок",
     excerpt:
@@ -184,6 +192,8 @@ export const articles: Article[] = [
   {
     id: "4",
     slug: "iski-otzyvy-nalogovye-spory-prostym-yazykom",
+    image: "https://cdn.poehali.dev/projects/ec09f91e-5c19-456f-a8f1-620fce7cd143/bucket/5c1d325e-cf3f-473f-9a01-c4718d9c98ef.jpg",
+    imageAlt: "Два белых лотка: конверт с золотой сургучной печатью и стопка документов с золотым зажимом, между ними золотая стрелка — претензия и ответ; на лотке логотип Legis24",
     category: "Налоги и суды",
     title: "Иски, отзывы и налоговые споры — простым языком",
     excerpt:
@@ -248,6 +258,8 @@ export const articles: Article[] = [
   {
     id: "5",
     slug: "kak-biznesu-otvechat-na-trebovaniya-fns",
+    image: "https://cdn.poehali.dev/projects/ec09f91e-5c19-456f-a8f1-620fce7cd143/bucket/8c13a619-46d9-49c1-95c0-e0b694851f98.jpg",
+    imageAlt: "Открытый белый конверт с письмом, золотые песочные часы и папка документов с золотым зажимом — срок ответа на требование; на основании часов логотип Legis24",
     category: "Налоги и суды",
     title: "Как бизнесу правильно отвечать на требования ФНС",
     excerpt: "ФНС прислала требование — первая реакция часто бывает неверной. Рассказываем, как грамотно ответить на запросы налоговой, чтобы не усугубить ситуацию и защитить компанию.",

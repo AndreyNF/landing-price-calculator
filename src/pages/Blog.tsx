@@ -113,6 +113,17 @@ export default function Blog() {
                 (e.currentTarget as HTMLElement).style.boxShadow = "none";
               }}
             >
+              {article.image && (
+                <img
+                  src={article.image}
+                  alt={article.imageAlt}
+                  width={1600}
+                  height={898}
+                  loading="lazy"
+                  decoding="async"
+                  style={{ width: "100%", height: "auto", display: "block" }}
+                />
+              )}
               <div className="p-7">
                 <div className="flex items-center justify-between mb-4">
                   <span

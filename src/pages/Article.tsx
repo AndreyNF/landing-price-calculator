@@ -28,6 +28,14 @@ export default function Article() {
     let canonical = document.querySelector('link[rel="canonical"]');
     if (!canonical) { canonical = document.createElement("link"); (canonical as HTMLLinkElement).rel = "canonical"; document.head.appendChild(canonical); }
     (canonical as HTMLLinkElement).href = `${window.location.origin}/blog/${article.slug}`;
+    if (article.image) {
+      let ogImg = document.querySelector('meta[property="og:image"]') as HTMLMetaElement | null;
+      if (!ogImg) { ogImg = document.createElement("meta"); ogImg.setAttribute("property", "og:image"); document.head.appendChild(ogImg); }
+      ogImg.content = article.image;
+      let twImg = document.querySelector('meta[name="twitter:image"]') as HTMLMetaElement | null;
+      if (!twImg) { twImg = document.createElement("meta"); twImg.name = "twitter:image"; document.head.appendChild(twImg); }
+      twImg.content = article.image;
+    }
     return () => { document.title = "Legis24 — юридические услуги для бизнеса"; };
   }, [article]);
 
@@ -88,6 +96,20 @@ export default function Article() {
         >
           {article.title}
         </h1>
+
+        {article.image && (
+          <img
+            src={article.image}
+            alt={article.imageAlt}
+            width={1600}
+            height={898}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            className="mb-8"
+            style={{ width: "100%", height: "auto", borderRadius: 12 }}
+          />
+        )}
 
         {/* Excerpt */}
         <p
