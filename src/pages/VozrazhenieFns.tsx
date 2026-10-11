@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
+import SocialChannels from "@/components/SocialChannels";
 import { useSeoMeta } from "@/hooks/useSeoMeta";
 
 const TELEGRAM = "https://t.me/intelectpro_bot";
@@ -382,7 +383,8 @@ export default function VozrazhenieFns() {
       </section>
 
       {/* Footer */}
-      <footer className="px-6 md:px-12 py-8" style={{ borderTop: "1px solid rgba(212,175,55,0.1)" }}>
+      <footer className="px-6 md:px-12 py-8 flex flex-col items-center gap-6" style={{ borderTop: "1px solid rgba(212,175,55,0.1)" }}>
+        <SocialChannels />
         <p className="font-body text-xs text-center" style={{ color: "var(--text-muted)" }}>
           © 2026 Legis24
         </p>

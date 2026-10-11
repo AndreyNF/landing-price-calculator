@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
+import SocialChannels from "@/components/SocialChannels";
 
 export default function IntellektualnaySobstvennost() {
   useEffect(() => {
@@ -163,7 +164,8 @@ export default function IntellektualnaySobstvennost() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-6 md:px-12 text-center" style={{ background: "#050d1a", borderTop: "1px solid rgba(212,175,55,0.1)" }}>
+      <footer className="py-8 px-6 md:px-12 text-center flex flex-col items-center gap-6" style={{ background: "#050d1a", borderTop: "1px solid rgba(212,175,55,0.1)" }}>
+        <SocialChannels />
         <p className="font-body text-xs" style={{ color: "rgba(232,228,220,0.25)" }}>
           © 2026 Legis24 — юридический аналитический центр. Все права защищены.
         </p>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import SocialChannels from "@/components/SocialChannels";
 import Icon from "@/components/ui/icon";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
@@ -204,6 +205,9 @@ export default function FaqSection({ onOpenModal }: { onOpenModal: () => void })
               Кабинет
             </Link>
           </div>
+        </div>
+        <div className="max-w-6xl mx-auto mt-8 pt-6" style={{ borderTop: "1px solid rgba(212,175,55,0.08)" }}>
+          <SocialChannels />
         </div>
       </footer>
 
