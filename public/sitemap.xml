@@ -78,4 +78,52 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://advokat-vsem.ru/blog/yuridicheskie-sovety-dlya-biznesa</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://advokat-vsem.ru/blog/kak-zashchitit-biznes-sudy-fns-dokumenty</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://advokat-vsem.ru/blog/praktika-yurista-razbor-del</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://advokat-vsem.ru/blog/iski-otzyvy-nalogovye-spory-prostym-yazykom</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://advokat-vsem.ru/blog/kak-biznesu-otvechat-na-trebovaniya-fns</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://advokat-vsem.ru/blog/nalogovyy-spor-kogda-gotovit-isk</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://advokat-vsem.ru/blog/pochemu-yuristy-peredayut-dokumenty-na-autsorsing</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://advokat-vsem.ru/blog/oshibki-v-sudebnykh-dokumentakh</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
 </urlset>
