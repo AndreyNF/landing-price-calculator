@@ -11,6 +11,7 @@ import Offer from "./pages/Offer";
 import NotFound from "./pages/NotFound";
 import Blog from "./pages/Blog";
 import Article from "./pages/Article";
+import ArticleObespechitelnyeMery from "./pages/ArticleObespechitelnyeMery";
 import Cabinet from "./pages/Cabinet";
 import Login from "./pages/Login";
 import VkCallback from "./pages/VkCallback";
@@ -38,6 +39,7 @@ const App = () => (
           <Route path="/terms" element={<Terms />} />
           <Route path="/offer" element={<Offer />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/obespechitelnye-mery-fns-2026" element={<ArticleObespechitelnyeMery />} />
           <Route path="/blog/:slug" element={<Article />} />
           <Route path="/cabinet" element={<Cabinet />} />
           <Route path="/login" element={<Login />} />

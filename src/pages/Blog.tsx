@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { articles } from "@/data/articles";
 import Icon from "@/components/ui/icon";
+import featured from "@/data/featured-article.json";
 
 export default function Blog() {
   return (
@@ -51,6 +52,49 @@ export default function Blog() {
 
         {/* Articles Grid */}
         <div className="grid md:grid-cols-2 gap-5">
+          <Link
+            to={`/blog/${featured.slug}`}
+            className="group block rounded-2xl overflow-hidden transition-all duration-300"
+            style={{ background: "#0d1526", border: "1px solid rgba(212,175,55,0.1)" }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.border = "1px solid rgba(212,175,55,0.3)";
+              (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 32px rgba(212,175,55,0.08)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.border = "1px solid rgba(212,175,55,0.1)";
+              (e.currentTarget as HTMLElement).style.boxShadow = "none";
+            }}
+          >
+            <img
+              src={featured.image}
+              alt={featured.imageAlt}
+              width={1600}
+              height={898}
+              loading="lazy"
+              decoding="async"
+              style={{ width: "100%", height: "auto", display: "block" }}
+            />
+            <div className="p-7">
+              <h2
+                className="text-xl font-bold mb-3 leading-snug"
+                style={{ fontFamily: "Playfair Display, serif", color: "#ffffff" }}
+              >
+                {featured.h1}
+              </h2>
+              <p className="text-sm leading-relaxed mb-5" style={{ color: "rgba(232,228,220,0.45)" }}>
+                {featured.description}
+              </p>
+              <div className="flex items-center justify-between">
+                <span className="text-xs" style={{ color: "rgba(232,228,220,0.3)" }}>
+                  {featured.dateLabel}
+                </span>
+                <span className="flex items-center gap-1 text-sm font-medium" style={{ color: "#D4AF37" }}>
+                  Читать
+                  <Icon name="ArrowRight" size={15} />
+                </span>
+              </div>
+            </div>
+          </Link>
           {articles.map((article) => (
             <Link
               key={article.id}
