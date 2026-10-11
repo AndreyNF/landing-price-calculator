@@ -56,7 +56,7 @@ const stages = [
     label: "Решение / отказ",
     result: "Иск в арбитраж",
     link: "/sudebnye-dokumenty/",
-    price: "от 30 000 ₽",
+    price: "45 000 ₽",
   },
 ];
 
@@ -197,10 +197,11 @@ export default function NalogovyeSpory() {
                 {[
                   ["1", "Ответ на требование", "/otvet-na-trebovanie-fns/", "10 000 ₽"],
                   ["2", "Возражение на акт", "/vozrazhenie-na-akt-fns/", "70 000 ₽"],
-                  ["3", "Иск / отзыв в арбитраж", "/sudebnye-dokumenty/", "30–45 000 ₽"],
+                  ["3", "Иск в арбитраж", "/sudebnye-dokumenty/", "45 000 ₽"],
+                  ["3", "Отзыв на иск", "/sudebnye-dokumenty/", "30 000 ₽"],
                   ["—", "Анализ позиции", "/", "25 000 ₽"],
                 ].map(([num, service, link, price]) => (
-                  <tr key={num} style={{ borderBottom: "1px solid rgba(212,175,55,0.08)" }}>
+                  <tr key={`${num}-${service}`} style={{ borderBottom: "1px solid rgba(212,175,55,0.08)" }}>
                     <td className="py-4 pr-6" style={{ color: "var(--text-muted)", fontSize: "0.75rem" }}>{num}</td>
                     <td className="py-4 pr-6">
                       <Link to={link} style={{ color: "#fff" }} className="hover:opacity-70 transition-opacity">
