@@ -6,9 +6,6 @@ import base64
 import secrets
 import urllib.request
 import urllib.error
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 import psycopg2
 import boto3
 
@@ -100,95 +97,8 @@ def send_to_telegram(**data) -> None:
         print("Telegram sendMessage error:", type(e).__name__)
 
 
-NOTIFY_EMAIL = "order@advokat-vsem.ru"
-
-
-def build_email_html(name, phone, email, inn, inn_company, message, files_count) -> str:
-    inn_html = ""
-    if inn:
-        inn_html = f"<tr><td><b>ИНН:</b></td><td>{esc(inn)}" + (f" ({esc(inn_company)})" if inn_company else "") + "</td></tr>"
-    message_html = ""
-    if message:
-        message_html = "<tr><td style='padding:8px 0;color:#666'><b>Сообщение:</b></td><td style='padding:8px 0'>" + esc(message) + "</td></tr>"
-    return f"""
-    <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
-      <h2 style="color:#0d1826;border-bottom:2px solid #d4af37;padding-bottom:8px">Новая заявка с сайта Legis24</h2>
-      <table style="width:100%;border-collapse:collapse;margin-top:16px">
-        <tr><td style="padding:8px 0;color:#666;width:120px"><b>Имя:</b></td><td style="padding:8px 0">{esc(name)}</td></tr>
-        <tr><td style="padding:8px 0;color:#666"><b>Телефон:</b></td><td style="padding:8px 0">{esc(phone)}</td></tr>
-        <tr><td style="padding:8px 0;color:#666"><b>Email:</b></td><td style="padding:8px 0">{esc(email)}</td></tr>
-        {inn_html}
-        {message_html}
-        <tr><td style="padding:8px 0;color:#666"><b>Файлов:</b></td><td style="padding:8px 0">{files_count}</td></tr>
-      </table>
-    </div>
-    """
-
-
-def send_via_smtp(subject: str, html_body: str) -> bool:
-    smtp_user = os.environ.get("SMTP_USER", "")
-    smtp_password = os.environ.get("SMTP_PASSWORD", "")
-    if not smtp_user or not smtp_password:
-        print("SMTP error: SMTP_USER/SMTP_PASSWORD не заданы")
-        return False
-    smtp_from = os.environ.get("SMTP_FROM") or smtp_user
-    try:
-        msg = MIMEMultipart("alternative")
-        msg["Subject"] = subject
-        msg["From"] = smtp_from
-        msg["To"] = NOTIFY_EMAIL
-        msg.attach(MIMEText(html_body, "html", "utf-8"))
-        with smtplib.SMTP("smtp.gmail.com", 587, timeout=10) as server:
-            server.starttls()
-            server.login(smtp_user, smtp_password)
-            server.sendmail(smtp_from, [NOTIFY_EMAIL], msg.as_string())
-        print("SMTP: письмо отправлено")
-        return True
-    except Exception as e:
-        print(f"SMTP error: {type(e).__name__}: {e}")
-        return False
-
-
-def send_via_resend(subject: str, html_body: str) -> bool:
-    resend_key = os.environ.get("RESEND_API_KEY", "")
-    if not resend_key:
-        print("Resend error: RESEND_API_KEY не задан")
-        return False
-    try:
-        req = urllib.request.Request(
-            "https://api.resend.com/emails",
-            data=json.dumps({
-                "from": "Legis24 <noreply@poehali.dev>",
-                "to": [NOTIFY_EMAIL],
-                "subject": subject,
-                "html": html_body,
-            }).encode(),
-            headers={"Authorization": f"Bearer {resend_key}", "Content-Type": "application/json"},
-            method="POST",
-        )
-        resp = urllib.request.urlopen(req, timeout=10)
-        print("Resend response:", resp.read().decode()[:300])
-        return True
-    except urllib.error.HTTPError as e:
-        print(f"Resend error: HTTP {e.code}: {e.read().decode()[:300]}")
-        return False
-    except Exception as e:
-        print(f"Resend error: {type(e).__name__}: {e}")
-        return False
-
-
-def send_email_notification(name, phone, email, inn, inn_company, message, files_count) -> None:
-    try:
-        subject = f"Новая заявка от {name}"
-        html_body = build_email_html(name, phone, email, inn, inn_company, message, files_count)
-        if not send_via_smtp(subject, html_body):
-            send_via_resend(subject, html_body)
-    except Exception as e:
-        print(f"Email error: {type(e).__name__}: {e}")
-
-
 def handler(event: dict, context) -> dict:
-    """Сохраняет заявку в БД и S3, затем уведомляет в Telegram и по email."""
+    """Сохраняет заявку в БД и S3, затем уведомляет в Telegram."""
     if event.get('httpMethod') == 'OPTIONS':
         return {
             'statusCode': 200,
@@ -280,11 +190,6 @@ def handler(event: dict, context) -> dict:
     send_to_telegram(
         name=name, phone=phone, email=email, inn=inn, inn_info=inn_info,
         message=message, file_urls=file_urls, ref_code=ref_code,
-    )
-
-    send_email_notification(
-        name=name, phone=phone, email=email, inn=inn, inn_company=inn_company,
-        message=message, files_count=len(files),
     )
 
     return {
