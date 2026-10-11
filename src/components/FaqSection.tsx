@@ -90,7 +90,7 @@ export default function FaqSection({ onOpenModal }: { onOpenModal: () => void })
                 Ваш клиент получил акт ФНС или попал в арбитражный спор? Передайте кейс нам — мы подготовим стратегию защиты за 24 часа, а вы получите вознаграждение до 30% от тарифа.
               </p>
               <div className="flex flex-wrap items-center gap-4">
-                <a href="https://t.me/intelectpro_bot" target="_blank" rel="noopener noreferrer"
+                <a href="https://t.me/intelectpro_bot?start=site" target="_blank" rel="noopener noreferrer"
                   className="inline-flex items-center gap-3 px-8 py-3.5 font-body font-bold text-xs tracking-widest uppercase rounded transition-all"
                   style={{ background: "var(--gold)", color: "#050d1a", letterSpacing: "0.08em" }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.88"; }}
@@ -155,7 +155,7 @@ export default function FaqSection({ onOpenModal }: { onOpenModal: () => void })
               Чем раньше начат анализ — тем больше возможностей для защиты
             </p>
             <div className="flex flex-col items-center gap-4">
-              <a href="https://t.me/intelectpro_bot" target="_blank" rel="noopener noreferrer"
+              <a href="https://t.me/intelectpro_bot?start=site" target="_blank" rel="noopener noreferrer"
                 className="flex items-center justify-center gap-3 px-10 py-4 font-body font-bold text-xs tracking-widest uppercase rounded transition-all"
                 style={{ background: "#229ED9", color: "#fff", letterSpacing: "0.08em" }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.9"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}

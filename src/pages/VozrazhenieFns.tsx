@@ -4,7 +4,7 @@ import Icon from "@/components/ui/icon";
 import SocialChannels from "@/components/SocialChannels";
 import { useSeoMeta } from "@/hooks/useSeoMeta";
 
-const TELEGRAM = "https://t.me/intelectpro_bot";
+const TELEGRAM = "https://t.me/intelectpro_bot?start=site";
 const EMAIL = "order@advokat-vsem.ru";
 
 const faqs = [

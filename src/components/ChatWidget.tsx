@@ -57,7 +57,7 @@ export default function ChatWidget() {
               <p className="text-xs opacity-80">@{BOT_USERNAME}</p>
             </div>
             <a
-              href={`https://t.me/${BOT_USERNAME}`}
+              href={`https://t.me/${BOT_USERNAME}?start=site`}
               target="_blank"
               rel="noopener noreferrer"
               className="opacity-70 hover:opacity-100 transition-opacity mr-2"

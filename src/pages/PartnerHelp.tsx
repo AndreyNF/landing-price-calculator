@@ -162,7 +162,7 @@ export default function PartnerHelp() {
             Куратор партнёрской программы ответит в Telegram.
           </p>
           <a
-            href="https://t.me/intelectpro_bot"
+            href="https://t.me/intelectpro_bot?start=site"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-sm font-semibold font-body transition-all duration-200"

@@ -123,7 +123,7 @@ export default function ArticleObespechitelnyeMery() {
           </p>
 
           <a
-            href="https://t.me/intelectpro_bot"
+            href="https://t.me/intelectpro_bot?start=site"
             target="_blank"
             rel="noopener"
             className="article-cta inline-flex items-center justify-center gap-3 px-8 py-4 font-bold text-xs tracking-widest uppercase rounded transition-all"

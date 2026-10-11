@@ -56,7 +56,7 @@ export default function IntellektualnaySobstvennost() {
             Споры о нарушении авторских прав, защита товарных знаков, борьба с незаконным копированием.
             Подготовка исков, отзывов и жалоб за 24 часа. Полное юридическое сопровождение под ключ.
           </p>
-          <a href="https://t.me/intelectpro_bot" target="_blank" rel="noopener noreferrer"
+          <a href="https://t.me/intelectpro_bot?start=site" target="_blank" rel="noopener noreferrer"
             className="inline-flex items-center gap-3 px-10 py-4 font-body font-bold text-xs tracking-widest uppercase rounded transition-all"
             style={{ background: "#229ED9", color: "#fff", letterSpacing: "0.08em" }}
             onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.9"; }}
@@ -148,7 +148,7 @@ export default function IntellektualnaySobstvennost() {
           <p className="font-body text-sm mb-8" style={{ color: "var(--text-muted)" }}>
             Чем раньше начат анализ — тем больше возможностей для защиты
           </p>
-          <a href="https://t.me/intelectpro_bot" target="_blank" rel="noopener noreferrer"
+          <a href="https://t.me/intelectpro_bot?start=site" target="_blank" rel="noopener noreferrer"
             className="inline-flex items-center gap-3 px-10 py-4 font-body font-bold text-xs tracking-widest uppercase rounded transition-all"
             style={{ background: "#229ED9", color: "#fff", letterSpacing: "0.08em" }}
             onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.9"; }}
