@@ -1,11 +1,16 @@
 import json
 import os
+import html
+from datetime import datetime, timezone, timedelta
 import base64
 import secrets
 import urllib.request
 import urllib.error
 import psycopg2
 import boto3
+
+TELEGRAM_CHAT_ID = "-1002508279128"
+MAX_TEXT = 4000
 
 SCHEMA = os.environ.get("MAIN_DB_SCHEMA", "t_p60076574_landing_price_calcul")
 
@@ -23,8 +28,77 @@ def s3_client():
     )
 
 
+def esc(value) -> str:
+    return html.escape(str(value or "").strip(), quote=False)
+
+
+def build_telegram_text(name, phone, email, inn, inn_info, message, file_urls, ref_code) -> str:
+    now = datetime.now(timezone(timedelta(hours=5))).strftime("%d.%m.%Y %H:%M")
+    lines = ["📩 <b>Новая заявка — сайт advokat-vsem.ru</b>"]
+    if name:
+        lines.append(f"Имя: {esc(name)}")
+    if phone:
+        lines.append(f"Телефон: {esc(phone)}")
+    if email:
+        lines.append(f"Email: {esc(email)}")
+    if inn:
+        inn_line = f"ИНН: {esc(inn)}"
+        details = []
+        if inn_info.get("name"):
+            details.append(esc(inn_info.get("name")))
+        if inn_info.get("address"):
+            details.append(esc(inn_info.get("address")))
+        if details:
+            inn_line += " — " + ", ".join(details)
+        lines.append(inn_line)
+    tail = []
+    if file_urls:
+        tail.append("Файлы:")
+        tail.extend(f"• {esc(u)}" for u in file_urls)
+    if ref_code:
+        tail.append(f"Реф. код: {esc(ref_code)}")
+    tail.append(f"Дата: {now} по Екатеринбургу (UTC+5)")
+
+    head_text = "\n".join(lines)
+    tail_text = "\n".join(tail)
+    raw = (message or "").strip()
+    if raw:
+        fixed = len(head_text) + len(tail_text) + len("\nСообщение: ") + 2
+        limit = MAX_TEXT - fixed
+        msg = esc(raw)
+        if len(msg) > limit:
+            cut = max(limit - 1, 0)
+            while cut > 0 and len(esc(raw[:cut]) + "…") > limit:
+                cut -= 1
+            msg = esc(raw[:cut]).rstrip() + "…"
+        return f"{head_text}\nСообщение: {msg}\n{tail_text}"
+    return f"{head_text}\n{tail_text}"
+
+
+def send_to_telegram(**data) -> None:
+    try:
+        token = os.environ["INTELLECT_BOT_TOKEN"]
+        text = build_telegram_text(**data)
+        req = urllib.request.Request(
+            f"https://api.telegram.org/bot{token}/sendMessage",
+            data=json.dumps({
+                "chat_id": TELEGRAM_CHAT_ID,
+                "text": text,
+                "parse_mode": "HTML",
+                "disable_web_page_preview": True,
+            }).encode(),
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        urllib.request.urlopen(req, timeout=5).read()
+    except urllib.error.HTTPError as e:
+        print("Telegram sendMessage error:", e.code, e.read().decode()[:300])
+    except Exception as e:
+        print("Telegram sendMessage error:", type(e).__name__)
+
+
 def handler(event: dict, context) -> dict:
-    """Отправляет заявку клиента в Telegram, сохраняет в БД и файлы в S3."""
+    """Сохраняет заявку в БД и S3, затем уведомляет в Telegram и по email."""
     if event.get('httpMethod') == 'OPTIONS':
         return {
             'statusCode': 200,
@@ -36,9 +110,6 @@ def handler(event: dict, context) -> dict:
             },
             'body': ''
         }
-
-    bot_token = os.environ['TELEGRAM_BOT_TOKEN']
-    chat_id = os.environ['TELEGRAM_CHAT_ID']
 
     body = json.loads(event.get('body', '{}'))
     name = body.get('name', '').strip()
@@ -70,6 +141,8 @@ def handler(event: dict, context) -> dict:
 
     # Сохраняем заявку в БД и получаем id
     submission_id = None
+    conn = None
+    file_urls = []
     try:
         conn = get_conn()
         cur = conn.cursor()
@@ -102,85 +175,22 @@ def handler(event: dict, context) -> dict:
                         VALUES (%s, %s, %s, %s, %s)""",
                     (submission_id, filename, file_url, len(file_data), mime),
                 )
+                file_urls.append(file_url)
             conn.commit()
         except Exception as e:
             print("S3/files error:", e)
         finally:
             conn.close()
-    elif conn:
+    elif conn is not None:
         try:
             conn.close()
         except Exception:
             pass
 
-    inn_line = ""
-    if inn:
-        inn_line = f"🏢 ИНН: {inn}"
-        if inn_company:
-            inn_line += f" ({inn_company})"
-        inn_line += "\n"
-
-    text = (
-        f"📄 *Новая заявка с сайта*\n\n"
-        f"👤 Имя: {name}\n"
-        f"📞 Телефон: {phone}\n"
-        f"✉️ Email: {email}\n"
-        + inn_line
-        + (f"💬 Сообщение: {message}\n" if message else "")
-        + f"📎 Файлов: {len(files)}"
+    send_to_telegram(
+        name=name, phone=phone, email=email, inn=inn, inn_info=inn_info,
+        message=message, file_urls=file_urls, ref_code=ref_code,
     )
-
-    api_base = f"https://api.telegram.org/bot{bot_token}"
-
-    try:
-        req = urllib.request.Request(
-            f"{api_base}/sendMessage",
-            data=json.dumps({
-                'chat_id': chat_id,
-                'text': text,
-                'parse_mode': 'Markdown'
-            }).encode(),
-            headers={'Content-Type': 'application/json'},
-            method='POST'
-        )
-        resp = urllib.request.urlopen(req)
-        print("sendMessage response:", resp.read().decode())
-    except urllib.error.HTTPError as e:
-        err = e.read().decode()
-        print("sendMessage error:", err)
-        return {
-            'statusCode': 500,
-            'headers': {'Access-Control-Allow-Origin': '*'},
-            'body': json.dumps({'ok': False, 'error': err})
-        }
-
-    for f in files:
-        file_data = base64.b64decode(f['data'])
-        filename = f.get('name', 'document')
-        mime = f.get('type', 'application/octet-stream')
-
-        boundary = 'boundary123456'
-        body_parts = (
-            f'--{boundary}\r\n'
-            f'Content-Disposition: form-data; name="chat_id"\r\n\r\n'
-            f'{chat_id}\r\n'
-            f'--{boundary}\r\n'
-            f'Content-Disposition: form-data; name="document"; filename="{filename}"\r\n'
-            f'Content-Type: {mime}\r\n\r\n'
-        ).encode() + file_data + f'\r\n--{boundary}--\r\n'.encode()
-
-        try:
-            doc_req = urllib.request.Request(
-                f"{api_base}/sendDocument",
-                data=body_parts,
-                headers={'Content-Type': f'multipart/form-data; boundary={boundary}'},
-                method='POST'
-            )
-            dresp = urllib.request.urlopen(doc_req)
-            print("sendDocument response:", dresp.read().decode())
-        except urllib.error.HTTPError as e:
-            err = e.read().decode()
-            print("sendDocument error:", err)
 
     # Отправляем email через Resend
     resend_key = os.environ.get('RESEND_API_KEY', '')
