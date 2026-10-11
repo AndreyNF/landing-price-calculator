@@ -182,6 +182,18 @@ export default function Article() {
                   </p>
                 </div>
               )}
+              {section.image && (
+                <img
+                  src={section.image.src}
+                  alt={section.image.alt}
+                  width={1600}
+                  height={898}
+                  loading="lazy"
+                  decoding="async"
+                  className="mt-6"
+                  style={{ width: "100%", height: "auto", borderRadius: 12 }}
+                />
+              )}
             </div>
           ))}
         </div>
